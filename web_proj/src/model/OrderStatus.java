@@ -1,0 +1,10 @@
+package model;
+
+public enum OrderStatus {
+	PROCESSING,
+	INPREPARATION,
+	WAITING_FOR_SUPPLIER,
+	IN_TRANSPORT,
+	DELIVERED,
+	CANCELED
+}
