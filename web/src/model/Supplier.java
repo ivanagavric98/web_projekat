@@ -19,6 +19,19 @@ public class Supplier extends User {
 		super(username, password, name, surname, gender, dateOfBirth, role);
 		this.orders = orders;
 	}
+
+	
+	public Supplier(User user){
+		this.username = user.username;
+		this.password = user.password;
+		this.name = user.name;
+		this.surname = user.surname;
+		this.gender = user.gender;
+		this.dateOfBirth = user.dateOfBirth;
+		this.role = user.role;
+		this.orders = new ArrayList<Order>();
+		
+	}
 	
 	public Supplier() {}
 	

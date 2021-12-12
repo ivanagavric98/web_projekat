@@ -16,5 +16,17 @@ public class Menager extends User {
 	public void setRestaurant(String restaurant) {
 		this.restaurant = restaurant;
 	}
+
+	
+	public Menager(User user){
+		this.username = user.username;
+		this.password = user.password;
+		this.name = user.name;
+		this.surname = user.surname;
+		this.gender = user.gender;
+		this.dateOfBirth = user.dateOfBirth;
+		this.role = user.role;
+		
+	}
 	
 }

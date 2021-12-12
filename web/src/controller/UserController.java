@@ -2,10 +2,6 @@ package controller;
 
 import service.UserService;
 
-import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.put;
-
 import java.io.IOException;
 
 import com.google.gson.Gson;
