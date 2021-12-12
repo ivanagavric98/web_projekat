@@ -7,7 +7,14 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.lang.model.element.TypeElement;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -77,6 +84,44 @@ public class CustomerDAO implements IDAO<Customer,String> {
 		writer.close();		
         
     }
-	
+    public List<Customer> userSortByUserPointAsc() throws JsonSyntaxException, IOException {
+		ArrayList<Customer> users=getAll();
+		Set<Customer> toSort=new HashSet<>();
 
+		for (Customer object : users) {
+			toSort.add(object);
+		}
+
+		List<Customer> resultList = toSort.stream().sorted((e1, e2) -> 
+        Integer.valueOf(e1.getPoints()).compareTo(Integer.valueOf(e2.getPoints()))).collect(Collectors.toList());
+
+		return resultList;
+    }
+
+    public List<Customer> userSortByUserPointsDesc() throws JsonSyntaxException, IOException {
+		ArrayList<Customer> users=getAll();
+		Set<Customer> toSort=new HashSet<>();
+
+		for (Customer object : users) {
+			toSort.add(object);
+		}
+
+		List<Customer> resultList = toSort.stream().sorted((e1, e2) -> 
+		Integer.valueOf(e1.getPoints()).compareTo(Integer.valueOf(e2.getPoints()))).collect(Collectors.toList());
+		Collections.reverse(resultList);
+		return resultList;  
+      }
+      
+    public List<Customer> customerFiltrateByType(String type) throws JsonSyntaxException, IOException {
+        ArrayList<Customer> customers=getAll();
+		ArrayList<Customer> resultList=new ArrayList<>();
+        for (Customer customer : customers) {
+            if(customer.getType().type.toString().toLowerCase().equals(type.toLowerCase())){
+                resultList.add(customer);
+            }
+        }
+        return resultList;
+        }
 }
+
+

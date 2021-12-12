@@ -11,7 +11,9 @@ public class CustomerType {
 		this.requiredPoints = requiredPoints;
 	}
 	
-	public CustomerType() {}
+	public CustomerType() {
+		type=Type.BRONZE;
+	}
 
 	public Type getType() {
 		return type;

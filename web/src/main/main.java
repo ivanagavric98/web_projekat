@@ -8,9 +8,13 @@ import static spark.Spark.staticFiles;
 
 import java.io.Console;
 import java.io.File;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import org.eclipse.jetty.websocket.client.io.UpgradeConnection.SendUpgradeRequest;
 
 import controller.CustomerController;
 import controller.MenagerController;
@@ -76,7 +80,7 @@ public class main {
 			
 		});
 
-		post("/registerSupplier/","application/json", (req,res) -> {
+		post("/registerSupplier","application/json", (req,res) -> {
 			res.type("application/json");	
 				User user=gson.fromJson(req.body(), User.class);
 				Boolean r=usersController.register(user);
@@ -100,6 +104,102 @@ public class main {
 			return r;
 			
 		});
+
+		get("/getAllUsers", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return usersController.getAllUsers();
+		});
+
+		get("/usersSearchByName/:name", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String name= req.params("name");
+			return usersController.usersSearchByName(name);
+		});
+
+		get("/usersSearchByUserName/:username", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String username= req.params("username");
+			return usersController.usersSearchByUserName(username);
+		});
+
+		get("/usersSearchBySurname/:surname", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String surname= req.params("surname");
+			return usersController.usersSearchBySurname(surname);
+		});
+
+		get("/userSortByNameAsc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return usersController.userSortByNameAsc();
+		});
+
+		get("/userSortByNameDesc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return usersController.userSortByNameDesc();
+		});
+
+		get("/userSortBySurnameAsc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return usersController.userSortBySurnameAsc();
+		});
+
+		get("/userSortBySurnameDesc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return usersController.userSortBySurnameDesc();
+		});
+
+		get("/userSortByUsernameAsc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return usersController.userSortByUsernameAsc();
+		});
+
+		get("/userSortByUsernameDesc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return usersController.userSortByUsernameDesc();
+		});
+
+		get("/customerSortByUserPointAsc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return customerController.userSortByUserPointAsc();
+		});
+
+		get("/customerSortByUserPointsDesc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return customerController.userSortByUserPointsDesc();
+		});
+
+		
+		get("/customersFiltrateByType/:type", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String type= req.params("type");
+
+			return customerController.customerFiltrateByType(type);
+		});
+
+		
+		get("/usersFiltrateByRole/:role", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String role= req.params("role");
+
+			return usersController.usersFiltrateByRole(role);
+		});
+
+
+
+
+
+
+/*
+		get("/usersSearch/:name/:surname/:username", "application/json", (req, res) -> {
+			String name= req.params("name");
+			String surname= req.params("surname");
+			String username= req.params("username");
+
+			return usersService.searchUsers(name,surname,username);
+			
+		});
+*/
+		
 	}
 }
 		/*
