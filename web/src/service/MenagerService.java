@@ -43,4 +43,8 @@ public ArrayList<Menager> getAllMenagers() throws JsonSyntaxException, IOExcepti
     return menagerDAO.getAll();
 }
 
+public void update(Menager menager) throws JsonSyntaxException, IOException{
+     menagerDAO.update(menager);
+}
+
 }
