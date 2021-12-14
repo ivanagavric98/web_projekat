@@ -18,6 +18,8 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.Adapter;
 import com.google.gson.reflect.TypeToken;
 
+import org.eclipse.jetty.util.UrlEncoded;
+
 import model.User;
 
 public class UserDAO implements IDAO<User, String>{
@@ -245,6 +247,51 @@ public class UserDAO implements IDAO<User, String>{
         }
         return resultList;
         }
+
+    public List<User> combineSearchUser(String name, String surname, String username) throws JsonSyntaxException, IOException {
+		ArrayList<User> allUsers=getAll();
+		ArrayList<User> resultList=new ArrayList<User>();
+		ArrayList<User> nameList=new ArrayList<User>();
+		ArrayList<User> surnameLis=new ArrayList<User>();
+		ArrayList<User> usernameList=new ArrayList<User>();
+
+		if(name==null || name.isBlank())
+			nameList=allUsers;
+		else	
+			nameList=searchByName(name);
+
+		if(surname==null || surname.isBlank())
+			surnameLis=allUsers;
+		else	
+			surnameLis=searchBySurname(surname);
+
+		if(username==null || username.isBlank())
+			usernameList=allUsers;
+		else	
+			usernameList=searchByUsername(username);
+
+			List<User> intersectionResult=new ArrayList<User>();
+			List<User> intersectionResult1=new ArrayList<User>();
+
+			for(User user :nameList){
+				for(User user2: surnameLis){
+					if(user.getUsername().equals(user2.getUsername())  ){
+						intersectionResult.add(user);
+					}
+				}
+			}
+
+			for(User user :intersectionResult){
+				for(User user1: usernameList){
+					if(user.getUsername().equals(user1.getUsername())  ){
+						intersectionResult1.add(user);
+					}
+				}
+			}
+			
+		return  intersectionResult1;
+	
     }
+}
 
 

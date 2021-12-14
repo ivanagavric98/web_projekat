@@ -3,6 +3,7 @@ package service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gson.JsonSyntaxException;
 
@@ -25,12 +26,11 @@ public class UserService {
 		}else{
 			for(User u : users){
 				if(u.username.equals(user.username)){
-				result= false;
-				}else{
-					usersDao.create(user);
-					result=true;
+				 return result= false;
 				}
 			}
+			usersDao.create(user);
+			result=true;
 		}
 		
 		return result;
@@ -88,6 +88,9 @@ public class UserService {
 	public List<User> usersFiltrateByRole(String role) throws JsonSyntaxException, IOException {
         return usersDao.usersFiltrateByRole(role);
 	}
+
+    public List<User> combineSearchUser(String name, String surname, String username) throws JsonSyntaxException, IOException {
+		return usersDao.combineSearchUser(name,surname,username);    }
 
   
 }

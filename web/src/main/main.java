@@ -152,6 +152,16 @@ public class main {
 			return usersController.usersSearchBySurname(surname);
 		});
 
+		
+		get("/combineSearchUser", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String surname= req.queryParams("surname");	
+			String username= req.queryParams("username");
+			String name= req.queryParams("name");
+
+			return usersController.combineSearchUser(name,surname,username);
+		});
+
 		get("/userSortByNameAsc", "application/json", (req, res) -> {
 			res.type("application/json");	
 			return usersController.userSortByNameAsc();
