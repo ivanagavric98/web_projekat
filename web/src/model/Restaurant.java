@@ -8,16 +8,20 @@ public class Restaurant {
 	public ArrayList<Article> articles;
 	public Location location;
 	public String logo;
+	public double grade;
+	public RestaurantStatus status;
 	
 	public Restaurant() {}
 		
-	public Restaurant(String name, String type, ArrayList<Article> articles, Location location, String logo) {
+	public Restaurant(String name, String type, ArrayList<Article> articles, Location location, String logo,Double grade,RestaurantStatus status) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.articles = articles;
 		this.location = location;
 		this.logo = logo;
+		this.grade = grade;
+		this.status=status;
 	}
 
 	public String getName() {
@@ -58,6 +62,22 @@ public class Restaurant {
 
 	public void setLogo(String logo) {
 		this.logo = logo;
+	}
+
+	public double getGrade() {
+		return grade;
+	}
+
+	public void setGrade(double grade) {
+		this.grade = grade;
+	}
+
+	public RestaurantStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(RestaurantStatus status) {
+		this.status = status;
 	}
 	
 	
