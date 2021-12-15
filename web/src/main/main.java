@@ -152,16 +152,6 @@ public class main {
 			return usersController.usersSearchBySurname(surname);
 		});
 
-		
-		get("/combineSearchUser", "application/json", (req, res) -> {
-			res.type("application/json");	
-			String surname= req.queryParams("surname");	
-			String username= req.queryParams("username");
-			String name= req.queryParams("name");
-
-			return usersController.combineSearchUser(name,surname,username);
-		});
-
 		get("/userSortByNameAsc", "application/json", (req, res) -> {
 			res.type("application/json");	
 			return usersController.userSortByNameAsc();
@@ -219,6 +209,15 @@ public class main {
 		});
 
 
+		get("/combineSearchUser", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String name= req.queryParams("name");
+			String username= req.params("username");
+			String surname= req.params("surname");
+
+			return usersController.combineSearchUser(name,surname,username);
+		});
+
 		
 		post("/registerRestaurant","application/json", (req,res) -> {
 			res.type("application/json");	
@@ -247,65 +246,79 @@ public class main {
 			
 		});
 
-
-
-
-
-
-/*
-		get("/usersSearch/:name/:surname/:username", "application/json", (req, res) -> {
-			String name= req.params("name");
-			String surname= req.params("surname");
-			String username= req.params("username");
-
-			return usersService.searchUsers(name,surname,username);
-			
+		get("/restourantSearchByName/:name", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String restourantName= req.params("name");
+			return restaurantController.restourantSearchByName(restourantName);
 		});
-*/
+
+		get("/restourantSearchByType/:type", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String type= req.params("type");
+			return restaurantController.restourantSearchByType(type);
+		});
+
+		get("/restourantSearchByLocation/:location", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String location= req.params("location");
+			return restaurantController.restourantSearchByLocation(location);
+		});
+
+		get("/restaurantSortByNameAsc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return restaurantController.restaurantSortByNameAsc();
+		});
+
+		get("/restaurantSortByNameDesc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return restaurantController.restaurantSortByNameDesc();
+		});
+
+		get("/restaurantSortByLocationAsc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return restaurantController.restaurantSortByLocationAsc();
+		});
+
+		get("/restaurantSortByLocationDesc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return restaurantController.restaurantSortByLocationDesc();
+		});
+
+		get("/restauranSortByGradeAsc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return restaurantController.restauranSortByGradeAsc();
+		});
+
+		get("/restauranSortByGradeDesc", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return restaurantController.restauranSortByGradeDesc();
+		});
+
+		get("/restaurantsFiltrateByType/:type", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String type= req.params("type");
+
+			return restaurantController.restaurantsFiltrateByType(type);
+		});
 		
+		get("/restaurantsFiltrateByStatus/:status", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String role= req.params("status");
+
+			return restaurantController.restaurantsFiltrateByStatus(role);
+		});
+
+		get("/combineSearchRestaurant/:role", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String name= req.queryParams("name");
+			String username= req.params("username");
+			String surname= req.params("surname");
+
+			return usersController.combineSearchUser(name,surname,username);
+		});
+
+
 	}
 }
-		/*
-	
-		
-		get("/rest/proizvodi/getJustProducts", (req, res) -> {
-			res.type("application/json");
-			return g.toJson(products.values());
-		});
-		
-		get("/rest/proizvodi/getJustSc", (req, res) -> {
-			res.type("application/json");
-			return g.toJson(getSc(req).getItems());
-		});
-		
-		get("/rest/proizvodi/getTotal", (req, res) -> {
-			res.type("application/json");
-			return g.toJson(getSc(req).getTotal());
-		});
-		
-		post("/rest/proizvodi/add", (req, res) -> {
-			res.type("application/json");
-			String payload = req.body();
-			ProductToAdd pd = g.fromJson(payload, ProductToAdd.class);
-			getSc(req).addItem(products.getProduct(pd.id), pd.count);
-			return ("OK");
-		});
-		
-		post("/rest/proizvodi/clearSc", (req, res) -> {
-			res.type("application/json");
-			getSc(req).getItems().clear();
-			return "OK";
-		});
-	}
-	
-	private static ShoppingCart getSc(Request req) {
-		Session ss = req.session(true);
-		ShoppingCart sc = ss.attribute("sc"); 
-		if (sc == null) {
-			sc = new ShoppingCart();
-			ss.attribute("sc", sc);
-		}
-		return sc;
-	}
 
-}*/
+
