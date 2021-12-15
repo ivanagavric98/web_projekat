@@ -97,4 +97,8 @@ public class RestaurantService {
     public List<Restaurant> combineSearchRestaurant(String type, String status) throws JsonSyntaxException, IOException {
         return restaurantDAO.combineSearchRestaurant(type,status);
     }
+
+    public List<Restaurant> getRestaurantsOpenAndClosed() throws JsonSyntaxException, IOException {
+        return restaurantDAO.getRestaurantsOpenAndClosed();
+    }
 }

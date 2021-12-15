@@ -308,13 +308,17 @@ public class main {
 			return restaurantController.restaurantsFiltrateByStatus(role);
 		});
 
-		get("/combineSearchRestaurant/:role", "application/json", (req, res) -> {
+		get("/combineSearchRestaurant", "application/json", (req, res) -> {
 			res.type("application/json");	
-			String name= req.queryParams("name");
-			String username= req.params("username");
-			String surname= req.params("surname");
+			String type= req.queryParams("type");
+			String status= req.queryParams("status");
 
-			return usersController.combineSearchUser(name,surname,username);
+			return restaurantController.combineSearchRestaurant(type,status);
+		});
+
+		get("/getRestaurantsOpenAndClosed", "application/json", (req, res) -> {
+			res.type("application/json");	
+			return restaurantController.getRestaurantsOpenAndClosed();
 		});
 
 
