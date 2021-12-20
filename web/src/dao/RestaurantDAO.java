@@ -292,5 +292,16 @@ public class RestaurantDAO  implements IDAO<Restaurant, String>{
 		.collect(Collectors.toList());
 		return resultList;
     }
+
+    public Restaurant getRestaurantByName(String restaurantName) throws JsonSyntaxException, IOException {
+        Restaurant result=new Restaurant();
+		ArrayList<Restaurant> restaurants=getAll();
+		for (Restaurant restaurant : restaurants) {
+			if(restaurant.name.trim().toLowerCase().equals(restaurantName.trim().toLowerCase())){
+				result = restaurant;
+			}
+		}
+		return result;
+    }
 	
 }

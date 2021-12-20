@@ -15,71 +15,75 @@ import service.MenagerService;
 import service.RestaurantService;
 
 public class RestaurantController {
-    private RestaurantService restourantService;
+    private RestaurantService restaurantService;
     private MenagerService menagerService;
     private AddressService addressService;
     private LocationService locationService;
 	private static Gson gson = new Gson();
 
-	public RestaurantController(RestaurantService restourantService) {
-		this.restourantService = restourantService;
+	public RestaurantController(RestaurantService restaurantService) {
+		this.restaurantService = restaurantService;
 	}
 
 		public Boolean register(Restaurant restaurant) throws JsonSyntaxException, IOException{
-            Boolean restourantSave=restourantService.register(restaurant);  
+            Boolean restourantSave=restaurantService.register(restaurant);  
 			return restourantSave;
 	   }
 
         public ArrayList<Restaurant> restourantSearchByName(String restourantName) throws JsonSyntaxException, IOException {
-            return restourantService.restourantSearchByName(restourantName);
+            return restaurantService.restourantSearchByName(restourantName);
         }
 
         public  ArrayList<Restaurant>  restourantSearchByType(String type) throws JsonSyntaxException, IOException {
-			return restourantService.restourantSearchByType(type);   
+			return restaurantService.restourantSearchByType(type);   
 	    }
 
         public  ArrayList<Restaurant>  restourantSearchByLocation(String location) throws JsonSyntaxException, IOException {
-            return restourantService.restourantSearchByLocation(location);
+            return restaurantService.restourantSearchByLocation(location);
         }
 
 		public  List<Restaurant> restaurantSortByNameAsc() throws JsonSyntaxException, IOException {
-            return restourantService.restaurantSortByNameAsc();
+            return restaurantService.restaurantSortByNameAsc();
 		}
 
         public  List<Restaurant> restaurantSortByNameDesc() throws JsonSyntaxException, IOException {
-            return restourantService.restaurantSortByNameDesc();
+            return restaurantService.restaurantSortByNameDesc();
         }
 
         public  List<Restaurant> restaurantSortByLocationAsc() throws JsonSyntaxException, IOException {
-            return restourantService.restaurantSortByLocationAsc();
+            return restaurantService.restaurantSortByLocationAsc();
         }
 
         public  List<Restaurant> restaurantSortByLocationDesc() throws JsonSyntaxException, IOException {
-            return restourantService.restaurantSortByLocationDesc();
+            return restaurantService.restaurantSortByLocationDesc();
         }
 
         public  List<Restaurant> restauranSortByGradeAsc() throws JsonSyntaxException, IOException {
-            return restourantService.restauranSortByGradeAsc();
+            return restaurantService.restauranSortByGradeAsc();
         }
 
         public  List<Restaurant> restauranSortByGradeDesc() throws JsonSyntaxException, IOException {
-            return restourantService.restauranSortByGradeDesc();
+            return restaurantService.restauranSortByGradeDesc();
         }
 
         public List<Restaurant> restaurantsFiltrateByType(String type) throws JsonSyntaxException, IOException {
-            return restourantService.restaurantsFiltrateByType(type);
+            return restaurantService.restaurantsFiltrateByType(type);
         }
 
         public List<Restaurant> restaurantsFiltrateByStatus(String status) throws JsonSyntaxException, IOException {
-            return restourantService.restaurantsFiltrateByStatus(status);
+            return restaurantService.restaurantsFiltrateByStatus(status);
         }
 
         public List<Restaurant> combineSearchRestaurant(String type, String status) throws JsonSyntaxException, IOException {
-            return restourantService.combineSearchRestaurant(type,status);
+            return restaurantService.combineSearchRestaurant(type,status);
         }
 
         public List<Restaurant> getRestaurantsOpenAndClosed() throws JsonSyntaxException, IOException {
-            return restourantService.getRestaurantsOpenAndClosed();
+            return restaurantService.getRestaurantsOpenAndClosed();
+        }
+
+        public Restaurant gerRestaurantByName(String restaurantName) throws JsonSyntaxException, IOException{
+            return restaurantService.getRestaurantByName(restaurantName);
         }
 	
 }
