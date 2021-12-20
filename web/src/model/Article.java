@@ -4,14 +4,14 @@ public class Article {
 	public String name;
 	public double price;
 	public String type;
-	public Restaurant restaurant;
+	public String restaurant;
 	public int quantity;
 	public String description;
 	public String image;
 	
 	public Article () {}
 	
-	public Article(String name, double price, String type, Restaurant restaurant, int quantity, String description,
+	public Article(String name, double price, String type, String restaurant, int quantity, String description,
 			String image) {
 		super();
 		this.name = name;
@@ -47,11 +47,11 @@ public class Article {
 		this.type = type;
 	}
 
-	public Restaurant getRestaurant() {
+	public String getRestaurant() {
 		return restaurant;
 	}
 
-	public void setRestaurant(Restaurant restaurant) {
+	public void setRestaurant(String restaurant) {
 		this.restaurant = restaurant;
 	}
 

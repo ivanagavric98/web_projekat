@@ -17,6 +17,7 @@ import com.google.gson.GsonBuilder;
 import org.eclipse.jetty.websocket.client.io.UpgradeConnection.SendUpgradeRequest;
 
 import controller.AddressController;
+import controller.ArticleController;
 import controller.CustomerController;
 import controller.LocationController;
 import controller.MenagerController;
@@ -24,6 +25,7 @@ import controller.RestaurantController;
 import controller.SupplierController;
 import controller.UserController;
 import dao.AddressDAO;
+import dao.ArticleDAO;
 import dao.CustomerDAO;
 import dao.LocationDAO;
 import dao.MenagerDAO;
@@ -32,6 +34,7 @@ import dao.SupplierDAO;
 import dao.UserDAO;
 import javaxt.utils.Date;
 import model.Address;
+import model.Article;
 import model.Customer;
 import model.Location;
 import model.Menager;
@@ -39,6 +42,7 @@ import model.Restaurant;
 import model.Supplier;
 import model.User;
 import service.AddressService;
+import service.ArticleService;
 import service.CustomerService;
 import service.LocationService;
 import service.MenagerService;
@@ -86,13 +90,17 @@ public class main {
 		LocationDAO locationDAO=new LocationDAO("web/data/locations.json");
 		LocationService locationService=new LocationService(locationDAO);
 		LocationController locationController=new LocationController(locationService);
+
+		ArticleDAO articleDAO=new ArticleDAO("web/data/articles.json");
+		ArticleService articleService=new ArticleService(articleDAO);
+		ArticleController articleController=new ArticleController(articleService);
 		
 		get("/test/", "text/html", (req, res) -> {
 			return usersService.Proba();
 		});
 		
 		
-		post("/registerCustomer/","application/json", (req,res) -> {
+		post("/registerCustomer","application/json", (req,res) -> {
 			res.type("application/json");	
 				User user=gson.fromJson(req.body(), User.class);
 				Boolean r=usersController.register(user);
@@ -321,7 +329,25 @@ public class main {
 			return restaurantController.getRestaurantsOpenAndClosed();
 		});
 
+		 post("/registerArticle","application/json", (req,res) -> {
+		 	res.type("application/json");	
+		 		Article article=gson.fromJson(req.body(), Article.class);
+		 		Boolean r=articleController.register(article);
+			return r;
+		 });
 
+		 post("/upadateArticle","application/json", (req,res) -> {
+			res.type("application/json");	
+				Article article=gson.fromJson(req.body(), Article.class);
+				articleController.updateArticle(article);
+		   return article;
+		});
+
+		get("/getRestaurantByName", "application/json", (req, res) -> {
+			res.type("application/json");	
+			String name= req.queryParams("name");
+			return restaurantController.gerRestaurantByName(name);
+		});
 	}
 }
 

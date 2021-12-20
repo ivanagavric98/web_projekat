@@ -101,4 +101,8 @@ public class RestaurantService {
     public List<Restaurant> getRestaurantsOpenAndClosed() throws JsonSyntaxException, IOException {
         return restaurantDAO.getRestaurantsOpenAndClosed();
     }
+
+    public Restaurant getRestaurantByName(String restaurantName) throws JsonSyntaxException, IOException {
+        return restaurantDAO.getRestaurantByName(restaurantName);
+    }
 }
