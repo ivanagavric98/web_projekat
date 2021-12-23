@@ -73,17 +73,17 @@ public class RestaurantController {
         public List<Restaurant> restaurantsFiltrateByStatus(String status) throws JsonSyntaxException, IOException {
             return restaurantService.restaurantsFiltrateByStatus(status);
         }
-
+/*
         public List<Restaurant> combineSearchRestaurant(String type, String status) throws JsonSyntaxException, IOException {
             return restaurantService.combineSearchRestaurant(type,status);
         }
-
+*/
         public List<Restaurant> getRestaurantsOpenAndClosed() throws JsonSyntaxException, IOException {
             return restaurantService.getRestaurantsOpenAndClosed();
         }
-
+/*
         public Restaurant gerRestaurantByName(String restaurantName) throws JsonSyntaxException, IOException{
             return restaurantService.getRestaurantByName(restaurantName);
         }
-	
+	*/
 }

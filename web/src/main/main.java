@@ -63,11 +63,11 @@ public class main {
 		port(8080);
 		
 		staticFiles.externalLocation(new File("./static").getCanonicalPath()); 
-		UserDAO usersDAO = new UserDAO("web/data/users.json");
+		UserDAO usersDAO = new UserDAO("data/users.json");
 		UserService usersService = new UserService(usersDAO);
 		UserController usersController = new UserController(usersService); 
 
-		CustomerDAO customersDAO = new CustomerDAO("web/data/customers.json");
+		CustomerDAO customersDAO = new CustomerDAO("data/customers.json");
 		CustomerService customerService = new CustomerService(customersDAO);
 		CustomerController customerController = new CustomerController(customerService); 
 		
@@ -217,7 +217,7 @@ public class main {
 		});
 
 
-		get("/combineSearchUser", "application/json", (req, res) -> {
+	/*	get("/combineSearchUser", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String name= req.queryParams("name");
 			String username= req.params("username");
@@ -225,7 +225,7 @@ public class main {
 
 			return usersController.combineSearchUser(name,surname,username);
 		});
-
+*/
 		
 		post("/registerRestaurant","application/json", (req,res) -> {
 			res.type("application/json");	
@@ -316,14 +316,14 @@ public class main {
 			return restaurantController.restaurantsFiltrateByStatus(role);
 		});
 
-		get("/combineSearchRestaurant", "application/json", (req, res) -> {
+		/*get("/combineSearchRestaurant", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String type= req.queryParams("type");
 			String status= req.queryParams("status");
 
 			return restaurantController.combineSearchRestaurant(type,status);
 		});
-
+*/
 		get("/getRestaurantsOpenAndClosed", "application/json", (req, res) -> {
 			res.type("application/json");	
 			return restaurantController.getRestaurantsOpenAndClosed();
@@ -342,12 +342,12 @@ public class main {
 				articleController.updateArticle(article);
 		   return article;
 		});
-
+/*
 		get("/getRestaurantByName", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String name= req.queryParams("name");
 			return restaurantController.gerRestaurantByName(name);
-		});
+		});*/
 	}
 }
 

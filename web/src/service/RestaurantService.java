@@ -93,16 +93,16 @@ public class RestaurantService {
     public List<Restaurant> restaurantsFiltrateByStatus(String status) throws JsonSyntaxException, IOException {
         return restaurantDAO.restaurantsFiltrateByStatus(status);
     }
-
+/*
     public List<Restaurant> combineSearchRestaurant(String type, String status) throws JsonSyntaxException, IOException {
         return restaurantDAO.combineSearchRestaurant(type,status);
     }
-
+*/
     public List<Restaurant> getRestaurantsOpenAndClosed() throws JsonSyntaxException, IOException {
         return restaurantDAO.getRestaurantsOpenAndClosed();
     }
 
-    public Restaurant getRestaurantByName(String restaurantName) throws JsonSyntaxException, IOException {
+ /*   public Restaurant getRestaurantByName(String restaurantName) throws JsonSyntaxException, IOException {
         return restaurantDAO.getRestaurantByName(restaurantName);
-    }
+    }*/
 }

@@ -1,1 +1,47 @@
-[{"username":"q1","password":"123","name":"w","surname":"lllll","gender":"FEMALE","dateOfBirth":"Jul 8, 2021, 12:00:00 AM","role":"CUSTOMER"},{"username":"kkbi","password":"123","name":"kjhgfc","surname":"dddd","gender":"FEMALE","dateOfBirth":"Jul 8, 2021, 12:00:00 AM","role":"CUSTOMER"},{"username":"ana","password":"123","name":"sss","surname":"fswrgwrgw","gender":"FEMALE","dateOfBirth":"Jul 8, 2021, 12:00:00 AM","role":"CUSTOMER"},{"username":"marja","password":"123","name":"Maja","surname":"jaic","gender":"FEMALE","dateOfBirth":"Jul 8, 2021, 12:00:00 AM","role":"CUSTOMER"},{"username":"GggghJrg","password":"123","name":"Ana","surname":"Anic","gender":"FEMALE","dateOfBirth":"Jul 8, 2021, 12:00:00 AM","role":"MENAGER"},{"username":"q32412352","password":"123","name":"Ana","surname":"Anic","gender":"FEMALE","dateOfBirth":"Jul 8, 2021, 12:00:00 AM","role":"MENAGER"}]
+[
+	{
+		"username": "iii",
+		"password": "iii",
+		"name": "Ivana",
+		"surname": "ii",
+		"gender": "FEMALE",
+		"dateOfBirth": "Jul 1, 1111 12:00:00 AM",
+		"role": "CUSTOMER"
+	},
+	{
+		"username": "Iva",
+		"password": "Iva",
+		"name": "Ivana",
+		"surname": "Gavric",
+		"gender": "FEMALE",
+		"dateOfBirth": "Jul 1, 1998 12:00:00 AM",
+		"role": "CUSTOMER"
+	},
+	{
+		"username": "Iva1",
+		"password": "Iva",
+		"name": "Ivana",
+		"surname": "Gavric",
+		"gender": "FEMALE",
+		"dateOfBirth": "Jul 1, 1998 12:00:00 AM",
+		"role": "CUSTOMER"
+	},
+	{
+		"username": "Iva2",
+		"password": "Iva",
+		"name": "Ivana",
+		"surname": "Gavric",
+		"gender": "FEMALE",
+		"dateOfBirth": "Jul 1, 1998 12:00:00 AM",
+		"role": "CUSTOMER"
+	},
+	{
+		"username": "KKK",
+		"password": "KKK",
+		"name": "KK",
+		"surname": "KKK",
+		"gender": "MALE",
+		"dateOfBirth": "Dec 22, 2021 12:00:00 AM",
+		"role": "CUSTOMER"
+	}
+]

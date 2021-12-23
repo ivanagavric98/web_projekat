@@ -1,8 +1,12 @@
 package dao;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -14,34 +18,40 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.internal.bind.ReflectiveTypeAdapterFactory.Adapter;
 import com.google.gson.reflect.TypeToken;
 
 import org.eclipse.jetty.util.UrlEncoded;
 
+import model.Customer;
 import model.User;
 
 public class UserDAO implements IDAO<User, String>{
 
 	private String path;
-	
+    private ArrayList<User> users;
+
+
 	public UserDAO(String path) {
 		super();
 		this.path = path;
+		//this.users = new ArrayList<User>();
+		try {
+            getAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
 	}
 
 	@Override
 	public ArrayList<User> getAll() throws JsonSyntaxException, IOException {
-		ArrayList<User> users = new Gson().fromJson((Files.readAllLines(Paths.get(path), 
-				Charset.defaultCharset()).size() == 0) ? "" : 
-					Files.readAllLines(Paths.get(path),
-							Charset.defaultCharset()).get(0), 
-					new TypeToken<List<User>>(){}.getType());
-		
-		if(users == null)
-			users = new ArrayList<User>();
-			
+        Gson gson = new Gson();
+		Type token = new TypeToken<ArrayList<User>>(){}.getType();
+        BufferedReader br = new BufferedReader(new FileReader("data/users.json"));
+        this.users = gson.fromJson(br, token);
 		return users;
 	}
 
@@ -64,7 +74,12 @@ public class UserDAO implements IDAO<User, String>{
 	@Override
 	public void create(User entity) throws JsonSyntaxException, IOException {
 		ArrayList<User> users = getAll();
+		if(users == null) {
+			System.out.println("yser");
+			users = new ArrayList<User>();
+		}
 		users.add(entity);
+		System.out.println("pppp" + " " + users.get(0).name);
 		saveAll(users);	
 	}
 
@@ -97,9 +112,11 @@ public class UserDAO implements IDAO<User, String>{
 	@Override
 	public void saveAll(ArrayList<User> entities) throws FileNotFoundException {
 		PrintWriter writer = new PrintWriter(path);
-		String allEntities = new Gson().toJson(entities, new TypeToken<List<User>>(){}.getType());
+		String allEntities = new Gson().toJson(entities, new TypeToken<List<Customer>>(){}.getType());
 		writer.println(allEntities);
 		writer.close();		
+        
+	        
 	}
 
 	@Override
@@ -248,7 +265,7 @@ public class UserDAO implements IDAO<User, String>{
         return resultList;
         }
 
-    public List<User> combineSearchUser(String name, String surname, String username) throws JsonSyntaxException, IOException {
+    /*public List<User> combineSearchUser(String name, String surname, String username) throws JsonSyntaxException, IOException {
 		ArrayList<User> allUsers=getAll();
 		ArrayList<User> resultList=new ArrayList<User>();
 		ArrayList<User> nameList=new ArrayList<User>();
@@ -291,7 +308,7 @@ public class UserDAO implements IDAO<User, String>{
 			
 		return  intersectionResult1;
 	
-    }
+    }*/
 }
 
 

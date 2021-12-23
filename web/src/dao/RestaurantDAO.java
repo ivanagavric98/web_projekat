@@ -256,7 +256,7 @@ public class RestaurantDAO  implements IDAO<Restaurant, String>{
         return resultList;
     }
 
-    public List<Restaurant> combineSearchRestaurant(String type, String status) throws JsonSyntaxException, IOException {
+    /*public List<Restaurant> combineSearchRestaurant(String type, String status) throws JsonSyntaxException, IOException {
 		ArrayList<Restaurant> allRestaurants=getAll();
 		List<Restaurant> typeList=new ArrayList<Restaurant>();
 		List<Restaurant> statusList=new ArrayList<Restaurant>();
@@ -282,7 +282,7 @@ public class RestaurantDAO  implements IDAO<Restaurant, String>{
 			}
 			
 		return  intersectionResult;
-	}
+	}*/
 
     public List<Restaurant> getRestaurantsOpenAndClosed() throws JsonSyntaxException, IOException {
 		List<Restaurant> resultList=new ArrayList<>();

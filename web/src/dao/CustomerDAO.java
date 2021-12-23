@@ -1,8 +1,11 @@
 package dao;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -21,26 +24,24 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import model.Customer;
+import model.User;
 
 public class CustomerDAO implements IDAO<Customer,String> {
     private String path;
-	
+    private ArrayList<Customer> customers;
+
+    
 	public CustomerDAO(String path) {
 		super();
 		this.path = path;
 	}
     @Override
     public ArrayList<Customer> getAll() throws JsonSyntaxException, IOException {
-        ArrayList<Customer> customers = new Gson().fromJson((Files.readAllLines(Paths.get(path), 
-        Charset.defaultCharset()).size() == 0) ? "" : 
-            Files.readAllLines(Paths.get(path),
-                    Charset.defaultCharset()).get(0), 
-            new TypeToken<List<Customer>>(){}.getType());
-
-            if(customers == null)
-            customers = new ArrayList<Customer>();
-                
-            return customers;
+    	Gson gson = new Gson();
+		Type token = new TypeToken<ArrayList<User>>(){}.getType();
+        BufferedReader br = new BufferedReader(new FileReader("data/customers.json"));
+        this.customers = gson.fromJson(br, token);
+		return customers;
     }
 
 	

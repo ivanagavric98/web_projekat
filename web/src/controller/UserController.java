@@ -69,10 +69,10 @@ public class UserController {
             return userService.usersFiltrateByRole(role);
 		}
 
-        public List<User> combineSearchUser(String name, String surname, String username) throws JsonSyntaxException, IOException {
+     /*   public List<User> combineSearchUser(String name, String surname, String username) throws JsonSyntaxException, IOException {
 			return userService.combineSearchUser(name,surname,username);     
 	   }
-
+*/
 	
         
 	

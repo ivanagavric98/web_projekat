@@ -20,7 +20,7 @@ public class UserService {
 	public Boolean register(User user) throws JsonSyntaxException, IOException {
 		ArrayList<User>users=getAllUsers();
 		Boolean result=false;
-		if(users.size()==0){
+		if(users==null){
 			usersDao.create(user);
 			result=true;
 		}else{
@@ -89,8 +89,8 @@ public class UserService {
         return usersDao.usersFiltrateByRole(role);
 	}
 
-    public List<User> combineSearchUser(String name, String surname, String username) throws JsonSyntaxException, IOException {
+   /* public List<User> combineSearchUser(String name, String surname, String username) throws JsonSyntaxException, IOException {
 		return usersDao.combineSearchUser(name,surname,username);    }
-
+*/
   
 }
