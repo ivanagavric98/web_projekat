@@ -136,6 +136,9 @@ public class main {
 			res.type("application/json");	
 				User user=gson.fromJson(req.body(), User.class);
 				usersController.updatePersonalInfo(user);
+				Session session = req.session(true);
+				session.attribute("user", user);
+				
 		   return user;
 		});
 		

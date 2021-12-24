@@ -16,7 +16,7 @@ Vue.component("login", {
 		        <div class="card rounded-3">
 		          <img src="images/food.jpg" class="w-100" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;" alt="Sample photo">
 		          <div class="card-body p-4 p-md-2">
-		            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">LOG IN</h3>
+		            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2 text-center">LOG IN</h3>
 	
 		            <form class="px-md-2" @submit="login">
 		
@@ -70,7 +70,7 @@ Vue.component("login", {
 	                            localStorage.setItem("username", user.username);
 	                            console.log(user.username);
 	                            localStorage.setItem("role", user.role);
-	                            this.$router.push("editPersonalInfo")
+	                            this.$router.push("profile")
 	                        }
 	                    }).catch(err => {
 	                        console.log(err);

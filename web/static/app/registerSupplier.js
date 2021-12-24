@@ -22,7 +22,7 @@ Vue.component("registerSupplier", {
 		        <div class="card rounded-3">
 		          <img src="images/food.jpg" class="w-100" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;" alt="Sample photo">
 		          <div class="card-body p-4 p-md-3">
-		            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Register Supplier</h3>
+		            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2 text-center">Register Supplier</h3>
 	
 		            <form class="px-md-2" @submit="register">
 		
