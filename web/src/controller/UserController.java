@@ -10,6 +10,7 @@ import java.util.Set;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import dto.UserLogInDTO;
 import model.User;
 
 public class UserController {
@@ -23,6 +24,10 @@ public class UserController {
 		public Boolean register(User user) throws JsonSyntaxException, IOException{			
 			return userService.register(user);
 	   }
+		
+		public User login(UserLogInDTO userLogInDTO) throws JsonSyntaxException, IOException {
+			return userService.login(userLogInDTO);
+		}
 
 		public ArrayList<User> getAllUsers() throws JsonSyntaxException, IOException {
 			return userService.getAllUsers();

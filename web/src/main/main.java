@@ -32,6 +32,7 @@ import dao.MenagerDAO;
 import dao.RestaurantDAO;
 import dao.SupplierDAO;
 import dao.UserDAO;
+import dto.UserLogInDTO;
 import javaxt.utils.Date;
 import model.Address;
 import model.Article;
@@ -111,6 +112,25 @@ public class main {
 			return r;
 			
 		});
+		
+		post("/login","application/json", (req,res) -> {
+			res.type("application/json");	
+			try {
+				User loggedUser= usersService.login(gson.fromJson(req.body(), UserLogInDTO.class));
+				if(loggedUser != null){
+					Session session = req.session(true);
+					session.attribute("user", loggedUser);
+					return gson.toJson(loggedUser);
+				} else {
+					return "Nije pronasao korisnika";
+				}
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}			
+		});
+		
 
 		post("/registerSupplier","application/json", (req,res) -> {
 			res.type("application/json");	

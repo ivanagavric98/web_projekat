@@ -33,7 +33,6 @@ public class UserDAO implements IDAO<User, String>{
 	private String path;
     private ArrayList<User> users;
 
-
 	public UserDAO(String path) {
 		super();
 		this.path = path;

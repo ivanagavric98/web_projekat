@@ -8,6 +8,7 @@ import java.util.Set;
 import com.google.gson.JsonSyntaxException;
 
 import dao.UserDAO;
+import dto.UserLogInDTO;
 import model.User;
 
 public class UserService {
@@ -34,6 +35,23 @@ public class UserService {
 		}
 		
 		return result;
+	}
+	
+	public User login(UserLogInDTO userLogInDTO) throws JsonSyntaxException, IOException {
+	
+		User user = null;
+		
+		if(userLogInDTO.getUsername() != null) {
+			user = usersDao.getByID(userLogInDTO.getUsername());
+		}
+		
+		if(user != null) {
+			if(userLogInDTO.getPassword().equals(user.getPassword())) {
+				return user;
+			}
+		}
+		
+		return null;
 	}
 	
 	public ArrayList<User> getAllUsers() throws JsonSyntaxException, IOException{
