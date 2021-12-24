@@ -5,6 +5,7 @@ const LogIn = { template: '<login></login>' }
 const EditPersonalInfo = { template: '<editPersonalInfo></editPersonalInfo>' }
 const RegisterManager = { template: '<registerManager></registerManager>' }
 const RegisterSupplier = { template: '<registerSupplier></registerSupplier>' }
+const AdminUsers = { template: '<adminUsers></adminUsers>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -13,7 +14,8 @@ const router = new VueRouter({
 		{ path: '/registration', component: Registration },
 		{ path: '/login', component: LogIn },
 		{ path: '/registerManager', component: RegisterManager },
-		{ path: '/registerSupplier', component: RegisterSupplier }
+		{ path: '/registerSupplier', component: RegisterSupplier },
+		{ path: '/adminUsers', component: AdminUsers }
 		]
 });
 

@@ -26,13 +26,13 @@ Vue.component("navbar", {
     <nav style="min-height:10vh;" class="container-fluid navbar navbar-dark bg-dark navbar-expand-md mb-4">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item active">
-            <a class="btn mr-1 btn-dark" href="/#/events">Food Delivery</a>
+            <a class="btn mr-1 btn-dark" href="/#/">Food Delivery</a>
           </li>
-          <li v-if="role =='admin' " class="nav-item active">
-            <a class="btn btn-dark mr-1" href="/#/adminUsers">View customers</a>
+          <li v-if="role =='ADMIN' " class="nav-item active">
+            <a class="btn btn-dark mr-1" href="/#/adminUsers">View users</a>
           </li>
-          <li v-if="role =='admin'" class="nav-item active">
-            <a class="btn btn-dark mr-1" href="/#/adminSuspiciousUsers">Suspicious customers</a>
+          <li v-if="role =='ADMIN'" class="nav-item active">
+            <a class="btn btn-dark mr-1" href="/#/registerSupplier">Register Supplier</a>
           </li>
           <li v-if="role =='admin'"  class="nav-item active">
             <a class="btn btn-dark mr-1" href="/#/adminEvents">View events</a>
@@ -64,13 +64,13 @@ Vue.component("navbar", {
           <li v-if="role == 'admin' | role == 'salesman' | role == 'customer'" class="nav-item active">
                 <a class="btn btn-dark mr-1" href="/#/changePassword">Change password</a>
           </li>
-            <li v-if="role != 'admin' && role != 'salesman' && role != 'customer'" class="nav-item active right">
+            <li v-if="role != 'ADMIN' && role != 'MANAGER' && role != 'CUSTOMER' && role != 'SUPPLIER'" class="nav-item active right">
                 <a class="btn btn-dark mr-1" href="/#/registration">Register</a>
             </li>
-            <li v-if="role != 'admin' && role != 'salesman' && role != 'customer'" class="nav-item active">
+            <li v-if="role != 'ADMIN' && role != 'MANAGER' && role != 'CUSTOMER' && role != 'SUPPLIER'" class="nav-item active">
                 <a class="btn btn-dark mr-1" href="/#/login">Login</a>
             </li>
-            <li v-if="role == 'CUSTOMER' || role == 'MANAGER' || role == 'SUPPLIER'"  class="nav-item active">
+            <li v-if="role == 'CUSTOMER' || role == 'MANAGER' || role == 'SUPPLIER' || role == 'ADMIN'"  class="nav-item active">
                 <button @click="logout" type="button" class="btn btn-dark mr-1">Logout</button>
             </li>
             

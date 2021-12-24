@@ -167,7 +167,9 @@ public class main {
 
 		get("/getAllUsers", "application/json", (req, res) -> {
 			res.type("application/json");	
-			return usersController.getAllUsers();
+			ArrayList<User> users =  usersController.getAllUsers();
+			return gson.toJson(users);
+
 		});
 		
 		get("/getUser", (req, res) -> {
