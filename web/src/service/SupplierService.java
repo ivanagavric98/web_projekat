@@ -17,7 +17,7 @@ public class SupplierService {
     public Boolean register(Supplier supplier) throws JsonSyntaxException, IOException {
 		ArrayList<Supplier>users=getAllSuppliers();
 		Boolean result=false;
-		if(users.size()==0){
+		if(users == null){
 			supplierDao.create(supplier);
 			result=true;
 		}else{

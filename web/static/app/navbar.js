@@ -28,9 +28,6 @@ Vue.component("navbar", {
           <li class="nav-item active">
             <a class="btn mr-1 btn-dark" href="/#/events">Food Delivery</a>
           </li>
-          <li v-if="role =='CUSTOMER'" class="nav-item active">
-            <a class="btn btn-dark mr-1" href="/#/logout">Log out</a>
-          </li>
           <li v-if="role =='admin' " class="nav-item active">
             <a class="btn btn-dark mr-1" href="/#/adminUsers">View customers</a>
           </li>
@@ -73,7 +70,7 @@ Vue.component("navbar", {
             <li v-if="role != 'admin' && role != 'salesman' && role != 'customer'" class="nav-item active">
                 <a class="btn btn-dark mr-1" href="/#/login">Login</a>
             </li>
-            <li v-if="role == 'CUSTOMER' | role == 'MANAGER' | role == 'SUPPLIER'"  class="nav-item active">
+            <li v-if="role == 'CUSTOMER' || role == 'MANAGER' || role == 'SUPPLIER'"  class="nav-item active">
                 <button @click="logout" type="button" class="btn btn-dark mr-1">Logout</button>
             </li>
             

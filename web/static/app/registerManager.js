@@ -1,4 +1,4 @@
-Vue.component("registration", {
+Vue.component("registerManager", {
 	data: function () {
 		return {
 				name: null,
@@ -22,7 +22,7 @@ Vue.component("registration", {
 		        <div class="card rounded-3">
 		          <img src="images/food.jpg" class="w-100" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;" alt="Sample photo">
 		          <div class="card-body p-4 p-md-3">
-		            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Registration Info</h3>
+		            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Register Manager</h3>
 	
 		            <form class="px-md-2" @submit="register">
 		
@@ -45,11 +45,6 @@ Vue.component("registration", {
 		                <label class="form-label" for="form3Example1q">Password</label>
 		                <input type="password" id="form3Example1q" class="form-control" v-model="password"/>
 		              </div>    
-		              
-		              <div class="form-outline mb-2">
-		                <label class="form-label" for="form3Example2q">Confirm Password</label>
-		                <input type="password" id="form3Example2q" class="form-control" v-model="password2"/>
-		              </div> 
 		              
 		              <div class="form-outline mb-2">
 		                 <label for="exampleDatepicker1" class="form-label">Date of Birth</label>		
@@ -89,11 +84,8 @@ Vue.component("registration", {
 	            if(!this.name || !this.surname || !this.username || !this.password || !this.password2 || !this.dateOfBirth || !this.gender){
 	                alert("Fill out all the fields")
 	                e.preventDefault();
-	            }else if(this.password2  !== this.password){
-	                alert("Passwords must match!")
-	                e.preventDefault();
 	            }else{
-	                axios.post('/registerCustomer', { name: this.name,
+	                axios.post('/registerManager', { name: this.name,
 	                        surname: this.surname,
 	                        username : this.username,
 	                        password: this.password,

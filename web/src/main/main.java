@@ -72,27 +72,27 @@ public class main {
 		CustomerService customerService = new CustomerService(customersDAO);
 		CustomerController customerController = new CustomerController(customerService); 
 		
-		SupplierDAO supplierDAO = new SupplierDAO("web/data/suppliers.json");
+		SupplierDAO supplierDAO = new SupplierDAO("data/suppliers.json");
 		SupplierService supplierService = new SupplierService(supplierDAO);
 		SupplierController supplierController = new SupplierController(supplierService);
 
-		MenagerDAO menagerDAO = new MenagerDAO("web/data/menagers.json");
+		MenagerDAO menagerDAO = new MenagerDAO("data/menagers.json");
 		MenagerService menagerService = new MenagerService(menagerDAO);
 		MenagerController menagerController = new MenagerController(menagerService);
 
-		RestaurantDAO restaurantDAO = new RestaurantDAO("web/data/restaurants.json");
+		RestaurantDAO restaurantDAO = new RestaurantDAO("data/restaurants.json");
 		RestaurantService restaurantService=new RestaurantService(restaurantDAO);
 		RestaurantController restaurantController=new RestaurantController(restaurantService);
 
-		AddressDAO addressDAO=new AddressDAO("web/data/addresses.json");
+		AddressDAO addressDAO=new AddressDAO("data/addresses.json");
 		AddressService addressService=new AddressService(addressDAO);
 		AddressController addressController=new AddressController(addressService);
 
-		LocationDAO locationDAO=new LocationDAO("web/data/locations.json");
+		LocationDAO locationDAO=new LocationDAO("data/locations.json");
 		LocationService locationService=new LocationService(locationDAO);
 		LocationController locationController=new LocationController(locationService);
 
-		ArticleDAO articleDAO=new ArticleDAO("web/data/articles.json");
+		ArticleDAO articleDAO=new ArticleDAO("data/articles.json");
 		ArticleService articleService=new ArticleService(articleDAO);
 		ArticleController articleController=new ArticleController(articleService);
 		

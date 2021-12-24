@@ -1,8 +1,11 @@
 package dao;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -14,27 +17,29 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import model.Supplier;
+import model.User;
 
 public class SupplierDAO  implements IDAO<Supplier, String>{
 
 	private String path;
-	
+    private ArrayList<Supplier> users;
+
 	public SupplierDAO(String path) {
 		super();
 		this.path = path;
+		try {
+            getAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	@Override
 	public ArrayList<Supplier> getAll() throws JsonSyntaxException, IOException {
-		ArrayList<Supplier> users = new Gson().fromJson((Files.readAllLines(Paths.get(path), 
-				Charset.defaultCharset()).size() == 0) ? "" : 
-					Files.readAllLines(Paths.get(path),
-							Charset.defaultCharset()).get(0), 
-					new TypeToken<List<Supplier>>(){}.getType());
-		
-		if(users == null)
-			users = new ArrayList<Supplier>();
-			
+		Gson gson = new Gson();
+		Type token = new TypeToken<ArrayList<Supplier>>(){}.getType();
+        BufferedReader br = new BufferedReader(new FileReader("data/suppliers.json"));
+        this.users = gson.fromJson(br, token);
 		return users;
 	}
 
@@ -57,6 +62,10 @@ public class SupplierDAO  implements IDAO<Supplier, String>{
 	@Override
 	public void create(Supplier entity) throws JsonSyntaxException, IOException {
 		ArrayList<Supplier> suppliers = getAll();
+		if(users == null) {
+			System.out.println("yser");
+			users = new ArrayList<Supplier>();
+		}
 		suppliers.add(entity);
 		saveAll(suppliers);	
 	}
