@@ -6,6 +6,7 @@ Vue.component("adminUsers", {
                 isAsc: false,
                 selectedItem: -1
             },
+            searchQuery: null,
             items: [],
             users: [],
             all: []
@@ -31,9 +32,12 @@ Vue.component("adminUsers", {
 		<h2 class= "text-center">USERS OVERVIEW</h2>
 		
 		<div class="input-group mb-3">
-		  <input type="text" class="form-control" placeholder="Search..." aria-label="" aria-describedby="basic-addon2">
+		  <input type="text" class="form-control" placeholder="Search..." aria-label="" aria-describedby="basic-addon2" v-model = "searchQuery">
 		  <div class="input-group-append">
-		    <button class="btn btn-primary" type="button">Search</button>
+		    <button class="btn btn-success" type="button" @click="searchUsersByName">Search By Name</button>
+		    <button class="btn btn-success" type="button" @click="searchUsersByUsername">Search By Username</button>
+		    <button class="btn btn-success" type="button" @click="searchUsersBySurname">Search By Surname</button>
+
 		  </div>
 		    </div>
 		    
@@ -106,7 +110,7 @@ Vue.component("adminUsers", {
 		  </div>
 		  </div>
 `,
-	   computed: {
+	   computed: {   
 		   sortedItems () {
             const list = this.users.slice();
             if (!!this.sort.key) {
@@ -119,8 +123,18 @@ Vue.component("adminUsers", {
             }
             return list;
         }
+		   
+		   
     },
 	methods: {
+		getAll(){
+			axios.get("/getAllUsers")
+	           .then(response => {
+	               console.log(response.data)
+	               this.users = response.data;               
+	           });
+			   
+		},		
 		 sortedClass (key) {
 	            return this.sort.key === key ? `sorted ${this.sort.isAsc ? 'asc' : 'desc' }` : '';
 	        },
@@ -130,6 +144,43 @@ Vue.component("adminUsers", {
 	        },
 	        selectRow(item){
 	            this.selectedItem = item;
+	        },
+	        searchUsersByName() {
+	        	
+	            axios.get("/usersSearchByName/" + this.searchQuery)
+	                .then(response => {
+	                    console.log(response.data)
+	                    if(response.data.length !== 0) {
+	                        this.users = response.data
+	                    }
+	                    else
+	                        alert("No results!")
+	                })
+	        },
+	        searchUsersByUsername(){
+	                
+	            axios.get("/usersSearchByUserName/" + this.searchQuery)
+                .then(response => {
+                    console.log(response.data)
+                    if(response.data.length !== 0) {
+                        this.users = response.data
+                    }
+                    else
+                        alert("No results!")
+                })
+	        },
+	        
+	        searchUsersBySurname(){
+	            axios.get("/usersSearchBySurname/" + this.searchQuery)
+                .then(response => {
+                    console.log(response.data)
+                    if(response.data.length !== 0) {
+                        this.users = response.data
+                    }
+                    else
+                        alert("No results!")
+                })
+	                
 	        }
 	      
 	},

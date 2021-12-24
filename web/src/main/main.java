@@ -189,19 +189,23 @@ public class main {
 		get("/usersSearchByName/:name", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String name= req.params("name");
-			return usersController.usersSearchByName(name);
+			ArrayList<User> users = usersController.usersSearchByName(name);
+			return gson.toJson(users);
 		});
 
 		get("/usersSearchByUserName/:username", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String username= req.params("username");
-			return usersController.usersSearchByUserName(username);
+			ArrayList<User> users = usersController.usersSearchByUserName(username);
+			return gson.toJson(users);
 		});
 
 		get("/usersSearchBySurname/:surname", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String surname= req.params("surname");
-			return usersController.usersSearchBySurname(surname);
+			ArrayList<User> users = usersController.usersSearchBySurname(surname);
+			return gson.toJson(users);
+
 		});
 
 		get("/userSortByNameAsc", "application/json", (req, res) -> {
