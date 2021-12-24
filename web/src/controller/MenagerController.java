@@ -16,8 +16,8 @@ public class MenagerController {
 		this.menagerService = menagerService;
 	}
 
-		public Boolean register(Menager menager,String nameRestaurant) throws JsonSyntaxException, IOException{			
-			return menagerService.register(menager,nameRestaurant);
+		public Boolean register(Menager menager) throws JsonSyntaxException, IOException{			
+			return menagerService.register(menager);
 	   }
 	
 }

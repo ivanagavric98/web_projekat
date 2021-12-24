@@ -152,14 +152,13 @@ public class main {
 			
 		});
 		//setovati na frontu da ako se samo registrujje menager kao restaurantName salje x 
-		post("/registerMenager/:restaurantName","application/json", (req,res) -> {
+		post("/registerManager","application/json", (req,res) -> {
 			res.type("application/json");	
 				User user=gson.fromJson(req.body(), User.class);
-				String restaurant= req.params("restaurantName");
 				Boolean r=usersController.register(user);
 				if(r){
 					Menager menager=new Menager(user);
-					menagerController.register(menager,restaurant);
+					menagerController.register(menager);
 				}
 			return r;
 			

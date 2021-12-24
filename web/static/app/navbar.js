@@ -34,6 +34,9 @@ Vue.component("navbar", {
           <li v-if="role =='ADMIN'" class="nav-item active">
             <a class="btn btn-dark mr-1" href="/#/registerSupplier">Register Supplier</a>
           </li>
+          <li v-if="role =='ADMIN'" class="nav-item active">
+            <a class="btn btn-dark mr-1" href="/#/registerManager">Register Manager</a>
+          </li>
           <li v-if="role =='admin'"  class="nav-item active">
             <a class="btn btn-dark mr-1" href="/#/adminEvents">View events</a>
           </li>

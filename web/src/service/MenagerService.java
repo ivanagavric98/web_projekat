@@ -14,26 +14,22 @@ public MenagerService(MenagerDAO menagerDao) {
   this.menagerDAO=menagerDao;
 }
 
-public Boolean register(Menager menager,String restaurantString) throws JsonSyntaxException, IOException {
+public Boolean register(Menager menager) throws JsonSyntaxException, IOException {
     ArrayList<Menager>menagers=getAllMenagers();
-    if(!restaurantString.equals("x")){
-        menager.setRestaurant(restaurantString);
-    }else{
-        menager.setRestaurant("");
-    }
+    
     Boolean result=false;
-    if(menagers.size()==0){
+    if(menagers == null){
         menagerDAO.create(menager);
         result=true;
     }else{
         for(Menager u : menagers){
             if(u.username.equals(menager.username)){
-            result= false;
-            }else{
-                menagerDAO.create(menager);
-                result=true;
-            }
+            	return result= false;
         }
+        }
+        menagerDAO.create(menager);
+        result=true;
+    
     }
     
     return result;

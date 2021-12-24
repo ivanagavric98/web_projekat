@@ -1,8 +1,11 @@
 package dao;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -14,28 +17,33 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import model.Menager;
+import model.User;
 
 public class MenagerDAO implements IDAO<Menager, String>{
 
 	private String path;
+    private ArrayList<Menager
+    > users;
+
 	
 	public MenagerDAO(String path) {
 		super();
 		this.path = path;
+		
+		try {
+            getAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	@Override
 	public ArrayList<Menager> getAll() throws JsonSyntaxException, IOException {
-		ArrayList<Menager> menagers = new Gson().fromJson((Files.readAllLines(Paths.get(path), 
-				Charset.defaultCharset()).size() == 0) ? "" : 
-					Files.readAllLines(Paths.get(path),
-							Charset.defaultCharset()).get(0), 
-					new TypeToken<List<Menager>>(){}.getType());
-		
-		if(menagers == null)
-        menagers = new ArrayList<Menager>();
-			
-		return menagers;
+		Gson gson = new Gson();
+		Type token = new TypeToken<ArrayList<Menager>>(){}.getType();
+        BufferedReader br = new BufferedReader(new FileReader("data/menagers.json"));
+        this.users = gson.fromJson(br, token);
+		return users;
 	}
 
 	@Override
@@ -57,6 +65,9 @@ public class MenagerDAO implements IDAO<Menager, String>{
 	@Override
 	public void create(Menager entity) throws JsonSyntaxException, IOException {
 		ArrayList<Menager> menagers = getAll();
+		if (menagers == null) {
+			menagers = new ArrayList<Menager>();
+		}
 		menagers.add(entity);
 		saveAll(menagers);	
 	}

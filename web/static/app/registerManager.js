@@ -81,7 +81,7 @@ Vue.component("registerManager", {
 	            e.preventDefault();
 
 	            this.errors = null;
-	            if(!this.name || !this.surname || !this.username || !this.password || !this.password2 || !this.dateOfBirth || !this.gender){
+	            if(!this.name || !this.surname || !this.username || !this.password || !this.dateOfBirth || !this.gender){
 	                alert("Fill out all the fields")
 	                e.preventDefault();
 	            }else{
@@ -91,7 +91,7 @@ Vue.component("registerManager", {
 	                        password: this.password,
 	                        gender : this.gender,
 	                        dateOfBirth : this.dateOfBirth,
-	                        role: "CUSTOMER"
+	                        role: "MENAGER"
 	                    })
 	                    .then(response => {
 	                        if(response.data)
