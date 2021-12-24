@@ -58,6 +58,10 @@ public class UserService {
 		return usersDao.getAll();
 	}
 	
+	public void updatePersonalInfo(User entity) throws JsonSyntaxException, IOException {
+		usersDao.update(entity);
+	}
+	
 	public String Proba() {
 		return "proba uspjela";
 	}

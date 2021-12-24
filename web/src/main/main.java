@@ -132,6 +132,14 @@ public class main {
 		});
 		
 
+		 post("/updatePersonalInfo","application/json", (req,res) -> {
+			res.type("application/json");	
+				User user=gson.fromJson(req.body(), User.class);
+				usersController.updatePersonalInfo(user);
+		   return user;
+		});
+		
+
 		post("/registerSupplier","application/json", (req,res) -> {
 			res.type("application/json");	
 				User user=gson.fromJson(req.body(), User.class);
@@ -161,7 +169,19 @@ public class main {
 			res.type("application/json");	
 			return usersController.getAllUsers();
 		});
-
+		
+		get("/getUser", (req, res) -> {
+			res.type("application/json");
+			try {
+				Session session = req.session(true);
+				User loggedUser = session.attribute("user");
+				return gson.toJson(loggedUser);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return "";
+			}
+		});
+		
 		get("/usersSearchByName/:name", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String name= req.params("name");

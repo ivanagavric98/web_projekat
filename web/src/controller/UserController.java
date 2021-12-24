@@ -29,10 +29,14 @@ public class UserController {
 			return userService.login(userLogInDTO);
 		}
 
+		public void updatePersonalInfo(User user) throws JsonSyntaxException, IOException {
+			userService.updatePersonalInfo(user);
+		}
+		
 		public ArrayList<User> getAllUsers() throws JsonSyntaxException, IOException {
 			return userService.getAllUsers();
 		}
-
+		
 		public ArrayList<User> usersSearchByName(String name) throws JsonSyntaxException, IOException {
 			return userService.usersSearchByName(name);
 		}
