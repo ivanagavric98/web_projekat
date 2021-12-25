@@ -7,6 +7,7 @@ Vue.component("adminUsers", {
                 selectedItem: -1
             },
             searchQuery: null,
+            filterParam: null,
             items: [],
             users: [],
             all: []
@@ -44,11 +45,11 @@ Vue.component("adminUsers", {
 		     <div class="row mb-5">
 				  <div class="col-3">
 				  <h6>User role: </h6>
-				  <select class="custom-select" >    
+				  <select class="custom-select"  @change="filtrate" v-model = "filterParam">    
 				    <option value="" disabled selected>Select user role...</option>
 				    <option value="All">All roles</option>
 				    <option value="Customer">Customer</option>
-				    <option value="Manager">Manager</option>
+				    <option value="Menager">Manager</option>
 				    <option value="Supplier">Deliverer</option>
 				  </select></div>
 				  <div class="col-3">
@@ -92,6 +93,12 @@ Vue.component("adminUsers", {
 		        >
 		          Role
 		        </th>
+		        <th
+		          :class="sortedClass('points')"
+		          @click="sortBy('points')"
+		        >
+		          Points
+		        </th>
 		      </tr>
 		    </thead>
 		    <tbody>
@@ -103,6 +110,7 @@ Vue.component("adminUsers", {
 		        <td>{{ item.name }}</td>
 		        <td>{{ item.surname }}</td>
 		        <td>{{ item.role }}</td>
+		        <td>{{ item.points }}</td>
 		      </tr>
 		    </tbody>
 		  </table>
@@ -172,6 +180,18 @@ Vue.component("adminUsers", {
 	        
 	        searchUsersBySurname(){
 	            axios.get("/usersSearchBySurname/" + this.searchQuery)
+                .then(response => {
+                    console.log(response.data)
+                    if(response.data.length !== 0) {
+                        this.users = response.data
+                    }
+                    else
+                        alert("No results!")
+                })
+	                
+	        },
+	        filtrate(){
+	            axios.get("/usersFiltrateByRole/" + this.filterParam)
                 .then(response => {
                     console.log(response.data)
                     if(response.data.length !== 0) {

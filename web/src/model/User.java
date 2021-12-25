@@ -10,6 +10,7 @@ public class User {
 	public Gender gender;
 	public Date dateOfBirth;
 	public Role role;
+	
 	public String getUsername() {
 		return username;
 	}

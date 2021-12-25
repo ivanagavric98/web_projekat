@@ -130,7 +130,7 @@ public class UserDAO implements IDAO<User, String>{
 
 		if(allUsers.size()!=0){
 			for (User user : allUsers) {
-				if(user.name.toLowerCase().equals(name.toLowerCase())){
+				if(user.name.toLowerCase().contains(name.toLowerCase())){
 					nameSearchList.add(user);
 				}
 			}
@@ -144,7 +144,7 @@ public class UserDAO implements IDAO<User, String>{
 
 		if(allUsers.size()!=0){
 			for (User user : allUsers) {
-				if(user.surname.toLowerCase().equals(surname.toLowerCase())){
+				if(user.surname.toLowerCase().contains(surname.toLowerCase())){
 					surnameSearchList.add(user);
 				}
 			}
@@ -158,7 +158,7 @@ public class UserDAO implements IDAO<User, String>{
 
 		if(allUsers.size()!=0){
 			for (User user : allUsers) {
-				if(user.username.toLowerCase().equals(username.toLowerCase())){
+				if(user.username.toLowerCase().contains(username.toLowerCase())){
 					usernameSearchList.add(user);
 				}
 			}

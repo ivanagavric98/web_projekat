@@ -10,6 +10,7 @@ import java.io.Console;
 import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -252,16 +253,15 @@ public class main {
 		get("/customersFiltrateByType/:type", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String type= req.params("type");
-
-			return customerController.customerFiltrateByType(type);
+			List<Customer> customers = customerController.customerFiltrateByType(type);
+			return gson.toJson(customers);
 		});
 
-		
 		get("/usersFiltrateByRole/:role", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String role= req.params("role");
-
-			return usersController.usersFiltrateByRole(role);
+			List<User> users = usersController.usersFiltrateByRole(role);
+			return gson.toJson(users);
 		});
 
 
