@@ -1,65 +1,20 @@
 [
 	{
-		"username": "iii",
-		"password": "iii",
-		"name": "Ivanaa",
-		"surname": "ii",
-		"gender": "MALE",
-		"dateOfBirth": "Jul 1, 1111 12:00:00 AM",
-		"role": "CUSTOMER"
-	},
-	{
-		"username": "Iva",
-		"password": "Iva",
-		"name": "Ivana",
-		"surname": "Gavric",
-		"gender": "FEMALE",
-		"dateOfBirth": "Jul 1, 1998 12:00:00 AM",
-		"role": "ADMIN"
-	},
-	{
-		"username": "Iva1",
-		"password": "Iva",
-		"name": "Ivana",
-		"surname": "Gavric",
-		"gender": "FEMALE",
-		"dateOfBirth": "Jul 1, 1998 12:00:00 AM",
-		"role": "CUSTOMER"
-	},
-	{
-		"username": "Iva2",
-		"password": "Iva",
-		"name": "Ivana",
-		"surname": "Gavric",
-		"gender": "FEMALE",
-		"dateOfBirth": "Jul 1, 1998 12:00:00 AM",
-		"role": "CUSTOMER"
-	},
-	{
-		"username": "KKK",
-		"password": "KKK",
-		"name": "KK",
-		"surname": "KKK",
-		"gender": "MALE",
-		"dateOfBirth": "Dec 22, 2021 12:00:00 AM",
-		"role": "CUSTOMER"
-	},
-	{
-		"username": "nina",
-		"password": "nina",
-		"name": "Nina",
-		"surname": "Nikolic",
-		"gender": "FEMALE",
-		"dateOfBirth": "Nov 11, 1998 12:00:00 AM",
-		"role": "SUPPLIER"
-	},
-	{
 		"username": "marija",
 		"password": "marija",
 		"name": "Marija",
 		"surname": "Maric",
 		"gender": "FEMALE",
 		"dateOfBirth": "Apr 4, 1998 12:00:00 AM",
+		"role": "MENAGER"
+	},
+	{
+		"username": "tea",
+		"password": "tea",
+		"name": "Teodora",
+		"surname": "Ninic",
+		"gender": "FEMALE",
+		"dateOfBirth": "Jan 1, 1998 12:00:00 AM",
 		"role": "MENAGER"
 	}
 ]

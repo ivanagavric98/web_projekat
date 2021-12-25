@@ -154,7 +154,7 @@ Vue.component("adminUsers", {
 	            this.selectedItem = item;
 	        },
 	        searchUsersByName() {
-	        	
+	        	if(this.filterParam === null){
 	            axios.get("/usersSearchByName/" + this.searchQuery)
 	                .then(response => {
 	                    console.log(response.data)
@@ -164,6 +164,18 @@ Vue.component("adminUsers", {
 	                    else
 	                        alert("No results!")
 	                })
+	        	}else {
+	        		axios.get("/usersSearchByName/" + this.searchQuery)
+	                .then(response => {
+	                    console.log(response.data)
+	                    if(response.data.length !== 0) {
+	                        this.items = response.data
+	                    }
+	                    else
+	                        alert("No results!")
+	                })
+	        	}
+	        	
 	        },
 	        searchUsersByUsername(){
 	                
@@ -196,6 +208,7 @@ Vue.component("adminUsers", {
                     console.log(response.data)
                     if(response.data.length !== 0) {
                         this.users = response.data
+                        this.items = this.users
                     }
                     else
                         alert("No results!")

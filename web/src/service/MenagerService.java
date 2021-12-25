@@ -34,13 +34,27 @@ public Boolean register(Menager menager) throws JsonSyntaxException, IOException
     
     return result;
 }
- 
-public ArrayList<Menager> getAllMenagers() throws JsonSyntaxException, IOException{
-    return menagerDAO.getAll();
-}
-
-public void update(Menager menager) throws JsonSyntaxException, IOException{
-     menagerDAO.update(menager);
-}
+	 
+	public ArrayList<Menager> getAllMenagers() throws JsonSyntaxException, IOException{
+	    return menagerDAO.getAll();
+	}
+	
+	public void update(Menager menager) throws JsonSyntaxException, IOException{
+	     menagerDAO.update(menager);
+	}
+	
+	public ArrayList<Menager> getAllMenagersWithoutRestaurant() throws JsonSyntaxException, IOException {
+		
+		ArrayList<Menager> menagers = menagerDAO.getAll();
+		ArrayList<Menager> menagersWithoutRestaurants = new ArrayList<Menager>();
+		
+		for(Menager m : menagers) {
+			if(m.getRestaurant() == null) {
+				menagersWithoutRestaurants.add(m);
+			}
+		}
+		
+		return menagersWithoutRestaurants;
+	}
 
 }

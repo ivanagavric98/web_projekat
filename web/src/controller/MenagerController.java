@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -19,6 +20,10 @@ public class MenagerController {
 		public Boolean register(Menager menager) throws JsonSyntaxException, IOException{			
 			return menagerService.register(menager);
 	   }
+		
+		public ArrayList<Menager> getAllManagersWithoutRestaurant() throws JsonSyntaxException, IOException{
+			return menagerService.getAllMenagersWithoutRestaurant();
+		}
 	
 }
 

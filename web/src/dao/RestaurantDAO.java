@@ -1,8 +1,11 @@
 package dao;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -19,27 +22,29 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import model.Restaurant;
+import model.User;
 
 public class RestaurantDAO  implements IDAO<Restaurant, String>{
 
 	private String path;
+    private ArrayList<Restaurant> restaurants;
 	
 	public RestaurantDAO(String path) {
 		super();
 		this.path = path;
+		try {
+            getAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	@Override
 	public ArrayList<Restaurant> getAll() throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants = new Gson().fromJson((Files.readAllLines(Paths.get(path), 
-				Charset.defaultCharset()).size() == 0) ? "" : 
-					Files.readAllLines(Paths.get(path),
-							Charset.defaultCharset()).get(0), 
-					new TypeToken<List<Restaurant>>(){}.getType());
-		
-		if(restaurants == null)
-        restaurants = new ArrayList<Restaurant>();
-			
+		Gson gson = new Gson();
+		Type token = new TypeToken<ArrayList<Restaurant>>(){}.getType();
+        BufferedReader br = new BufferedReader(new FileReader("data/restaurants.json"));
+        this.restaurants = gson.fromJson(br, token);
 		return restaurants;
 	}
 
@@ -62,6 +67,10 @@ public class RestaurantDAO  implements IDAO<Restaurant, String>{
 	@Override
 	public void create(Restaurant entity) throws JsonSyntaxException, IOException {
 		ArrayList<Restaurant> restaurants= getAll();
+		if(restaurants == null) {
+			restaurants = new ArrayList<Restaurant>();
+		}
+		
 		restaurants.add(entity);
 		saveAll(restaurants);	
 	}

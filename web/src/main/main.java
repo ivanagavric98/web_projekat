@@ -274,6 +274,13 @@ public class main {
 			return usersController.combineSearchUser(name,surname,username);
 		});
 */
+
+		get("/getAllMenagersWithoutRestaurant", "application/json", (req, res) -> {
+			res.type("application/json");	
+			ArrayList<Menager> menagers =  menagerController.getAllManagersWithoutRestaurant();
+			return gson.toJson(menagers);
+
+		});
 		
 		post("/registerRestaurant","application/json", (req,res) -> {
 			res.type("application/json");	
@@ -281,7 +288,9 @@ public class main {
 			String location= req.queryParams("location");
 			String restaurant= req.queryParams("restaurant");
 			String menager= req.queryParams("menager");
+			
 			Restaurant restaurant1= gson.fromJson(restaurant, Restaurant.class);
+			
 			Menager menager1=gson.fromJson(menager,Menager.class);
 			Location location1=gson.fromJson(location,Location.class);
 			Address address1=gson.fromJson(address,Address.class);
@@ -292,7 +301,8 @@ public class main {
 			Boolean r=false;
 			Boolean addressSave=addressService.register(restaurant1.getLocation().getAddress());	
             Boolean locationSave=locationService.register(restaurant1.getLocation());
-			if(addressSave && locationSave){
+			
+            if(addressSave && locationSave){
 				 r=restaurantController.register(restaurant1);
 				 if(r){
 					 menagerService.update(menager1);
