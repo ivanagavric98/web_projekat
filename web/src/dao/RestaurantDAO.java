@@ -52,7 +52,7 @@ public class RestaurantDAO  implements IDAO<Restaurant, String>{
 	public Restaurant getByID(String id) throws JsonSyntaxException, IOException {
 		Restaurant wantedRestaurant = null;
 		ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) getAll();
-		if(restaurants.size()!=0)
+		if(restaurants != null)
 		{
 			for(Restaurant restaurant : restaurants) {
 				if(restaurant.getName().equals(id)) {

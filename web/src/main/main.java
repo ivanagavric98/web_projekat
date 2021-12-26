@@ -399,6 +399,14 @@ public class main {
    			menagerService.update(menager);
    			return gson.toJson(menager);
 		 });
+
+	
+		 get("/getRestaurantByName/:name", "application/json", (req, res) -> {
+				res.type("application/json");	
+			    Restaurant restaurant = restaurantController.getRestaurantByName(req.params("name"));
+			    return gson.toJson(restaurant);
+			});
+		 
 		 
 	}
 }

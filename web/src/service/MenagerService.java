@@ -48,12 +48,13 @@ public Boolean register(Menager menager) throws JsonSyntaxException, IOException
 		ArrayList<Menager> menagers = menagerDAO.getAll();
 		ArrayList<Menager> menagersWithoutRestaurants = new ArrayList<Menager>();
 		
-		for(Menager m : menagers) {
-			if(m.getRestaurant() == null) {
-				menagersWithoutRestaurants.add(m);
+		if(menagers != null) {
+			for(Menager m : menagers) {
+				if(m.getRestaurant() == null) {
+					menagersWithoutRestaurants.add(m);
+				}
 			}
 		}
-		
 		return menagersWithoutRestaurants;
 	}
 

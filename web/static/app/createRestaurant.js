@@ -123,15 +123,24 @@ Vue.component("createRestaurant", {
 	                alert("Fill out all the fields")
 	                e.preventDefault();
 	            }else{
+	            	if(!this.selectedManager){  
+    	            	  localStorage.setItem('restaurant', JSON.stringify(restaurant.name));
+    	            	  alert("There is no available manager. You have to create new manager for Your restaurant.");
+                          this.$router.push("registerManager")
+    	            	  
+    	              }
+	            	
 	                axios.post('/registerRestaurant', JSON.stringify(restaurant))
 	                    .then(response => {
-	                    		let username = this.selectedManager.username
-	                        	axios
+	                		let username = this.selectedManager.username	            	
+	                    	axios
 	                        	.post('/addRestaurantToManager/' + username, JSON.stringify(restaurant))
-	                        	.then(alert("That restaurant IS CREATED!"));
+	                        	.then(alert("That restaurant is created!"));
+	                    	
 	                    });
+	                
+	                
 	            }
 	        }
-	
 	},
 });

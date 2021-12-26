@@ -102,6 +102,10 @@ public class RestaurantService {
         return restaurantDAO.getRestaurantsOpenAndClosed();
     }
 
+	public Restaurant getRestaurantByName(String name) throws JsonSyntaxException, IOException {
+		return restaurantDAO.getByID(name);
+	}
+
  /*   public Restaurant getRestaurantByName(String restaurantName) throws JsonSyntaxException, IOException {
         return restaurantDAO.getRestaurantByName(restaurantName);
     }*/

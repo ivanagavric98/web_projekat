@@ -8,10 +8,19 @@ Vue.component("registerManager", {
 				username: null,
 				gender: null,
 				role: null,
-				dateOfBirth: null
+				dateOfBirth: null,
+				restaurant: {}
 		}
 	},
-	mounted() {},
+	mounted() {
+		
+		 axios.get("/getRestaurantByName/" + JSON.parse(localStorage.getItem('restaurant')))
+         .then(response => {
+             console.log(response.data)
+             this.restaurant = response.data;               
+         });
+		
+	},
 	template: 
 	`
 	<div id="Registration">
@@ -77,30 +86,40 @@ Vue.component("registerManager", {
     },
 	methods: {
 		  register(e) {
-	            e.preventDefault();
-	            e.preventDefault();
+			  e.preventDefault();
+			  e.preventDefault();
 
+			  
 	            this.errors = null;
 	            if(!this.name || !this.surname || !this.username || !this.password || !this.dateOfBirth || !this.gender){
 	                alert("Fill out all the fields")
 	                e.preventDefault();
+	              
 	            }else{
-	                axios.post('/registerManager', { name: this.name,
+	            	
+	            	let manager = {
+	            			name: this.name,
 	                        surname: this.surname,
 	                        username : this.username,
 	                        password: this.password,
 	                        gender : this.gender,
 	                        dateOfBirth : this.dateOfBirth,
 	                        role: "MENAGER"
-	                    })
+	            	}
+	            	
+	            		axios.post('/registerManager',  JSON.stringify(manager))
 	                    .then(response => {
-	                        if(response.data)
-	                            alert("You have successfully registered!")
-	                        else
-	                            alert("That username already exists!")
-	                    });
-	            }
-	        }
-	
+	                    		let username = manager.username
+
+	                    		axios
+	                        	.post('/addRestaurantToManager/' + username, this.restaurant)
+	                        	.then(alert("You have successfully registered!")
+);
+	                        
+	                        
+	                    });	
+	            	}
+	            	}
+	              	
 	},
 });
