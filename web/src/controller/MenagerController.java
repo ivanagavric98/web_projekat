@@ -17,13 +17,16 @@ public class MenagerController {
 		this.menagerService = menagerService;
 	}
 
-		public Boolean register(Menager menager) throws JsonSyntaxException, IOException{			
-			return menagerService.register(menager);
-	   }
-		
-		public ArrayList<Menager> getAllManagersWithoutRestaurant() throws JsonSyntaxException, IOException{
-			return menagerService.getAllMenagersWithoutRestaurant();
-		}
+	public Boolean register(Menager menager) throws JsonSyntaxException, IOException{			
+		return menagerService.register(menager);
+	}
 	
+	public ArrayList<Menager> getAllManagersWithoutRestaurant() throws JsonSyntaxException, IOException{
+		return menagerService.getAllMenagersWithoutRestaurant();
+	}
+	
+	public Menager getMenagerByUsername(String username) throws JsonSyntaxException, IOException{
+		 return menagerService.getMenagerByUsername(username);
+	}
 }
 

@@ -30,18 +30,18 @@ public class RestaurantService {
 		ArrayList<Restaurant>restaurants=getAllRestaurants();
 		Boolean result=false;
        
-        if(restaurants.size()==0){
+        if(restaurants == null){
             restaurantDAO.create(restaurant);
             result=true;
         }else{
             for(Restaurant u : restaurants){
                 if(u.name.equals(restaurant.name)){
-                    result= false;
-                }else{
-                    restaurantDAO.create(restaurant);
-                    result=true;
+                   return result= false;
                 }
             }
+            restaurantDAO.create(restaurant);
+            result=true;
+
         }
 		return result;
 	}

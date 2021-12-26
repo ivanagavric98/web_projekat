@@ -168,6 +168,16 @@ public class main {
 			
 		});
 
+		post("/registerRestaurant","application/json", (req,res) -> {
+			res.type("application/json");	
+			
+			Restaurant restaurant= gson.fromJson(req.body(), Restaurant.class);
+			Boolean r = restaurantController.register(restaurant);
+			return gson.toJson(restaurant);
+		
+		});
+
+		
 		get("/getAllUsers", "application/json", (req, res) -> {
 			res.type("application/json");	
 			ArrayList<User> users =  usersController.getAllUsers();
@@ -282,36 +292,7 @@ public class main {
 
 		});
 		
-		post("/registerRestaurant","application/json", (req,res) -> {
-			res.type("application/json");	
-			String address= req.queryParams("address");
-			String location= req.queryParams("location");
-			String restaurant= req.queryParams("restaurant");
-			String menager= req.queryParams("menager");
-			
-			Restaurant restaurant1= gson.fromJson(restaurant, Restaurant.class);
-			
-			Menager menager1=gson.fromJson(menager,Menager.class);
-			Location location1=gson.fromJson(location,Location.class);
-			Address address1=gson.fromJson(address,Address.class);
-			menager1.setRestaurant(restaurant1.getName());
-
-			location1.setAddress(address1);
-			restaurant1.setLocation(location1);
-			Boolean r=false;
-			Boolean addressSave=addressService.register(restaurant1.getLocation().getAddress());	
-            Boolean locationSave=locationService.register(restaurant1.getLocation());
-			
-            if(addressSave && locationSave){
-				 r=restaurantController.register(restaurant1);
-				 if(r){
-					 menagerService.update(menager1);
-				 }
-			}
-			return r;
-			
-		});
-
+		
 		get("/restourantSearchByName/:name", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String restourantName= req.params("name");
@@ -406,6 +387,19 @@ public class main {
 			String name= req.queryParams("name");
 			return restaurantController.gerRestaurantByName(name);
 		});*/
+		 
+		 
+		 post("/addRestaurantToManager/:username", (req, res) -> {
+			res.type("application/json");
+			 
+			Menager menager = menagerController.getMenagerByUsername(req.params("username"));
+   			Restaurant restaurant = gson.fromJson(req.body(), Restaurant.class);
+
+   			menager.setRestaurant(restaurant.getName());
+   			menagerService.update(menager);
+   			return gson.toJson(menager);
+		 });
+		 
 	}
 }
 

@@ -8,6 +8,8 @@ Vue.component("createRestaurant", {
 				city: null,
 				country: null,
 				selectedManager: null,
+				longitude: null,
+				latitude: null,
 				managers: []
 				}
 	},
@@ -67,7 +69,7 @@ Vue.component("createRestaurant", {
 					 <div class="form-outline mb-2">
 		                 <label for="exampleDatepicker1" class="form-label">Choose manager</label>		
 				            <select id="form3Example1q"  class="form-control"  v-model="selectedManager">
-							  	<option v-for="manager in managers" v-bind:value="manager">
+							  	<option v-for="manager in managers" :value="manager">
 							  	 {{ manager.name }}  {{ manager.surname }}
 							  	</option>
 						    </select>
@@ -100,23 +102,33 @@ Vue.component("createRestaurant", {
 	            e.preventDefault();
 	            e.preventDefault();
 
+	            let restaurant = {
+            			name: this.name,
+                        type: this.type,
+                        status: 'OPEN',
+                        location: {
+                        	latitude: this.latitude,
+                        	longitude: this.longitude,
+	                        address: {
+		                        street : this.street,
+		                        number: this.number,
+		                        city : this.city,
+		                        country  : this.country
+	                       	}
+                        }
+            	}
+	            
 	            this.errors = null;
 	            if(!this.name || !this.type || !this.street || !this.number || !this.city || !this.country){
 	                alert("Fill out all the fields")
 	                e.preventDefault();
 	            }else{
-	                axios.post('/registerRestaurant', { name: this.name,
-	                        type: this.type,
-	                        street : this.street,
-	                        number: this.number,
-	                        city : this.city,
-	                        country  : this.country
-	                     })
+	                axios.post('/registerRestaurant', JSON.stringify(restaurant))
 	                    .then(response => {
-	                        if(response.data)
-	                            alert("You have successfully create restaurant!")
-	                        else
-	                            alert("That restaurant already exists!")
+	                    		let username = this.selectedManager.username
+	                        	axios
+	                        	.post('/addRestaurantToManager/' + username, JSON.stringify(restaurant))
+	                        	.then(alert("That restaurant IS CREATED!"));
 	                    });
 	            }
 	        }

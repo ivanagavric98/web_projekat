@@ -57,4 +57,8 @@ public Boolean register(Menager menager) throws JsonSyntaxException, IOException
 		return menagersWithoutRestaurants;
 	}
 
+	public Menager getMenagerByUsername(String username) throws JsonSyntaxException, IOException {
+		return menagerDAO.getByID(username);
+	}
+
 }
