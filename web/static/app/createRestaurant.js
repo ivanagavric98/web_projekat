@@ -3,6 +3,7 @@ Vue.component("createRestaurant", {
 		return {
 				name: null,
 				type: null,
+				logo: null,
 				street: null,
 				number: null,
 				city: null,
@@ -77,7 +78,7 @@ Vue.component("createRestaurant", {
 					
 					 <div class="form-outline mb-2">
 		                 <label for="exampleDatepicker1" class="form-label">Logo image</label>		
-		                 <input type="file" id="form3Example1q" class="form-control"/>
+		                 <input type="file" @change="addedLogo" id="img" name= "img" accept = "image/*" class="form-control"/>
 		            </div>
 					
 					<div class="text-center">
@@ -98,6 +99,22 @@ Vue.component("createRestaurant", {
     },
 	methods: {
 		
+		addedLogo(e){
+			const file = e.target.files[0];
+            this.createBase64Image(file);
+            this.logo = URL.createObjectURL(file);
+		},
+		
+		 createBase64Image(file){
+            const reader= new FileReader();
+           
+            reader.onload = (e) =>{
+            	let img = e.target.result;
+            	this.logo = img;
+            }
+            reader.readAsDataURL(file);
+        },
+		
 		  createRestaurant(e) {
 	            e.preventDefault();
 	            e.preventDefault();
@@ -106,6 +123,7 @@ Vue.component("createRestaurant", {
             			name: this.name,
                         type: this.type,
                         status: 'OPEN',
+                        logo: this.logo,
                         location: {
                         	latitude: this.latitude,
                         	longitude: this.longitude,

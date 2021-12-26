@@ -13,6 +13,7 @@ import model.Address;
 import model.Location;
 import model.Menager;
 import model.Restaurant;
+import service.Base64ToImage;
 
 public class RestaurantService {
     private RestaurantDAO restaurantDAO;
@@ -21,6 +22,8 @@ public class RestaurantService {
     private LocationService locationService;
     private AddressService addressService;
     private MenagerService menagerService;
+	private Base64ToImage decoder = new Base64ToImage();
+
 	
 	public RestaurantService(RestaurantDAO restaurantDAO) {
 		this.restaurantDAO=restaurantDAO;
@@ -30,6 +33,12 @@ public class RestaurantService {
 		ArrayList<Restaurant>restaurants=getAllRestaurants();
 		Boolean result=false;
        
+		String image = new String();
+		String path = "images/restaurants/" + restaurant.getName() + ".jpg";
+		decoder.Base64DecodeAndSave(restaurant.getLogo(), path);
+		path = "./" + "images/restaurants/" + restaurant.getName() + ".jpg";
+		restaurant.setLogo(path);
+		
         if(restaurants == null){
             restaurantDAO.create(restaurant);
             result=true;
