@@ -8,6 +8,8 @@ const RegisterSupplier = { template: '<registerSupplier></registerSupplier>' }
 const AdminUsers = { template: '<adminUsers></adminUsers>' }
 const Profile = { template: '<profile></profile>' }
 const CreateRestaurant = { template: '<createRestaurant></createRestaurant>' }
+const RestaurantsOverview = { template: '<restaurants></restaurants>' }
+
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -19,7 +21,8 @@ const router = new VueRouter({
 		{ path: '/registerSupplier', component: RegisterSupplier },
 		{ path: '/adminUsers', component: AdminUsers },
 		{ path: '/profile', component: Profile },
-		{ path: '/createRestaurant', component: CreateRestaurant }
+		{ path: '/createRestaurant', component: CreateRestaurant },
+		{ path: '/restaurants', component: RestaurantsOverview }
 		]
 });
 

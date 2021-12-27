@@ -26,7 +26,7 @@ Vue.component("navbar", {
     <nav style="min-height:10vh;" class="container-fluid navbar navbar-dark bg-dark navbar-expand-md mb-4">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item active">
-            <a class="btn mr-1 btn-dark" href="/#/">Food Delivery</a>
+            <a class="btn mr-1 btn-dark" href="/#/restaurants">Food Delivery</a>
           </li>
           <li v-if="role =='ADMIN' " class="nav-item active">
             <a class="btn btn-dark mr-1" href="/#/adminUsers">View users</a>

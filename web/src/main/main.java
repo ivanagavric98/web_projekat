@@ -365,7 +365,8 @@ public class main {
 */
 		get("/getRestaurantsOpenAndClosed", "application/json", (req, res) -> {
 			res.type("application/json");	
-			return restaurantController.getRestaurantsOpenAndClosed();
+			List<Restaurant> restaurants = restaurantController.getRestaurantsOpenAndClosed();
+			return gson.toJson(restaurants);
 		});
 
 		 post("/registerArticle","application/json", (req,res) -> {
@@ -381,14 +382,7 @@ public class main {
 				articleController.updateArticle(article);
 		   return article;
 		});
-/*
-		get("/getRestaurantByName", "application/json", (req, res) -> {
-			res.type("application/json");	
-			String name= req.queryParams("name");
-			return restaurantController.gerRestaurantByName(name);
-		});*/
-		 
-		 
+
 		 post("/addRestaurantToManager/:username", (req, res) -> {
 			res.type("application/json");
 			 
