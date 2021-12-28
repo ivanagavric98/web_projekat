@@ -90,4 +90,8 @@ public class RestaurantController {
 		public Restaurant getRestaurantByName(String name) throws JsonSyntaxException, IOException {
 			return restaurantService.getRestaurantByName(name);
 		}
+
+		public ArrayList<Restaurant> getOpenedRestaurants() throws JsonSyntaxException, IOException {
+			return restaurantService.getOpenedRestaurants();
+		}
 }

@@ -13,6 +13,7 @@ import model.Address;
 import model.Location;
 import model.Menager;
 import model.Restaurant;
+import model.RestaurantStatus;
 import service.Base64ToImage;
 
 public class RestaurantService {
@@ -115,7 +116,16 @@ public class RestaurantService {
 		return restaurantDAO.getByID(name);
 	}
 
- /*   public Restaurant getRestaurantByName(String restaurantName) throws JsonSyntaxException, IOException {
-        return restaurantDAO.getRestaurantByName(restaurantName);
-    }*/
+	public ArrayList<Restaurant> getOpenedRestaurants() throws JsonSyntaxException, IOException {
+		ArrayList<Restaurant> allRestaurants = restaurantDAO.getAll();
+		ArrayList<Restaurant> openedRestaurants = new ArrayList<Restaurant>();
+		
+		for(Restaurant r: allRestaurants) {
+			if(r.getStatus().equals(RestaurantStatus.OPEN)) {
+				 openedRestaurants.add(r);
+			}
+		}
+		return openedRestaurants;
+	}
+
 }

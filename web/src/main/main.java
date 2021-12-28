@@ -316,46 +316,52 @@ public class main {
 
 		get("/restaurantSortByNameAsc", "application/json", (req, res) -> {
 			res.type("application/json");	
-			return restaurantController.restaurantSortByNameAsc();
+			List<Restaurant> restaurants = restaurantController.restaurantSortByNameAsc();
+			return gson.toJson(restaurants);
 		});
 
 		get("/restaurantSortByNameDesc", "application/json", (req, res) -> {
 			res.type("application/json");	
-			return restaurantController.restaurantSortByNameDesc();
+			List<Restaurant> restaurants = restaurantController.restaurantSortByNameDesc();
+			return gson.toJson(restaurants);
 		});
 
 		get("/restaurantSortByLocationAsc", "application/json", (req, res) -> {
 			res.type("application/json");	
-			return restaurantController.restaurantSortByLocationAsc();
+			List<Restaurant> restaurants = restaurantController.restaurantSortByLocationAsc();
+			return gson.toJson(restaurants);
 		});
 
 		get("/restaurantSortByLocationDesc", "application/json", (req, res) -> {
 			res.type("application/json");	
-			return restaurantController.restaurantSortByLocationDesc();
+			List<Restaurant> restaurants = restaurantController.restaurantSortByLocationDesc();
+			return gson.toJson(restaurants);
 		});
 
 		get("/restauranSortByGradeAsc", "application/json", (req, res) -> {
 			res.type("application/json");	
-			return restaurantController.restauranSortByGradeAsc();
+			List<Restaurant> restaurants = restaurantController.restauranSortByGradeAsc();
+			return gson.toJson(restaurants);
 		});
 
 		get("/restauranSortByGradeDesc", "application/json", (req, res) -> {
 			res.type("application/json");	
-			return restaurantController.restauranSortByGradeDesc();
+			List<Restaurant> restaurants = restaurantController.restauranSortByGradeDesc();
+			return gson.toJson(restaurants);
 		});
 
 		get("/restaurantsFiltrateByType/:type", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String type= req.params("type");
-
-			return restaurantController.restaurantsFiltrateByType(type);
+			List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByType(type);
+			return gson.toJson(restaurants);
 		});
 		
 		get("/restaurantsFiltrateByStatus/:status", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String role= req.params("status");
-
-			return restaurantController.restaurantsFiltrateByStatus(role);
+			List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByStatus(role);
+			return gson.toJson(restaurants);
 		});
 
 		/*get("/combineSearchRestaurant", "application/json", (req, res) -> {
@@ -404,6 +410,10 @@ public class main {
 			    return gson.toJson(restaurant);
 			});
 		 
+		 get("/getOpenedRestaurants", "application/json", (req, res) -> {
+			    ArrayList<Restaurant> restaurants = restaurantController.getOpenedRestaurants();
+			    return gson.toJson(restaurants);
+			});
 		 
 	}
 }
