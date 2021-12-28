@@ -296,19 +296,22 @@ public class main {
 		get("/restourantSearchByName/:name", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String restourantName= req.params("name");
-			return restaurantController.restourantSearchByName(restourantName);
+			ArrayList<Restaurant> restaurants = restaurantController.restourantSearchByName(restourantName);
+			return gson.toJson(restaurants);
 		});
 
 		get("/restourantSearchByType/:type", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String type= req.params("type");
-			return restaurantController.restourantSearchByType(type);
+			ArrayList<Restaurant> restaurants = restaurantController.restourantSearchByType(type);
+			return gson.toJson(restaurants);
 		});
 
 		get("/restourantSearchByLocation/:location", "application/json", (req, res) -> {
 			res.type("application/json");	
 			String location= req.params("location");
-			return restaurantController.restourantSearchByLocation(location);
+			ArrayList<Restaurant> restaurants = restaurantController.restourantSearchByLocation(location);
+			return gson.toJson(restaurants);
 		});
 
 		get("/restaurantSortByNameAsc", "application/json", (req, res) -> {

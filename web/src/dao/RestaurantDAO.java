@@ -121,7 +121,7 @@ public class RestaurantDAO  implements IDAO<Restaurant, String>{
 
 		if(allRestaurants.size()!=0){
 			for (Restaurant restaurant : allRestaurants) {
-				if(restaurant.name.toLowerCase().equals(restaurantName.toLowerCase())){
+				if(restaurant.name.toLowerCase().contains(restaurantName.toLowerCase())){
 					nameSearchList.add(restaurant);
 				}
 			}
@@ -135,7 +135,7 @@ public class RestaurantDAO  implements IDAO<Restaurant, String>{
 
 		if(allRestaurants.size()!=0){
 			for (Restaurant restaurant : allRestaurants) {
-				if(restaurant.type.toLowerCase().equals(type.toLowerCase())){
+				if(restaurant.type.toLowerCase().contains(type.toLowerCase())){
 					typeSearchList.add(restaurant);
 				}
 			}
@@ -149,8 +149,8 @@ public class RestaurantDAO  implements IDAO<Restaurant, String>{
 
 		if(allRestaurants.size()!=0){
 			for (Restaurant restaurant : allRestaurants) {
-				if(restaurant.location.getAddress().getCity().toLowerCase().equals(location.toLowerCase()) || 
-				restaurant.location.getAddress().getCountry().toLowerCase().equals(location.toLowerCase())){
+				if(restaurant.location.getAddress().getStreet().toLowerCase().contains(location.toLowerCase()) || 
+				restaurant.location.getAddress().getCity().toLowerCase().contains(location.toLowerCase())){
 					locationSearchList.add(restaurant);
 				}
 			}

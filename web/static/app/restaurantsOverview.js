@@ -1,7 +1,8 @@
 Vue.component("restaurants", {
 	data: function () {
 		return {
-				restaurants: []
+				restaurants: [],
+				searchQuery: null
 				}
 	},
 	mounted() {
@@ -12,12 +13,36 @@ Vue.component("restaurants", {
                this.restaurants = response.data;               
            });
 	},
+	
 	template: 
 	`
+	
     <div class="restaurant-list">
-        <div  :key="restaurant.name" v-for="restaurant in restaurants">
-    <div class="container" >
-    <div class="picture">
+    
+    	<div class="input-group mb-3" style = "width: 56%; margin-left: 22%;">
+		  <input type="text" class="form-control" placeholder="Search..." aria-label="" aria-describedby="basic-addon2" v-model="searchQuery">
+		  <div class="input-group-append">
+		    <button class="btn btn-success" @click="searchRestaurantsByName" type="button" >Search By Name</button>
+		    <button class="btn btn-success" @click="searchRestaurantsByType" type="button" >Search By Type</button>
+		    <button class="btn btn-success" @click="searchRestaurantsByLocation" type="button" >Search By Location</button>
+		  </div>
+		</div>
+	
+    
+        <div  :key="restaurant.name" v-for="restaurant in restaurants" @click= "goToRestaurant(restaurant)">
+    <div class="container" name="rest" style= "margin-top:10px;
+    color: #42405F;
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    padding: 17px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    min-width: 800px;
+    width: 80%;">
+    
+    <div class="picture" name="rest">
        <img class="rounded-image" v-bind:src="restaurant.logo">
     </div>
     <div class="restaurant-info">
@@ -44,9 +69,44 @@ Vue.component("restaurants", {
 		
     },
 	methods: {
-		/*
-		goToRestaurant(){
-			
-		}*/
+		goToRestaurant: function(restaurant){
+      	  localStorage.setItem('restaurant', JSON.stringify(restaurant.name));
+          this.$router.push("adminRestaurant")
+		},
+		
+		searchRestaurantsByName(){
+			axios.get("/restourantSearchByName/" + this.searchQuery)
+            .then(response => {
+                console.log(response.data)
+                if(response.data.length !== 0) {
+                    this.restaurants = response.data
+                }
+                else
+                    alert("No results!")
+            })
+		},
+		searchRestaurantsByType(){
+			axios.get("/restourantSearchByType/" + this.searchQuery)
+            .then(response => {
+                console.log(response.data)
+                if(response.data.length !== 0) {
+                    this.restaurants = response.data
+                }
+                else
+                    alert("No results!")
+            })
+		},
+		searchRestaurantsByLocation(){
+			axios.get("/restourantSearchByLocation/" + this.searchQuery)
+            .then(response => {
+                console.log(response.data)
+                if(response.data.length !== 0) {
+                    this.restaurants = response.data
+                }
+                else
+                    alert("No results!")
+            })
+		}
+		
 	},
 });
