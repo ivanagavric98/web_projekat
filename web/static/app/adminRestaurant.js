@@ -110,11 +110,11 @@ Vue.component("adminRestaurant", {
 		</div>
 		
 	
-			<div class="item-options">
-				<div class="space"> </div>
+			<div class="item-options" v-if="role == 'MENAGER'">
+				<div class="space"> Edit </div>
 				<div class="item-options-panel">
 					<div class="single-option" data-toggle="modal" data-target="#editModal" @click=setEditableArticle(article)  style="color: #edf5e1">
-						<i class="fas fa-edit fa-1x"></i>
+						<i class="fas fa-edit fa-1x"> Edit</i>
 					</div>
 					<div class="single-option align" style="color: #edf5e1">
 						<i class="far fa-trash-alt" style="color: #edf5e1"></i>
