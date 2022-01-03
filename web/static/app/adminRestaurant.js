@@ -1,6 +1,7 @@
 Vue.component("adminRestaurant", {
 	data: function () {
 		return {
+				role: "",
 				articles: [],
 				restaurant: {},
 				status: 'items',
@@ -12,11 +13,12 @@ Vue.component("adminRestaurant", {
 				price: null,
 				description: null,
 				type: null,
-				quantity: null
+				quantity: null,
+				editedArticle: {}
 				}
 	},
 	mounted() {
-		
+        this.role = window.localStorage.getItem('role');
 		 axios.get("/getRestaurantByName/" + JSON.parse(localStorage.getItem('restaurant')))
         .then(response => {
             console.log(response.data)
@@ -77,7 +79,7 @@ Vue.component("adminRestaurant", {
 	<div class="items-list" v-if="status=='items'">
 	<div style="width: 888px; margin: auto" class="headr">
 			<h3>Articles</h3>
-		<button data-toggle="modal" class="modal-button" data-target="#exampleModalCenter"><span class="headr-new-item"> <i class="fas fa-plus"></i> New Article </span></button>
+		<button data-toggle="modal" class="modal-button" data-target="#exampleModalCenter"><span class="headr-new-item" v-if="role == 'MENAGER'"> <i class="fas fa-plus"></i> New Article </span></button>
 		</div>
 	<div :key="index" v-for="(article, index) in articles" class="item-wrapper">
 		<div class="item" >
@@ -111,7 +113,7 @@ Vue.component("adminRestaurant", {
 			<div class="item-options">
 				<div class="space"> </div>
 				<div class="item-options-panel">
-					<div class="single-option" data-toggle="modal" data-target="#editModal"  style="color: #edf5e1">
+					<div class="single-option" data-toggle="modal" data-target="#editModal" @click=setEditableArticle(article)  style="color: #edf5e1">
 						<i class="fas fa-edit fa-1x"></i>
 					</div>
 					<div class="single-option align" style="color: #edf5e1">
@@ -122,7 +124,7 @@ Vue.component("adminRestaurant", {
 		</div>
 	
 			</div>
-		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" v-if="role == 'MENAGER'">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 			<div class="modal-header">
@@ -179,6 +181,65 @@ Vue.component("adminRestaurant", {
     </div>	
 		
 		</div>
+  </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLongTitle">Edit article</h5>
+		  <button type="button" class="close comment-button" data-dismiss="modal" aria-label="Close">
+			<i class="fas fa-times"></i>
+		  </button>
+		</div>
+		<div class="modal-body">
+			<form name='new-item-form'>
+			<div class="article-image mb-2" @click="onPickFile()" v-if="!newArticle.image">
+			  <i class="far fa-image fa-3x"></i>
+			  <input type="file" @change="uploadPhoto" accept="image/*" style="display:none" ref="fileInput" />
+			</div>
+			<div class="article-image mb-2" v-if="!!newArticle.image">
+							  <img class="item-image" :src="getImage(newArticle.image)" alt="Image" />
+							  <div class="remove-image" @click="removeImage"><i class="fas fa-times"></i> Remove image</div>
+		  </div>
+		  <div class="form-group row mb-2">
+			  <label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
+			  <div class="col-sm-10">
+				  <input type="text" class="form-control" placeholder="Name"  ref="name" v-model="editedArticle.name">
+			  </div>
+			</div>
+			<div class="form-group row mb-2">
+			  <label for="staticEmail" class="col-sm-2 col-form-label">Price</label>
+			  <div class="col-sm-10">
+				  <input type="text" class="form-control" placeholder="Price"  ref="price" v-model="editedArticle.price">
+			  </div>
+			</div>
+			<div class="form-group row mb-2">
+			  <label for="staticEmail" class="col-sm-2 col-form-label">Type</label>
+			  <div class="col-sm-10">
+				  <input type="text" class="form-control" placeholder="Type"  ref="type" v-model="editedArticle.type">
+			  </div>
+			</div>
+			<div class="form-group row mb-2">
+			  <label for="staticEmail" class="col-sm-2 col-form-label">Quantity</label>
+			  <div class="col-sm-10">
+				  <input type="text" class="form-control" placeholder="Optional*" ref="description" v-model="editedArticle.quantity">
+			  </div>
+			</div>
+			<div class="form-group row mb-2">
+			  <label for="staticEmail" class="col-sm-2 col-form-label">Description</label>
+			  <div class="col-sm-10">
+				  <input type="text" class="form-control" placeholder="Optional*" ref="description" v-model="editedArticle.description">
+			  </div>
+			</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		  <button type="button" class="btn btn-primary" @click="updateArticle" data-dismiss="modal">Save changes</button>
+		</div>
+	  </form>
+	  </div>
+	</div>
   </div>
 
 		</div>
@@ -243,7 +304,22 @@ Vue.component("adminRestaurant", {
 	                            alert("That article already exists!")
 	                    });
 	            }
-		}
+		},
+		setEditableArticle(article) {
+			console.log(article);
+			this.editedArticle=article;
+		},
 		
+		updateArticle(e){
+			this.errors = null;
+                axios.post('/updateArticle', this.editedArticle, {})
+                    .then(response => {
+                        if(response.data){
+                            alert("You have successfully update article!")
+                            this.$router.push('adminRestaurant');
+                        }else
+                            alert("That article already exists!")
+                    });   
+		}
 	}
 });
