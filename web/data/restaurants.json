@@ -72,7 +72,7 @@
 			}
 		},
 		"logo": "./images/restaurants/walter.jpg",
-		"grade": 0.0,
+		"grade": 3.0,
 		"status": "OPEN"
 	},
 	{
@@ -87,7 +87,7 @@
 			}
 		},
 		"logo": "./images/restaurants/girosmaster.jpg",
-		"grade": 0.0,
+		"grade": 4.0,
 		"status": "OPEN"
 	},
 	{
@@ -102,7 +102,7 @@
 			}
 		},
 		"logo": "./images/restaurants/dvastapica.jpg",
-		"grade": 0.0,
+		"grade": 4.0,
 		"status": "OPEN"
 	}
 	

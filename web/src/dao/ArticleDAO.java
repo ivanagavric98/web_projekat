@@ -1,8 +1,11 @@
 package dao;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -14,45 +17,47 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import model.Article;
+import model.Restaurant;
 
 public class ArticleDAO  implements IDAO<Article, String>{
 
 	private String path;
+    private ArrayList<Article> articles;
 	
 	public ArticleDAO(String path) {
 		super();
 		this.path = path;
+		
+		try {
+            getAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 	}
 
 	@Override
 	public ArrayList<Article> getAll() throws JsonSyntaxException, IOException {
-		ArrayList<Article> articles = new Gson().fromJson((Files.readAllLines(Paths.get(path), 
-				Charset.defaultCharset()).size() == 0) ? "" : 
-					Files.readAllLines(Paths.get(path),
-							Charset.defaultCharset()).get(0), 
-					new TypeToken<List<Article>>(){}.getType());
-		
-		if(articles == null)
-        articles = new ArrayList<Article>();
-			
+		Gson gson = new Gson();
+		Type token = new TypeToken<ArrayList<Article>>(){}.getType();
+        BufferedReader br = new BufferedReader(new FileReader("data/articles.json"));
+        this.articles = gson.fromJson(br, token);
 		return articles;
 	}
 
 	@Override
-	public Article getByID(String street) throws JsonSyntaxException, IOException {
-	/*	Address wantedAddress = null;
-		ArrayList<Address> addresses = (ArrayList<Address>) getAll();
-		if(addresses.size()!=0)
+	public Article getByID(String name) throws JsonSyntaxException, IOException {
+		Article wantedArticle = null;
+		ArrayList<Article> articles = (ArrayList<Article>) getAll();
+		if(articles.size()!=0)
 		{
-			for(Address address : addresses) {
-				if(address.get.equals(id)) {
-					wantedRestaurant = restaurant;
+			for(Article article : articles) {
+				if(article.getName().equals(name)) {
+					wantedArticle = article;
 					break;
 				}
 			}
 		}
-		return wantedRestaurant;
-        */return null;
+		return wantedArticle;
 	}
 
 	@Override
@@ -101,4 +106,5 @@ public class ArticleDAO  implements IDAO<Article, String>{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }

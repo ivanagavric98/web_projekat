@@ -1,6 +1,4 @@
 /controller/
-/dto/
-/main/
-/service/
 /dao/
-/model/
+/service/
+/main/

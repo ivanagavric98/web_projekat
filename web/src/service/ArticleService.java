@@ -15,8 +15,8 @@ public class ArticleService {
 		this.articleDAO=articleDAO;
 	}
 	
-	public Boolean register(Article article) throws JsonSyntaxException, IOException {
-		ArrayList<Article>articles=getAllAddresses();
+	public Boolean addArticleToRestaurant(Article article) throws JsonSyntaxException, IOException {
+		ArrayList<Article> articles =  articleDAO.getAll();
 		Boolean result=false;
         
 		if(articles.size()==0){
@@ -35,11 +35,13 @@ public class ArticleService {
 		return result;
 	}
 	
-	public ArrayList<Article> getAllAddresses() throws JsonSyntaxException, IOException{
+	public ArrayList<Article> getAllArticles() throws JsonSyntaxException, IOException{
 		return articleDAO.getAll();
 	}
 
     public void updateArticle(Article article) throws JsonSyntaxException, IOException {
 		 articleDAO.update(article);
     }
+    
+
 }

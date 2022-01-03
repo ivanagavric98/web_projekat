@@ -128,4 +128,8 @@ public class RestaurantService {
 		return openedRestaurants;
 	}
 
+	public ArrayList<Restaurant> restaurantSearchByGrade(double grade) throws JsonSyntaxException, IOException {
+		return restaurantDAO.restaurantSearchByGrade(grade);
+	}
+
 }

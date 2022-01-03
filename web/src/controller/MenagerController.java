@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import model.Article;
 import model.Menager;
 import service.MenagerService;
 
@@ -28,5 +29,6 @@ public class MenagerController {
 	public Menager getMenagerByUsername(String username) throws JsonSyntaxException, IOException{
 		 return menagerService.getMenagerByUsername(username);
 	}
+
 }
 

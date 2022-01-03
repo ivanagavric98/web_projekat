@@ -15,15 +15,15 @@ import service.MenagerService;
 import service.RestaurantService;
 
 public class RestaurantController {
-    private RestaurantService restaurantService;
-    private MenagerService menagerService;
-    private AddressService addressService;
-    private LocationService locationService;
-	private static Gson gson = new Gson();
-
-	public RestaurantController(RestaurantService restaurantService) {
-		this.restaurantService = restaurantService;
-	}
+	    private RestaurantService restaurantService;
+	    private MenagerService menagerService;
+	    private AddressService addressService;
+	    private LocationService locationService;
+		private static Gson gson = new Gson();
+	
+		public RestaurantController(RestaurantService restaurantService) {
+			this.restaurantService = restaurantService;
+		}
 
 		public Boolean register(Restaurant restaurant) throws JsonSyntaxException, IOException{
             Boolean restourantSave=restaurantService.register(restaurant);  
@@ -81,11 +81,6 @@ public class RestaurantController {
         public List<Restaurant> getRestaurantsOpenAndClosed() throws JsonSyntaxException, IOException {
             return restaurantService.getRestaurantsOpenAndClosed();
         }
-/*
-        public Restaurant gerRestaurantByName(String restaurantName) throws JsonSyntaxException, IOException{
-            return restaurantService.getRestaurantByName(restaurantName);
-        }
-	*/
 
 		public Restaurant getRestaurantByName(String name) throws JsonSyntaxException, IOException {
 			return restaurantService.getRestaurantByName(name);
@@ -93,5 +88,9 @@ public class RestaurantController {
 
 		public ArrayList<Restaurant> getOpenedRestaurants() throws JsonSyntaxException, IOException {
 			return restaurantService.getOpenedRestaurants();
+		}
+
+		public ArrayList<Restaurant> restourantSearchByGrade(double grade) throws JsonSyntaxException, IOException {
+			return restaurantService.restaurantSearchByGrade(grade);
 		}
 }

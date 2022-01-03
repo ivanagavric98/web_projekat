@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.google.gson.JsonSyntaxException;
 
 import dao.MenagerDAO;
+import model.Article;
 import model.Menager;
 
 public class MenagerService {

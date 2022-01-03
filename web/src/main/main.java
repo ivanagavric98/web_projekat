@@ -314,6 +314,14 @@ public class main {
 			return gson.toJson(restaurants);
 		});
 
+		get("/restourantSearchByGrade/:grade", "application/json", (req, res) -> {
+			res.type("application/json");
+			String grade= req.params("grade");
+		    double grade1 = Double.parseDouble(grade); 
+			ArrayList<Restaurant> restaurants = restaurantController.restourantSearchByGrade(grade1);
+			return gson.toJson(restaurants);
+		});
+
 		get("/restaurantSortByNameAsc", "application/json", (req, res) -> {
 			res.type("application/json");	
 			List<Restaurant> restaurants = restaurantController.restaurantSortByNameAsc();
@@ -378,10 +386,10 @@ public class main {
 			return gson.toJson(restaurants);
 		});
 
-		 post("/registerArticle","application/json", (req,res) -> {
+		 post("/addArticleToRestaurant","application/json", (req,res) -> {
 		 	res.type("application/json");	
-		 		Article article=gson.fromJson(req.body(), Article.class);
-		 		Boolean r=articleController.register(article);
+		 	Article article=gson.fromJson(req.body(), Article.class);
+		 	Boolean r=articleController.addArticleToRestaurant(article);
 			return r;
 		 });
 
@@ -391,6 +399,12 @@ public class main {
 				articleController.updateArticle(article);
 		   return article;
 		});
+		 
+		 get("/getAllArticles", "application/json", (req, res) -> {
+				res.type("application/json");	
+				ArrayList<Article> articles =  articleController.getAll();
+				return gson.toJson(articles);
+			});
 
 		 post("/addRestaurantToManager/:username", (req, res) -> {
 			res.type("application/json");
@@ -414,6 +428,8 @@ public class main {
 			    ArrayList<Restaurant> restaurants = restaurantController.getOpenedRestaurants();
 			    return gson.toJson(restaurants);
 			});
+		 
+		 
 		 
 	}
 }

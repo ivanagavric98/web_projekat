@@ -312,5 +312,19 @@ public class RestaurantDAO  implements IDAO<Restaurant, String>{
 		}
 		return result;
     }
+
+	public ArrayList<Restaurant> restaurantSearchByGrade(double grade) throws JsonSyntaxException, IOException {
+		ArrayList<Restaurant> allRestaurants=getAll();
+		ArrayList<Restaurant> gradeSearchList=new ArrayList<>();
+
+		if(allRestaurants.size()!=0){
+			for (Restaurant restaurant : allRestaurants) {
+				if(restaurant.grade == grade){
+					gradeSearchList.add(restaurant);
+				}
+			}
+		}
+		return gradeSearchList;	
+		}
 	
 }

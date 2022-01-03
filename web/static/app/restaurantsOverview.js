@@ -26,6 +26,7 @@ Vue.component("restaurants", {
 		    <button class="btn btn-success" @click="searchRestaurantsByName" type="button" >Search By Name</button>
 		    <button class="btn btn-success" @click="searchRestaurantsByType" type="button" >Search By Type</button>
 		    <button class="btn btn-success" @click="searchRestaurantsByLocation" type="button" >Search By Location</button>
+		    <button class="btn btn-success" @click="searchRestaurantsByGrade" type="button" >Search By Grade</button>
 		  </div>
 		</div>
 
@@ -49,17 +50,17 @@ Vue.component("restaurants", {
     
         <div  :key="restaurant.name" v-for="restaurant in restaurants" @click= "goToRestaurant(restaurant)">
 		    <div class="container" name="rest" style= "margin-top:10px;
-		    color: #42405F;
-		    display: flex;
-		    flex-direction: row;
-		    background-color: white;
-		    padding: 17px;
-		    border-radius: 20px;
-		    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-		    cursor: pointer;
-		    min-width: 800px;
-		    width: 80%;">
-    
+			    color: #42405F;
+			    display: flex;
+			    flex-direction: row;
+			    background-color: white;
+			    padding: 17px;
+			    border-radius: 20px;
+			    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+			    cursor: pointer;
+			    min-width: 800px;
+			    width: 80%;">
+	    
 		    <div class="picture" name="rest">
 		       <img class="rounded-image" v-bind:src="restaurant.logo">
 		    </div>
@@ -116,6 +117,18 @@ Vue.component("restaurants", {
 		},
 		searchRestaurantsByLocation(){
 			axios.get("/restourantSearchByLocation/" + this.searchQuery)
+            .then(response => {
+                console.log(response.data)
+                if(response.data.length !== 0) {
+                    this.restaurants = response.data
+                }
+                else
+                    alert("No results!")
+            })
+		},
+		
+		searchRestaurantsByGrade(){
+			axios.get("/restourantSearchByGrade/" + this.searchQuery)
             .then(response => {
                 console.log(response.data)
                 if(response.data.length !== 0) {

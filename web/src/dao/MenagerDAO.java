@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import model.Article;
 import model.Menager;
 import model.User;
 
@@ -111,7 +112,6 @@ public class MenagerDAO implements IDAO<Menager, String>{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 	
 
 }
