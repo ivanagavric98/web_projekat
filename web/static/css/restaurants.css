@@ -204,6 +204,7 @@ div.container rest{
 	width: 888px;
 	display: flex;
 	align-items: center;
+	background-color: #edf5e1;
 }
 .headr > *:first-child {
 	flex: 1;
@@ -329,7 +330,7 @@ div.container rest{
 
 .modal-button{
     border:none;
-    background-color:#5CDB95 ;
+    background-color: #05386B;
 }
 
 .edit-modal{

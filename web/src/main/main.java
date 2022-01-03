@@ -393,7 +393,7 @@ public class main {
 			return r;
 		 });
 
-		 post("/upadateArticle","application/json", (req,res) -> {
+		 post("/updateArticle","application/json", (req,res) -> {
 			res.type("application/json");	
 				Article article=gson.fromJson(req.body(), Article.class);
 				articleController.updateArticle(article);

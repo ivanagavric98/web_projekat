@@ -3,7 +3,16 @@ Vue.component("adminRestaurant", {
 		return {
 				articles: [],
 				restaurant: {},
-				status: 'items'
+				status: 'items',
+				newArticle:{
+					image: '',
+				},
+				imageFile: '',
+				name: null,
+				price: null,
+				description: null,
+				type: null,
+				quantity: null
 				}
 	},
 	mounted() {
@@ -19,9 +28,6 @@ Vue.component("adminRestaurant", {
 	           console.log(response.data)
 	           this.articles = response.data;               
 	       });
-			 
-		 
-		 
 	},
 	
 	template: 
@@ -71,7 +77,7 @@ Vue.component("adminRestaurant", {
 	<div class="items-list" v-if="status=='items'">
 	<div style="width: 888px; margin: auto" class="headr">
 			<h3>Articles</h3>
-		<button data-toggle="modal" class="modal-button" data-target="#exampleModalCenter"><span class="headr-new-item"> <i class="fas fa-plus"></i> New Item </span></button>
+		<button data-toggle="modal" class="modal-button" data-target="#exampleModalCenter"><span class="headr-new-item"> <i class="fas fa-plus"></i> New Article </span></button>
 		</div>
 	<div :key="index" v-for="(article, index) in articles" class="item-wrapper">
 		<div class="item" >
@@ -87,6 +93,11 @@ Vue.component("adminRestaurant", {
 				</div>
 				<div class="item-details">
 					<label class="item-description">{{ article.description }}</label>
+				</div>
+				<div class="item-pricing">
+					<label class="item-price" for="username"
+						>Quantity: <b>{{ article.quantity }} GR </b></label
+					>
 				</div>
 				<div class="item-pricing">
 					<label class="item-price" for="username"
@@ -122,35 +133,47 @@ Vue.component("adminRestaurant", {
 		</div>
 	<div class="modal-body">
 		  <form name='new-item-form'>
-		  <div class="article-image mb-2"  >
+		  <div class="article-image mb-2" @click="onPickFile()" v-if="!newArticle.image" >
 			<i class="far fa-image fa-3x"></i>
-			<input type="file"  accept="image/*" style="display:none" ref="fileInput" />
+			  <input type="file" @change="uploadPhoto" accept="image/*" style="display:none" ref="fileInput"/>
 		  </div>
-		  <div class="article-image mb-2" >
-							<img class="item-image"  alt="Image" />
-							<div class="remove-image" ><i class="fas fa-times"></i> Remove image</div>
+			<div class="article-image mb-2" v-if="!!newArticle.image">
+							<img class="item-image" :src="getImage(newArticle.image)" alt="Image" />
+						    <div class="remove-image" @click="removeImage"><i class="fas fa-times"></i> Remove image</div>
 		</div>
 		<div class="form-group row mb-2">
 			<label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" placeholder="Name"  ref="name">
+				<input type="text" class="form-control" placeholder="Name"  ref="name" v-model="name">
 			</div>
 		  </div>
 		  <div class="form-group row mb-2">
 			<label for="staticEmail" class="col-sm-2 col-form-label">Price</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" placeholder="Price"  ref="price">
+				<input type="text" class="form-control" placeholder="Price"  ref="price" v-model="price">
+			</div>
+		  </div>
+		  <div class="form-group row mb-2">
+			<label for="staticEmail" class="col-sm-2 col-form-label">Type</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" placeholder="Type"  ref="type" v-model="type">
 			</div>
 		  </div>
 		  <div class="form-group row mb-2">
 			<label for="staticEmail" class="col-sm-2 col-form-label">Description</label>
 			<div class="col-sm-10">
-				<input type="text" class="form-control" placeholder="Optional*" ref="description">
+				<input type="text" class="form-control" placeholder="Optional*" ref="description" v-model="description">
+			</div>
+		  </div>
+		  <div class="form-group row mb-2">
+			<label for="staticEmail" class="col-sm-2 col-form-label">Quantity</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" placeholder="Optional*" ref="quantity" v-model="quantity">
 			</div>
 		  </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary"  data-dismiss="modal">Save changes</button>
+        <button type="button" class="btn btn-primary"  data-dismiss="modal" @click= "addNewArticle">Save changes</button>
       </div>
 	</form>
     </div>	
@@ -171,6 +194,56 @@ Vue.component("adminRestaurant", {
 		changeDisplay(status){
 			console.log(status);
 			this.status=status
+		},
+		getImage(image) {
+			if(image.includes("data")){
+                return image;
+            }
+			if (image.includes(baseUrl))
+			return !!image ? `${baseUrl}/${image}` : '';
+		},
+		uploadPhoto(event) {
+			const files = event.target.files;
+			const fileReader = new FileReader();
+			fileReader.addEventListener('load', () => {
+				this.newArticle.image = fileReader.result;
+			});
+			fileReader.readAsDataURL(files[0]);
+			this.imageFile = files[0];
+		},
+		onPickFile() {
+			console.log('Open images');
+			this.$refs.fileInput.click();
+		},
+		removeImage() {
+			this.newArticle.image = '';
+		},
+		
+		addNewArticle(e){
+			 	e.preventDefault();
+	            e.preventDefault();
+
+	            this.errors = null;
+	            if(!this.name || !this.price || !this.type){
+	                alert("Fill out all the fields")
+	                e.preventDefault();
+	            }else{
+	                axios.post('/addArticleToRestaurant', { name: this.name,
+	                        price: this.price,
+	                        description : this.description,
+	                        quantity: this.quantity,
+	                        type: this.type,
+	                        image: this.newArticle.image
+	                    })
+	                    .then(response => {
+	                        if(response.data){
+	                            alert("You have successfully added new article!")
+	                            this.$router.push('adminRestaurant');
+	                        }else
+	                            alert("That article already exists!")
+	                    });
+	            }
 		}
-	},
+		
+	}
 });

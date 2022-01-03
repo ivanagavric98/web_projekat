@@ -24,13 +24,12 @@ public class ArticleService {
 			result=true;
 		}else{
 			for(Article u : articles){
-				if(u.restaurant.equals(article.restaurant) && u.name.equals(article.name)){
-				result= false;
-				}else{
-					articleDAO.create(article);
-					result=true;
-				}
+				if(u.name.equals(article.name))
+					result= false;
 			}
+			articleDAO.create(article);
+			result=true;
+		
 		}
 		return result;
 	}

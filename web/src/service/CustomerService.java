@@ -24,16 +24,16 @@ public class CustomerService {
 		return customerDao.getAll();
 	}
 
-  public List<Customer> userSortByUserPointAsc() throws JsonSyntaxException, IOException {
-    return customerDao.userSortByUserPointAsc();
-}
+	public List<Customer> userSortByUserPointAsc() throws JsonSyntaxException, IOException {
+		return customerDao.userSortByUserPointAsc();
+	}
 
-public List<Customer> userSortByUserPointsDesc() throws JsonSyntaxException, IOException {
-    return customerDao.userSortByUserPointsDesc();
-}
+	public List<Customer> userSortByUserPointsDesc() throws JsonSyntaxException, IOException {
+		return customerDao.userSortByUserPointsDesc();
+	}
 
-public List<Customer> customerFiltrateByType(String type) throws JsonSyntaxException, IOException {
-  return customerDao.customerFiltrateByType(type);
-}
+	public List<Customer> customerFiltrateByType(String type) throws JsonSyntaxException, IOException {
+		return customerDao.customerFiltrateByType(type);
+	}	
 	
 }
