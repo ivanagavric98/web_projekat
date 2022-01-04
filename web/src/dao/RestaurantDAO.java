@@ -21,30 +21,33 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import model.Article;
 import model.Restaurant;
+import model.RestaurantStatus;
 import model.User;
 
-public class RestaurantDAO  implements IDAO<Restaurant, String>{
+public class RestaurantDAO implements IDAO<Restaurant, String> {
 
 	private String path;
-    private ArrayList<Restaurant> restaurants;
-	
+	private ArrayList<Restaurant> restaurants;
+
 	public RestaurantDAO(String path) {
 		super();
 		this.path = path;
 		try {
-            getAll();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+			getAll();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public ArrayList<Restaurant> getAll() throws JsonSyntaxException, IOException {
 		Gson gson = new Gson();
-		Type token = new TypeToken<ArrayList<Restaurant>>(){}.getType();
-        BufferedReader br = new BufferedReader(new FileReader("data/restaurants.json"));
-        this.restaurants = gson.fromJson(br, token);
+		Type token = new TypeToken<ArrayList<Restaurant>>() {
+		}.getType();
+		BufferedReader br = new BufferedReader(new FileReader("web/data/restaurants.json"));
+		this.restaurants = gson.fromJson(br, token);
 		return restaurants;
 	}
 
@@ -52,10 +55,9 @@ public class RestaurantDAO  implements IDAO<Restaurant, String>{
 	public Restaurant getByID(String id) throws JsonSyntaxException, IOException {
 		Restaurant wantedRestaurant = null;
 		ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) getAll();
-		if(restaurants != null)
-		{
-			for(Restaurant restaurant : restaurants) {
-				if(restaurant.getName().equals(id)) {
+		if (restaurants != null) {
+			for (Restaurant restaurant : restaurants) {
+				if (restaurant.getName().equals(id)) {
 					wantedRestaurant = restaurant;
 					break;
 				}
@@ -66,47 +68,48 @@ public class RestaurantDAO  implements IDAO<Restaurant, String>{
 
 	@Override
 	public void create(Restaurant entity) throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants= getAll();
-		if(restaurants == null) {
+		ArrayList<Restaurant> restaurants = getAll();
+		if (restaurants == null) {
 			restaurants = new ArrayList<Restaurant>();
 		}
-		
+
 		restaurants.add(entity);
-		saveAll(restaurants);	
+		saveAll(restaurants);
 	}
 
 	@Override
 	public void update(Restaurant entity) throws JsonSyntaxException, IOException {
 		ArrayList<Restaurant> restaurants = getAll();
-		for(Restaurant res : restaurants) {
-			if(res.getName().equals(entity.getName())) {
+		for (Restaurant res : restaurants) {
+			if (res.getName().equals(entity.getName())) {
 				restaurants.set(restaurants.indexOf(res), entity);
 				break;
 			}
 		}
 		saveAll(restaurants);
-		
+
 	}
 
 	@Override
 	public void delete(Restaurant entity) throws JsonSyntaxException, IOException {
-		return;		
+		return;
 	}
 
 	@Override
 	public void save(Restaurant entity) throws JsonSyntaxException, IOException {
 		ArrayList<Restaurant> restaurants = getAll();
 		restaurants.add(entity);
-		saveAll(restaurants);	
-		
+		saveAll(restaurants);
+
 	}
 
 	@Override
 	public void saveAll(ArrayList<Restaurant> entities) throws FileNotFoundException {
 		PrintWriter writer = new PrintWriter(path);
-		String allEntities = new Gson().toJson(entities, new TypeToken<List<Restaurant>>(){}.getType());
+		String allEntities = new Gson().toJson(entities, new TypeToken<List<Restaurant>>() {
+		}.getType());
 		writer.println(allEntities);
-		writer.close();		
+		writer.close();
 	}
 
 	@Override
@@ -115,216 +118,237 @@ public class RestaurantDAO  implements IDAO<Restaurant, String>{
 		return null;
 	}
 
-    public ArrayList<Restaurant> restourantSearchByName(String restaurantName) throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> allRestaurants=getAll();
-		ArrayList<Restaurant> nameSearchList=new ArrayList<>();
+	public ArrayList<Restaurant> restourantSearchByName(String restaurantName) throws JsonSyntaxException, IOException {
+		ArrayList<Restaurant> allRestaurants = getAll();
+		ArrayList<Restaurant> nameSearchList = new ArrayList<>();
 
-		if(allRestaurants.size()!=0){
+		if (allRestaurants.size() != 0) {
 			for (Restaurant restaurant : allRestaurants) {
-				if(restaurant.name.toLowerCase().contains(restaurantName.toLowerCase())){
+				if (restaurant.name.toLowerCase().contains(restaurantName.toLowerCase())) {
 					nameSearchList.add(restaurant);
 				}
 			}
 		}
 		return nameSearchList;
-    }
+	}
 
-    public ArrayList<Restaurant> restourantSearchByType(String type) throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> allRestaurants=getAll();
-		ArrayList<Restaurant> typeSearchList=new ArrayList<>();
+	public ArrayList<Restaurant> restourantSearchByType(String type) throws JsonSyntaxException, IOException {
+		ArrayList<Restaurant> allRestaurants = getAll();
+		ArrayList<Restaurant> typeSearchList = new ArrayList<>();
 
-		if(allRestaurants.size()!=0){
+		if (allRestaurants.size() != 0) {
 			for (Restaurant restaurant : allRestaurants) {
-				if(restaurant.type.toLowerCase().contains(type.toLowerCase())){
+				if (restaurant.type.toLowerCase().contains(type.toLowerCase())) {
 					typeSearchList.add(restaurant);
 				}
 			}
 		}
 		return typeSearchList;
-    }
+	}
 
-    public ArrayList<Restaurant> restourantSearchByLocation(String location) throws JsonSyntaxException, IOException {
-        ArrayList<Restaurant> allRestaurants=getAll();
-		ArrayList<Restaurant> locationSearchList=new ArrayList<>();
+	public ArrayList<Restaurant> restourantSearchByLocation(String location) throws JsonSyntaxException, IOException {
+		ArrayList<Restaurant> allRestaurants = getAll();
+		ArrayList<Restaurant> locationSearchList = new ArrayList<>();
 
-		if(allRestaurants.size()!=0){
+		if (allRestaurants.size() != 0) {
 			for (Restaurant restaurant : allRestaurants) {
-				if(restaurant.location.getAddress().getStreet().toLowerCase().contains(location.toLowerCase()) || 
-				restaurant.location.getAddress().getCity().toLowerCase().contains(location.toLowerCase())){
+				if (restaurant.location.getAddress().getStreet().toLowerCase().contains(location.toLowerCase()) ||
+						restaurant.location.getAddress().getCity().toLowerCase().contains(location.toLowerCase())) {
 					locationSearchList.add(restaurant);
 				}
 			}
 		}
 		return locationSearchList;
-    }
-
-    public List<Restaurant> restaurantSortByNameAsc() throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants=getAll();
-		Set<Restaurant> toSort=new HashSet<>();
-
-		for (Restaurant object : restaurants) {
-			toSort.add(object);
-		}
-
-		List<Restaurant> resultList = toSort.stream().sorted((e1, e2) -> 
-		e1.getName().compareTo(e2.getName())).collect(Collectors.toList());
-		
-		return resultList;
-    }
-
-    public List<Restaurant> restaurantSortByNameDesc() throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants=getAll();
-		Set<Restaurant> toSort=new HashSet<>();
-
-		for (Restaurant object : restaurants) {
-			toSort.add(object);
-		}
-
-		List<Restaurant> resultList = toSort.stream().sorted((e1, e2) -> 
-		e1.getName().compareTo(e2.getName())).collect(Collectors.toList());
-		Collections.reverse(resultList);
-		return resultList;   
-	 }
-
-    public List<Restaurant> restaurantSortByLocationAsc() throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants=getAll();
-		Set<Restaurant> toSort=new HashSet<>();
-
-		for (Restaurant object : restaurants) {
-			toSort.add(object);
-		}
-
-		List<Restaurant> resultList = toSort.stream().sorted((e1, e2) -> 
-		e1.getLocation().getAddress().getCity().compareTo(e2.getLocation().getAddress().getCity())).collect(Collectors.toList());
-		Collections.reverse(resultList);
-		return resultList;  
-	   }
-
-    public List<Restaurant> restauranSortByGradeAsc() throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants=getAll();
-		Set<Restaurant> toSort=new HashSet<>();
-
-		for (Restaurant object : restaurants) {
-			toSort.add(object);
-		}
-
-		List<Restaurant> resultList = toSort.stream().sorted((e1, e2) -> 
-		e1.getLocation().getAddress().getCity().compareTo(e2.getLocation().getAddress().getCity())).collect(Collectors.toList());
-		Collections.reverse(resultList);
-		Collections.reverse(resultList);
-		return resultList;  
-	   }
-
-    public List<Restaurant> restauranSortByGradeDesc() throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants=getAll();
-		Set<Restaurant> toSort=new HashSet<>();
-
-		for (Restaurant object : restaurants) {
-			toSort.add(object);
-		}
-
-		List<Restaurant> resultList = toSort.stream().sorted((e1, e2) -> 
-		Double.valueOf(e1.getGrade()).compareTo(Double.valueOf(e2.getGrade()))).collect(Collectors.toList());
-		
-		return resultList;
-    }
-
-    public List<Restaurant> restaurantSortByLocationDesc() throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants=getAll();
-		Set<Restaurant> toSort=new HashSet<>();
-
-		for (Restaurant object : restaurants) {
-			toSort.add(object);
-		}
-
-		List<Restaurant> resultList = toSort.stream().sorted((e1, e2) -> 
-		Double.valueOf(e1.getGrade()).compareTo(Double.valueOf(e2.getGrade()))).collect(Collectors.toList());
-		Collections.reverse(resultList);
-		return resultList;  
-	  }
-
-	public List<Restaurant> restaurantsFiltrateByType(String type) throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants=getAll();
-		ArrayList<Restaurant> resultList=new ArrayList<>();
-        for (Restaurant restaurant : restaurants) {
-            if(restaurant.getType().toLowerCase().equals(type.toLowerCase())){
-                resultList.add(restaurant);
-            }
-        }
-        return resultList;
 	}
 
-    public List<Restaurant> restaurantsFiltrateByStatus(String status) throws JsonSyntaxException, IOException {
-        ArrayList<Restaurant> restaurants=getAll();
-		ArrayList<Restaurant> resultList=new ArrayList<>();
-        for (Restaurant restaurant : restaurants) {
-            if(restaurant.getStatus().toString().toLowerCase().equals(status.toLowerCase())){
-                resultList.add(restaurant);
-            }
-        }
-        return resultList;
-    }
+	public List<Restaurant> restaurantSortByNameAsc() throws JsonSyntaxException, IOException {
+		ArrayList<Restaurant> restaurants = getAll();
+		Set<Restaurant> toSort = new HashSet<>();
 
-    /*public List<Restaurant> combineSearchRestaurant(String type, String status) throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> allRestaurants=getAll();
-		List<Restaurant> typeList=new ArrayList<Restaurant>();
-		List<Restaurant> statusList=new ArrayList<Restaurant>();
+		for (Restaurant object : restaurants) {
+			toSort.add(object);
+		}
 
-		if(type==null || type.isBlank())
-			typeList=allRestaurants;
-		else	
-			typeList=restaurantsFiltrateByType(type);
+		List<Restaurant> resultList = toSort.stream().sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+				.collect(Collectors.toList());
 
-		if(status==null || status.isBlank())
-			statusList=allRestaurants;
-		else	
-		statusList=restaurantsFiltrateByStatus(status);
-
-			List<Restaurant> intersectionResult=new ArrayList<Restaurant>();
-
-			for(Restaurant restaurant :typeList){
-				for(Restaurant restaurant2: statusList){
-					if(restaurant.getName().equals(restaurant2.getName())  ){
-						intersectionResult.add(restaurant);
-					}
-				}
-			}
-			
-		return  intersectionResult;
-	}*/
-
-    public List<Restaurant> getRestaurantsOpenAndClosed() throws JsonSyntaxException, IOException {
-		List<Restaurant> resultList=new ArrayList<>();
-		List<Restaurant> openList=restaurantsFiltrateByStatus("OPEN");
-		List<Restaurant> closedList=restaurantsFiltrateByStatus("CLOSED");
-		resultList=Stream.concat(openList.stream(), closedList.stream())
-		.collect(Collectors.toList());
 		return resultList;
-    }
+	}
 
-    public Restaurant getRestaurantByName(String restaurantName) throws JsonSyntaxException, IOException {
-        Restaurant result=new Restaurant();
-		ArrayList<Restaurant> restaurants=getAll();
+	public List<Restaurant> restaurantSortByNameDesc() throws JsonSyntaxException, IOException {
+		ArrayList<Restaurant> restaurants = getAll();
+		Set<Restaurant> toSort = new HashSet<>();
+
+		for (Restaurant object : restaurants) {
+			toSort.add(object);
+		}
+
+		List<Restaurant> resultList = toSort.stream().sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+				.collect(Collectors.toList());
+		Collections.reverse(resultList);
+		return resultList;
+	}
+
+	public List<Restaurant> restaurantSortByLocationAsc() throws JsonSyntaxException, IOException {
+		ArrayList<Restaurant> restaurants = getAll();
+		Set<Restaurant> toSort = new HashSet<>();
+
+		for (Restaurant object : restaurants) {
+			toSort.add(object);
+		}
+
+		List<Restaurant> resultList = toSort.stream().sorted(
+				(e1, e2) -> e1.getLocation().getAddress().getCity().compareTo(e2.getLocation().getAddress().getCity()))
+				.collect(Collectors.toList());
+		Collections.reverse(resultList);
+		return resultList;
+	}
+
+	public List<Restaurant> restauranSortByGradeAsc() throws JsonSyntaxException, IOException {
+		ArrayList<Restaurant> restaurants = getAll();
+		Set<Restaurant> toSort = new HashSet<>();
+
+		for (Restaurant object : restaurants) {
+			toSort.add(object);
+		}
+
+		List<Restaurant> resultList = toSort.stream().sorted(
+				(e1, e2) -> e1.getLocation().getAddress().getCity().compareTo(e2.getLocation().getAddress().getCity()))
+				.collect(Collectors.toList());
+		Collections.reverse(resultList);
+		Collections.reverse(resultList);
+		return resultList;
+	}
+
+	public List<Restaurant> restauranSortByGradeDesc() throws JsonSyntaxException, IOException {
+		ArrayList<Restaurant> restaurants = getAll();
+		Set<Restaurant> toSort = new HashSet<>();
+
+		for (Restaurant object : restaurants) {
+			toSort.add(object);
+		}
+
+		List<Restaurant> resultList = toSort.stream()
+				.sorted((e1, e2) -> Double.valueOf(e1.getGrade()).compareTo(Double.valueOf(e2.getGrade())))
+				.collect(Collectors.toList());
+
+		return resultList;
+	}
+
+	public List<Restaurant> restaurantSortByLocationDesc() throws JsonSyntaxException, IOException {
+		ArrayList<Restaurant> restaurants = getAll();
+		Set<Restaurant> toSort = new HashSet<>();
+
+		for (Restaurant object : restaurants) {
+			toSort.add(object);
+		}
+
+		List<Restaurant> resultList = toSort.stream()
+				.sorted((e1, e2) -> Double.valueOf(e1.getGrade()).compareTo(Double.valueOf(e2.getGrade())))
+				.collect(Collectors.toList());
+		Collections.reverse(resultList);
+		return resultList;
+	}
+
+	public List<Restaurant> restaurantsFiltrateByType(String type) throws JsonSyntaxException, IOException {
+		ArrayList<Restaurant> restaurants = getAll();
+		ArrayList<Restaurant> resultList = new ArrayList<>();
 		for (Restaurant restaurant : restaurants) {
-			if(restaurant.name.trim().toLowerCase().equals(restaurantName.trim().toLowerCase())){
+			if (restaurant.getType().toLowerCase().equals(type.toLowerCase())) {
+				resultList.add(restaurant);
+			}
+		}
+		return resultList;
+	}
+
+	public List<Restaurant> restaurantsFiltrateByStatus(String status) throws JsonSyntaxException, IOException {
+		ArrayList<Restaurant> restaurants = getAll();
+		ArrayList<Restaurant> resultList = new ArrayList<>();
+		for (Restaurant restaurant : restaurants) {
+			if (restaurant.getStatus().toString().toLowerCase().equals(status.toLowerCase())) {
+				resultList.add(restaurant);
+			}
+		}
+		return resultList;
+	}
+
+	/*
+	 * public List<Restaurant> combineSearchRestaurant(String type, String status)
+	 * throws JsonSyntaxException, IOException {
+	 * ArrayList<Restaurant> allRestaurants=getAll();
+	 * List<Restaurant> typeList=new ArrayList<Restaurant>();
+	 * List<Restaurant> statusList=new ArrayList<Restaurant>();
+	 * 
+	 * if(type==null || type.isBlank())
+	 * typeList=allRestaurants;
+	 * else
+	 * typeList=restaurantsFiltrateByType(type);
+	 * 
+	 * if(status==null || status.isBlank())
+	 * statusList=allRestaurants;
+	 * else
+	 * statusList=restaurantsFiltrateByStatus(status);
+	 * 
+	 * List<Restaurant> intersectionResult=new ArrayList<Restaurant>();
+	 * 
+	 * for(Restaurant restaurant :typeList){
+	 * for(Restaurant restaurant2: statusList){
+	 * if(restaurant.getName().equals(restaurant2.getName()) ){
+	 * intersectionResult.add(restaurant);
+	 * }
+	 * }
+	 * }
+	 * 
+	 * return intersectionResult;
+	 * }
+	 */
+
+	public List<Restaurant> getRestaurantsOpenAndClosed() throws JsonSyntaxException, IOException {
+		List<Restaurant> resultList = new ArrayList<>();
+		List<Restaurant> openList = restaurantsFiltrateByStatus("OPEN");
+		List<Restaurant> closedList = restaurantsFiltrateByStatus("CLOSED");
+		resultList = Stream.concat(openList.stream(), closedList.stream())
+				.collect(Collectors.toList());
+		return resultList;
+	}
+
+	public Restaurant getRestaurantByName(String restaurantName) throws JsonSyntaxException, IOException {
+		Restaurant result = new Restaurant();
+		ArrayList<Restaurant> restaurants = getAll();
+		for (Restaurant restaurant : restaurants) {
+			if (restaurant.name.trim().toLowerCase().equals(restaurantName.trim().toLowerCase())) {
 				result = restaurant;
 			}
 		}
 		return result;
-    }
+	}
 
 	public ArrayList<Restaurant> restaurantSearchByGrade(double grade) throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> allRestaurants=getAll();
-		ArrayList<Restaurant> gradeSearchList=new ArrayList<>();
+		ArrayList<Restaurant> allRestaurants = getAll();
+		ArrayList<Restaurant> gradeSearchList = new ArrayList<>();
 
-		if(allRestaurants.size()!=0){
+		if (allRestaurants.size() != 0) {
 			for (Restaurant restaurant : allRestaurants) {
-				if(restaurant.grade == grade){
+				if (restaurant.grade == grade) {
 					gradeSearchList.add(restaurant);
 				}
 			}
 		}
-		return gradeSearchList;	
+		return gradeSearchList;
+	}
+
+	public Boolean isRestaurantOpen(String params) throws JsonSyntaxException, IOException {
+		Restaurant restaurant = getRestaurantByName(params);
+		if (restaurant.status.equals(RestaurantStatus.OPEN)) {
+			return true;
 		}
-	
+		return false;
+	}
+
+	public ArrayList<Article> getArticlesFromRestaurant(String params) throws JsonSyntaxException, IOException {
+		Restaurant restaurant = getRestaurantByName(params);
+		return restaurant.getArticles();
+
+	}
+
 }

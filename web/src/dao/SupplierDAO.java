@@ -19,27 +19,28 @@ import com.google.gson.reflect.TypeToken;
 import model.Supplier;
 import model.User;
 
-public class SupplierDAO  implements IDAO<Supplier, String>{
+public class SupplierDAO implements IDAO<Supplier, String> {
 
 	private String path;
-    private ArrayList<Supplier> users;
+	private ArrayList<Supplier> users;
 
 	public SupplierDAO(String path) {
 		super();
 		this.path = path;
 		try {
-            getAll();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+			getAll();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public ArrayList<Supplier> getAll() throws JsonSyntaxException, IOException {
 		Gson gson = new Gson();
-		Type token = new TypeToken<ArrayList<Supplier>>(){}.getType();
-        BufferedReader br = new BufferedReader(new FileReader("data/suppliers.json"));
-        this.users = gson.fromJson(br, token);
+		Type token = new TypeToken<ArrayList<Supplier>>() {
+		}.getType();
+		BufferedReader br = new BufferedReader(new FileReader("web/data/suppliers.json"));
+		this.users = gson.fromJson(br, token);
 		return users;
 	}
 
@@ -47,10 +48,9 @@ public class SupplierDAO  implements IDAO<Supplier, String>{
 	public Supplier getByID(String id) throws JsonSyntaxException, IOException {
 		Supplier wantedUser = null;
 		ArrayList<Supplier> suppliers = (ArrayList<Supplier>) getAll();
-		if(suppliers.size()!=0)
-		{
-			for(Supplier supplier : suppliers) {
-				if(supplier.getUsername().equals(id)) {
+		if (suppliers.size() != 0) {
+			for (Supplier supplier : suppliers) {
+				if (supplier.getUsername().equals(id)) {
 					wantedUser = supplier;
 					break;
 				}
@@ -62,46 +62,47 @@ public class SupplierDAO  implements IDAO<Supplier, String>{
 	@Override
 	public void create(Supplier entity) throws JsonSyntaxException, IOException {
 		ArrayList<Supplier> suppliers = getAll();
-		if(users == null) {
+		if (users == null) {
 			System.out.println("yser");
 			users = new ArrayList<Supplier>();
 		}
 		suppliers.add(entity);
-		saveAll(suppliers);	
+		saveAll(suppliers);
 	}
 
 	@Override
 	public void update(Supplier entity) throws JsonSyntaxException, IOException {
 		ArrayList<Supplier> suppliers = getAll();
-		for(Supplier user : suppliers) {
-			if(user.getUsername().equals(entity.getUsername())) {
+		for (Supplier user : suppliers) {
+			if (user.getUsername().equals(entity.getUsername())) {
 				suppliers.set(suppliers.indexOf(user), entity);
 				break;
 			}
 		}
 		saveAll(suppliers);
-		
+
 	}
 
 	@Override
 	public void delete(Supplier entity) throws JsonSyntaxException, IOException {
-		return;		
+		return;
 	}
 
 	@Override
-	public void save(Supplier entity) throws JsonSyntaxException, IOException,FileNotFoundException {
+	public void save(Supplier entity) throws JsonSyntaxException, IOException, FileNotFoundException {
 		ArrayList<Supplier> suppliers = getAll();
 		suppliers.add(entity);
-		saveAll(suppliers);	
-		
+		saveAll(suppliers);
+
 	}
 
 	@Override
 	public void saveAll(ArrayList<Supplier> entities) throws FileNotFoundException {
 		PrintWriter writer = new PrintWriter(path);
-		String allEntities = new Gson().toJson(entities, new TypeToken<List<Supplier>>(){}.getType());
+		String allEntities = new Gson().toJson(entities, new TypeToken<List<Supplier>>() {
+		}.getType());
 		writer.println(allEntities);
-		writer.close();		
+		writer.close();
 	}
 
 	@Override
@@ -109,7 +110,5 @@ public class SupplierDAO  implements IDAO<Supplier, String>{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
 
 }

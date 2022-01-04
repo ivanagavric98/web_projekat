@@ -1,5 +1,4 @@
 [
-
 	{
 		"name": "Petrus",
 		"type": "International",
@@ -16,7 +15,7 @@
 		"status": "OPEN"
 	},
 	{
-		"name": "McDonald's",
+		"name": "SARA",
 		"type": "Fast Food",
 		"location": {
 			"address": {
@@ -105,5 +104,4 @@
 		"grade": 4.0,
 		"status": "OPEN"
 	}
-	
 ]
