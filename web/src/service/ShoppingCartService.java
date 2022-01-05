@@ -63,4 +63,61 @@ public class ShoppingCartService {
     public ShoppingCart getById(String params) throws JsonSyntaxException, IOException {
         return shoppingCartDAO.getByID(params);
     }
+
+    public ShoppingCart deteleArticlesFromCart(Double priceForArticle, String shoppingCartId,
+            ShoppingCartItem shoppingCartItem) throws JsonSyntaxException, IOException {
+        ShoppingCart shoppingCart = shoppingCartDAO.getByID(shoppingCartId);
+
+        if (shoppingCart.getItems().size() == 0) {
+            return shoppingCart;
+        } else {
+            ArrayList<ShoppingCartItem> items = shoppingCart.getItems();
+            ArrayList<ShoppingCartItem> itemsToRemove = new ArrayList<>();
+
+            for (ShoppingCartItem shi : items) {
+                if (shi.getArticle().equals(shoppingCartItem.articleName)) {
+                    itemsToRemove.add(shi);
+                }
+            }
+
+            items.removeAll(itemsToRemove);
+            shoppingCart.setItems(items);
+
+            Double priceToUpdate = shoppingCart.getPrice() - priceForArticle;
+            shoppingCart.setPrice(priceToUpdate);
+            shoppingCartDAO.update(shoppingCart);
+
+            return shoppingCart;
+        }
+
+    }
+
+    public ShoppingCart updateArticleFromCart(Double priceForArticle, Double priceToSub, String shoppingCartId,
+            ShoppingCartItem shoppingCartItem) throws JsonSyntaxException, IOException {
+        ShoppingCart shoppingCart = shoppingCartDAO.getByID(shoppingCartId);
+
+        if (shoppingCart.getItems().size() == 0) {
+            return shoppingCart;
+        } else {
+            ArrayList<ShoppingCartItem> items = shoppingCart.getItems();
+            ArrayList<ShoppingCartItem> itemsToRemove = new ArrayList<>();
+            ;
+
+            for (ShoppingCartItem shi : items) {
+                if (shi.getArticle().equals(shoppingCartItem.articleName)) {
+                    itemsToRemove.add(shi);
+                }
+            }
+            items.removeAll(itemsToRemove);
+            Double price = shoppingCart.getPrice() - priceToSub + priceForArticle;
+            items.add(shoppingCartItem);
+
+            shoppingCart.setItems(items);
+
+            shoppingCart.setPrice(price);
+            shoppingCartDAO.update(shoppingCart);
+
+            return shoppingCart;
+        }
+    }
 }

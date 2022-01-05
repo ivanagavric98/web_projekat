@@ -49,4 +49,9 @@ public class ArticleController {
 		return articleService.getPricePerArticle(restaurantName, shoppingCartItem);
 	}
 
+	public Article getInfoAboutArticle(String articleName, String restaurantName)
+			throws JsonSyntaxException, IOException {
+		return articleService.getInfoAboutArticle(articleName, restaurantName);
+	}
+
 }

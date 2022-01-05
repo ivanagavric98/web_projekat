@@ -91,7 +91,6 @@ public class ArticleDAO implements IDAO<Article, String> {
 		ArrayList<Article> articles = getAll();
 		articles.add(entity);
 		saveAll(articles);
-
 	}
 
 	@Override
@@ -135,6 +134,19 @@ public class ArticleDAO implements IDAO<Article, String> {
 		}
 		return price;
 
+	}
+
+	public Article getInfoAboutArticle(String articleName, String restaurantName)
+			throws JsonSyntaxException, IOException {
+		ArrayList<Article> articles = getAll();
+
+		for (Article a : articles) {
+			if (a.getRestaurant().trim().toLowerCase().equals(restaurantName.trim().toLowerCase()) &&
+					a.getName().trim().toLowerCase().equals(articleName.trim().toLowerCase())) {
+				return a;
+			}
+		}
+		return null;
 	}
 
 }

@@ -463,5 +463,46 @@ public class main {
 					shoppingCartItem);
 		});
 
+		get("/getShoppingChartById/:id", "application/json", (req, res) -> {
+			res.type("application/json");
+			ShoppingCart shoppingCart = shoppingCartController.getById(req.params("id"));
+			return gson.toJson(shoppingCart);
+		});
+
+		get("/getInfoAboutArticle/:aricleName/:restourantName", "application/json", (req, res) -> {
+			res.type("application/json");
+			Article article = articleController.getInfoAboutArticle(req.params("aricleName"),
+					req.params("restourantName"));
+			return gson.toJson(article);
+		});
+
+		post("/deteleArticlesFromCart/:shoppingCartId", "application/json", (req, res) -> {
+			res.type("application/json");
+			ShoppingCartItem shoppingCartItem = gson.fromJson(req.body(), ShoppingCartItem.class);
+			ShoppingCart shoppingCart = shoppingCartController.getById(req.params("shoppingCartId"));
+			Double priceForArticle = articleController.getPricePerArticle(shoppingCart.restaurantName,
+					shoppingCartItem);
+			return shoppingCartService.deteleArticlesFromCart(priceForArticle, req.params("shoppingCartId"),
+					shoppingCartItem);
+		});
+
+		post("/updateArticleFromCart/:shoppingCartId", "application/json", (req, res) -> {
+			res.type("application/json");
+			ShoppingCartItem shoppingCartItem = gson.fromJson(req.body(), ShoppingCartItem.class);
+			ShoppingCart shoppingCart = shoppingCartController.getById(req.params("shoppingCartId"));
+			Double newPrice = articleController.getPricePerArticle(shoppingCart.restaurantName,
+					shoppingCartItem);
+			ShoppingCartItem oldShoppingCartItem = new ShoppingCartItem();
+			for (ShoppingCartItem sci : shoppingCart.getItems()) {
+				if (sci.getArticle().equals(shoppingCartItem.getArticle())) {
+					oldShoppingCartItem = sci;
+				}
+			}
+			Double priceToSub = articleController.getPricePerArticle(shoppingCart.restaurantName,
+					oldShoppingCartItem);
+			return shoppingCartService.updateArticleFromCart(newPrice, priceToSub, req.params("shoppingCartId"),
+					shoppingCartItem);
+
+		});
 	}
 }

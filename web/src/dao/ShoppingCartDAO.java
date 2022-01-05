@@ -1,42 +1,42 @@
 package dao;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-
+import java.lang.reflect.Type;
 import model.Address;
 import model.ShoppingCart;
 
 public class ShoppingCartDAO implements IDAO<ShoppingCart, String> {
 
     private String path;
+    private ArrayList<ShoppingCart> shoppingCarts;
 
     public ShoppingCartDAO(String path) {
         super();
         this.path = path;
+        // this.users = new ArrayList<User>();
+        try {
+            getAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public ArrayList<ShoppingCart> getAll() throws JsonSyntaxException, IOException {
-        ArrayList<ShoppingCart> shoppingCarts = new Gson().fromJson((Files.readAllLines(Paths.get(path),
-                Charset.defaultCharset()).size() == 0) ? ""
-                        : Files.readAllLines(Paths.get(path),
-                                Charset.defaultCharset()).get(0),
-                new TypeToken<List<ShoppingCart>>() {
-                }.getType());
-
-        if (shoppingCarts == null)
-            shoppingCarts = new ArrayList<ShoppingCart>();
-
+        Gson gson = new Gson();
+        Type token = new TypeToken<ArrayList<ShoppingCart>>() {
+        }.getType();
+        BufferedReader br = new BufferedReader(new FileReader("web/data/shoppingCarts.json"));
+        this.shoppingCarts = gson.fromJson(br, token);
         return shoppingCarts;
     }
 

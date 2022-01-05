@@ -8,13 +8,14 @@ public class Order {
 	public String restaurant;
 	public String dateAndTime;
 	public double price;
-	public Customer customer;
+	public String customer;
 	public OrderStatus orderStatus;
-	
-	public Order() {}
+
+	public Order() {
+	}
 
 	public Order(String iD, ArrayList<Article> articles, String restaurant, String dateAndTime, double price,
-			Customer customer, OrderStatus orderStatus) {
+			String customer, OrderStatus orderStatus) {
 		super();
 		ID = iD;
 		this.articles = articles;
@@ -65,11 +66,11 @@ public class Order {
 		this.price = price;
 	}
 
-	public Customer getCustomer() {
+	public String getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(Customer customer) {
+	public void setCustomer(String customer) {
 		this.customer = customer;
 	}
 
@@ -80,6 +81,5 @@ public class Order {
 	public void setOrderStatus(OrderStatus orderStatus) {
 		this.orderStatus = orderStatus;
 	}
-	
-	
+
 }

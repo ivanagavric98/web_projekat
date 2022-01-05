@@ -53,4 +53,9 @@ public class ArticleService {
 		return articleDAO.getPricePerArticle(restaurantName, shoppingCartItem);
 	}
 
+	public Article getInfoAboutArticle(String articleName, String restaurantName)
+			throws JsonSyntaxException, IOException {
+		return articleDAO.getInfoAboutArticle(articleName, restaurantName);
+	}
+
 }

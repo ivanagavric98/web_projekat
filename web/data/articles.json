@@ -7,5 +7,14 @@
         "quantity": 150,
         "description": "odlicno je",
         "image": "slika"
+    },
+    {
+        "name": "salata",
+        "price": 100.0,
+        "type": "pice",
+        "restaurant": "SARA",
+        "quantity": 150,
+        "description": "odlicno je",
+        "image": "slika"
     }
 ]
