@@ -32,6 +32,7 @@ import org.eclipse.jetty.util.UrlEncoded;
 
 import model.Customer;
 import model.Order;
+import model.OrderStatus;
 
 public class OrderDAO implements IDAO<Order, String> {
     private String path;
@@ -55,6 +56,9 @@ public class OrderDAO implements IDAO<Order, String> {
     @Override
     public void create(Order entity) throws JsonSyntaxException, IOException {
         ArrayList<Order> customers = getAll();
+        if (customers == null) {
+            customers = new ArrayList<>();
+        }
         customers.add(entity);
         saveAll(customers);
     }
@@ -67,13 +71,29 @@ public class OrderDAO implements IDAO<Order, String> {
 
     @Override
     public Order getByID(String id) throws JsonSyntaxException, IOException {
-        // TODO Auto-generated method stub
-        return null;
+        Order wantedOrder = null;
+        ArrayList<Order> orders = (ArrayList<Order>) getAll();
+        if (orders.size() != 0) {
+            for (Order order : orders) {
+                if (order.getID().equals(id)) {
+                    wantedOrder = order;
+                    break;
+                }
+            }
+        }
+        return wantedOrder;
     }
 
     @Override
     public void update(Order entity) throws JsonSyntaxException, IOException {
-        // TODO Auto-generated method stub
+        ArrayList<Order> orders = getAll();
+        for (Order order : orders) {
+            if (order.getID().equals(entity.getID())) {
+                orders.set(orders.indexOf(order), entity);
+                break;
+            }
+        }
+        saveAll(orders);
 
     }
 
@@ -97,6 +117,64 @@ public class OrderDAO implements IDAO<Order, String> {
         writer.println(allEntities);
         writer.close();
 
+    }
+
+    public Order changeStatusToInPreparation(String params) throws JsonSyntaxException, IOException {
+        Order order = getByID(params);
+        order.setOrderStatus(OrderStatus.IN_PREPARATION);
+        update(order);
+        return order;
+    }
+
+    public Order changeStatusToWaitingForSupplier(String params)
+            throws JsonSyntaxException, IOException {
+        Order order = getByID(params);
+        order.setOrderStatus(OrderStatus.WAITING_FOR_SUPPLIER);
+        update(order);
+        return order;
+    }
+
+    public Order changeStatusToInTransport(String params) throws JsonSyntaxException, IOException {
+        Order order = getByID(params);
+        order.setOrderStatus(OrderStatus.IN_TRANSPORT);
+        update(order);
+        return order;
+    }
+
+    public Order changeStatusToDelivered(String params) throws JsonSyntaxException, IOException {
+        Order order = getByID(params);
+        order.setOrderStatus(OrderStatus.DELIVERED);
+        update(order);
+        return order;
+    }
+
+    public Order changeStatusToCanceled(String params) throws JsonSyntaxException, IOException {
+        Order order = getByID(params);
+        order.setOrderStatus(OrderStatus.CANCELED);
+        update(order);
+        return order;
+    }
+
+    public ArrayList<Order> getOrderWithStatusInPreparation() throws JsonSyntaxException, IOException {
+        ArrayList<Order> orders = getAll();
+        ArrayList<Order> resultOrder = new ArrayList<>();
+        for (Order order : orders) {
+            if (order.getOrderStatus().equals(OrderStatus.IN_PREPARATION)) {
+                resultOrder.add(order);
+            }
+        }
+        return resultOrder;
+    }
+
+    public ArrayList<Order> getOrderWithStatusWaitingForSupplier() throws JsonSyntaxException, IOException {
+        ArrayList<Order> orders = getAll();
+        ArrayList<Order> resultOrder = new ArrayList<>();
+        for (Order order : orders) {
+            if (order.getOrderStatus().equals(OrderStatus.WAITING_FOR_SUPPLIER)) {
+                resultOrder.add(order);
+            }
+        }
+        return resultOrder;
     }
 
 }

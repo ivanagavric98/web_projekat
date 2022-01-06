@@ -1,55 +1,11 @@
 [
 	{
-		"username": "iii",
-		"password": "iii",
-		"name": "Ivana",
-		"surname": "ii",
-		"gender": "FEMALE",
-		"dateOfBirth": "Jul 1, 1111 12:00:00 AM",
-		"role": "CUSTOMER"
-	},
-	{
-		"username": "iii",
-		"password": "iii",
-		"name": "Ivana",
-		"surname": "ii",
-		"gender": "FEMALE",
-		"dateOfBirth": "Jul 1, 1111 12:00:00 AM",
-		"role": "CUSTOMER"
-	},
-	{
-		"username": "iii",
-		"password": "iii",
-		"name": "Ivana",
-		"surname": "ii",
-		"gender": "FEMALE",
-		"dateOfBirth": "Jul 1, 1111 12:00:00 AM",
-		"role": "CUSTOMER"
-	},
-	{
-		"username": "Iva",
-		"password": "Iva",
-		"name": "Ivana",
-		"surname": "Gavric",
-		"gender": "FEMALE",
-		"dateOfBirth": "Jul 1, 1998 12:00:00 AM",
-		"role": "CUSTOMER"
-	},
-	{
-		"username": "Iva2",
-		"password": "Iva",
-		"name": "Ivana",
-		"surname": "Gavric",
-		"gender": "FEMALE",
-		"dateOfBirth": "Jul 1, 1998 12:00:00 AM",
-		"role": "CUSTOMER"
-	},
-	{
 		"orders": [],
 		"cart": {
+			"id": 0,
 			"price": 0.0
 		},
-		"points": 0,
+		"points": -239.4,
 		"type": {
 			"type": "BRONZE",
 			"discount": 0,

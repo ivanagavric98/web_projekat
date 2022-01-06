@@ -13,6 +13,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,18 +26,22 @@ import controller.ArticleController;
 import controller.CustomerController;
 import controller.LocationController;
 import controller.MenagerController;
+import controller.OrderController;
 import controller.RestaurantController;
 import controller.ShoppingCartController;
 import controller.SupplierController;
+import controller.SupplierRequestController;
 import controller.UserController;
 import dao.AddressDAO;
 import dao.ArticleDAO;
 import dao.CustomerDAO;
 import dao.LocationDAO;
 import dao.MenagerDAO;
+import dao.OrderDAO;
 import dao.RestaurantDAO;
 import dao.ShoppingCartDAO;
 import dao.SupplierDAO;
+import dao.SupplierRequestDAO;
 import dao.UserDAO;
 import dto.UserLogInDTO;
 import javaxt.utils.Date;
@@ -45,18 +50,23 @@ import model.Article;
 import model.Customer;
 import model.Location;
 import model.Menager;
+import model.Order;
+import model.OrderStatus;
 import model.Restaurant;
 import model.ShoppingCart;
 import model.ShoppingCartItem;
 import model.Supplier;
+import model.SupplierRequest;
 import model.User;
 import service.AddressService;
 import service.ArticleService;
 import service.CustomerService;
 import service.LocationService;
 import service.MenagerService;
+import service.OrderService;
 import service.RestaurantService;
 import service.ShoppingCartService;
+import service.SupplierRequestService;
 import service.SupplierService;
 import service.UserService;
 import spark.Request;
@@ -106,6 +116,14 @@ public class main {
 		ShoppingCartDAO shoppingCartDAO = new ShoppingCartDAO("web/data/shoppingCarts.json");
 		ShoppingCartService shoppingCartService = new ShoppingCartService(shoppingCartDAO);
 		ShoppingCartController shoppingCartController = new ShoppingCartController(shoppingCartService);
+
+		OrderDAO orderDAO = new OrderDAO("web/data/orders.json");
+		OrderService orderService = new OrderService(orderDAO);
+		OrderController orderController = new OrderController(orderService);
+
+		SupplierRequestDAO supplierRequestDAO = new SupplierRequestDAO("web/data/supplierRequest.json");
+		SupplierRequestService supplierRequestService = new SupplierRequestService(supplierRequestDAO);
+		SupplierRequestController supplierRequestController = new SupplierRequestController(supplierRequestService);
 
 		get("/test/", "text/html", (req, res) -> {
 			return usersService.Proba();
@@ -504,5 +522,99 @@ public class main {
 					shoppingCartItem);
 
 		});
+
+		post("/addOrder/:username", "application/json", (req, res) -> {
+			res.type("application/json");
+			ShoppingCart shoppingCart = gson.fromJson(req.body(), ShoppingCart.class);
+			Order order = orderController.addOrder(shoppingCart);
+
+			// mora sa se username korisnika koji saljemo kao parametar u putanji,sacuvaj
+			// cijelog korisnika ili njegovo ime u localStoragu kad se loguje i onda ovde
+			// posalje
+			customerController.updateUsersPoints(req.params("username"), shoppingCart.price);
+			return order;
+		});
+
+		// mozda staviti neku listu samo onih porudybina koje su u statusu obrada pa
+		// odatle da ih otkazuje
+		post("/cancelOrder/:username/:orderId", "application/json", (req, res) -> {
+			res.type("application/json");
+			Order order = orderController.changeStatusToCanceled(req.params("orderId"));
+			customerController.updateUsersPointsAferCancellation(req.params("username"), order.getPrice());
+			return order;
+		});
+
+		get("/getOrderWithStatusInPreparation", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Order> orders = orderController.getOrderWithStatusInPreparation();
+			return orders;
+		});
+
+		get("/getOrderWithStatusWaitingForSupplier", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Order> orders = orderController.getOrderWithStatusWaitingForSupplier();
+			return orders;
+		});
+
+		post("/changeStatusToInPreparation/:orderId", "application/json", (req, res) -> {
+			res.type("application/json");
+			Order order = orderController.changeStatusToInPreparation(req.params("orderId"));
+			return order;
+		});
+
+		post("/changeStatusToWaitingForSupplier/:orderId", "application/json", (req, res) -> {
+			res.type("application/json");
+			Order order = orderController.changeStatusToWaitingForSupplier(req.params("orderId"));
+			return order;
+		});
+
+		post("/changeStatusToInTransport/:orderId", "application/json", (req, res) -> {
+			res.type("application/json");
+			Order order = orderController.changeStatusToInTransport(req.params("orderId"));
+			return order;
+		});
+
+		post("/changeStatusToDelivered/:orderId", "application/json", (req, res) -> {
+			res.type("application/json");
+			Order order = orderController.changeStatusToDelivered(req.params("orderId"));
+			return order;
+		});
+
+		post("/changeStatusToCanceled/:orderId", "application/json", (req, res) -> {
+			res.type("application/json");
+			Order order = orderController.changeStatusToCanceled(req.params("orderId"));
+			return order;
+		});
+
+		post("/addRequest/:supplierUsername/:orderId", "application/json", (req, res) -> {
+			res.type("application/json");
+			Boolean result = supplierRequestController.addRequest(req.params("supplierUsername"),
+					req.params("orderId"));
+			return result;
+		});
+
+		post("/processSupplierRequetst/:orderId/:supplierUsername/:par", "application/json", (req, res) -> {
+			res.type("application/json");
+			// par salji sa fronta, vrijednost ili cancel ili approve
+			Boolean result = supplierRequestController.processSupplierRequetst(req.params("orderId"),
+					req.params("supplierUsername"),
+					req.params("par"));
+			if (result) {
+				Supplier supplier = supplierController.getByUsername(req.params("supplierUsername"));
+				Order order = orderController.getByID(req.params("orderId"));
+				ArrayList<Order> orders = supplier.getOrders();
+				if (orders == null) {
+					orders = new ArrayList<>();
+				}
+				order.setOrderStatus(OrderStatus.IN_TRANSPORT);
+				orderController.update(order);
+				orders.add(order);
+				supplier.setOrders(orders);
+				supplierController.update(supplier);
+
+			}
+			return result;
+		});
+
 	}
 }

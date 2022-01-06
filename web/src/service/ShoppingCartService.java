@@ -2,11 +2,8 @@ package service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import com.google.gson.JsonSyntaxException;
-
 import dao.ShoppingCartDAO;
-import model.Article;
 import model.ShoppingCart;
 import model.ShoppingCartItem;
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Order {
 	public String ID;
-	public ArrayList<Article> articles;
+	public ArrayList<String> articles;
 	public String restaurant;
 	public String dateAndTime;
 	public double price;
@@ -14,7 +14,7 @@ public class Order {
 	public Order() {
 	}
 
-	public Order(String iD, ArrayList<Article> articles, String restaurant, String dateAndTime, double price,
+	public Order(String iD, ArrayList<String> articles, String restaurant, String dateAndTime, double price,
 			String customer, OrderStatus orderStatus) {
 		super();
 		ID = iD;
@@ -34,11 +34,11 @@ public class Order {
 		ID = iD;
 	}
 
-	public ArrayList<Article> getArticles() {
+	public ArrayList<String> getArticles() {
 		return articles;
 	}
 
-	public void setArticles(ArrayList<Article> articles) {
+	public void setArticles(ArrayList<String> articles) {
 		this.articles = articles;
 	}
 

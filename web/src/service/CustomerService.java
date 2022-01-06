@@ -11,16 +11,32 @@ import model.Customer;
 import model.User;
 
 public class CustomerService {
-    private CustomerDAO customerDao;
-    public CustomerService(CustomerDAO customerDAO) {
-      this.customerDao=customerDAO;
-    }
-    
-    public void register(Customer customer) throws JsonSyntaxException, IOException {
-		customerDao.create(customer);
+	private CustomerDAO customerDao;
+
+	public CustomerService(CustomerDAO customerDAO) {
+		this.customerDao = customerDAO;
 	}
- 	
-	public ArrayList<Customer> getAllCustomers() throws JsonSyntaxException, IOException{
+
+	public Boolean register(Customer customer) throws JsonSyntaxException, IOException {
+		ArrayList<Customer> users = getAllCustomers();
+		Boolean result = false;
+		if (users == null) {
+			customerDao.create(customer);
+			result = true;
+		} else {
+			for (User u : users) {
+				if (u.username.equals(customer.username)) {
+					return result = false;
+				}
+			}
+			customerDao.create(customer);
+			result = true;
+		}
+
+		return result;
+	}
+
+	public ArrayList<Customer> getAllCustomers() throws JsonSyntaxException, IOException {
 		return customerDao.getAll();
 	}
 
@@ -34,6 +50,16 @@ public class CustomerService {
 
 	public List<Customer> customerFiltrateByType(String type) throws JsonSyntaxException, IOException {
 		return customerDao.customerFiltrateByType(type);
-	}	
-	
+	}
+
+	public Customer updateCustomerssPoints(String customer, double price) throws JsonSyntaxException, IOException {
+		return customerDao.updateUsersPoints(customer, price);
+
+	}
+
+	public Customer updateUsersPointsAferCancellation(String customer, Double price)
+			throws JsonSyntaxException, IOException {
+		return customerDao.updateUsersPointsAferCancellation(customer, price);
+	}
+
 }

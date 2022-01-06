@@ -2,7 +2,7 @@ package model;
 
 public enum OrderStatus {
 	PROCESSING,
-	INPREPARATION,
+	IN_PREPARATION,
 	WAITING_FOR_SUPPLIER,
 	IN_TRANSPORT,
 	DELIVERED,

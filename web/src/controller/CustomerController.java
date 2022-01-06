@@ -18,28 +18,36 @@ import spark.CustomErrorPages;
 
 public class CustomerController {
     private CustomerService customerService;
-	private static Gson gson = new Gson();
+    private static Gson gson = new Gson();
 
-	public CustomerController(CustomerService customerService) {
-		this.customerService = customerService;
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
     }
-		
-        public Customer register(Customer customer) throws JsonSyntaxException, IOException{			
-             customerService.register(customer);
-         return customer;
-        }
 
-        public List<Customer> userSortByUserPointAsc() throws JsonSyntaxException, IOException {
-			return  customerService.userSortByUserPointAsc();
-		}
+    public Customer register(Customer customer) throws JsonSyntaxException, IOException {
+        customerService.register(customer);
+        return customer;
+    }
 
-        public List<Customer> userSortByUserPointsDesc() throws JsonSyntaxException, IOException {
-            return customerService.userSortByUserPointsDesc();
-        }
+    public List<Customer> userSortByUserPointAsc() throws JsonSyntaxException, IOException {
+        return customerService.userSortByUserPointAsc();
+    }
 
-        public List<Customer> customerFiltrateByType(String type) throws JsonSyntaxException, IOException {
-            return customerService.customerFiltrateByType(type);   
-             }
-		
-	}	
+    public List<Customer> userSortByUserPointsDesc() throws JsonSyntaxException, IOException {
+        return customerService.userSortByUserPointsDesc();
+    }
 
+    public List<Customer> customerFiltrateByType(String type) throws JsonSyntaxException, IOException {
+        return customerService.customerFiltrateByType(type);
+    }
+
+    public Customer updateUsersPoints(String customer, double price) throws JsonSyntaxException, IOException {
+        return customerService.updateCustomerssPoints(customer, price);
+    }
+
+    public Customer updateUsersPointsAferCancellation(String params, Double price)
+            throws JsonSyntaxException, IOException {
+        return customerService.updateUsersPointsAferCancellation(params, price);
+    }
+
+}

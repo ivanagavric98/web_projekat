@@ -13,106 +13,109 @@ import model.User;
 
 public class UserService {
 	private UserDAO usersDao;
-	
+
 	public UserService(UserDAO usersDao) {
-		this.usersDao=usersDao;
+		this.usersDao = usersDao;
 	}
-	
+
 	public Boolean register(User user) throws JsonSyntaxException, IOException {
-		ArrayList<User>users=getAllUsers();
-		Boolean result=false;
-		if(users==null){
+		ArrayList<User> users = getAllUsers();
+		Boolean result = false;
+		if (users == null) {
 			usersDao.create(user);
-			result=true;
-		}else{
-			for(User u : users){
-				if(u.username.equals(user.username)){
-				 return result= false;
+			result = true;
+		} else {
+			for (User u : users) {
+				if (u.username.equals(user.username)) {
+					return result = false;
 				}
 			}
 			usersDao.create(user);
-			result=true;
+			result = true;
 		}
-		
+
 		return result;
 	}
-	
+
 	public User login(UserLogInDTO userLogInDTO) throws JsonSyntaxException, IOException {
-	
+
 		User user = null;
-		
-		if(userLogInDTO.getUsername() != null) {
+
+		if (userLogInDTO.getUsername() != null) {
 			user = usersDao.getByID(userLogInDTO.getUsername());
 		}
-		
-		if(user != null) {
-			if(userLogInDTO.getPassword().equals(user.getPassword())) {
+
+		if (user != null) {
+			if (userLogInDTO.getPassword().equals(user.getPassword())) {
 				return user;
 			}
 		}
-		
+
 		return null;
 	}
-	
-	public ArrayList<User> getAllUsers() throws JsonSyntaxException, IOException{
+
+	public ArrayList<User> getAllUsers() throws JsonSyntaxException, IOException {
 		return usersDao.getAll();
 	}
-	
+
 	public void updatePersonalInfo(User entity) throws JsonSyntaxException, IOException {
 		usersDao.update(entity);
 	}
-	
+
 	public String Proba() {
 		return "proba uspjela";
 	}
-/*
-    public ArrayList<User> searchUsers(String name, String surname, String username) {
-		return usersDao.searchUsers(name,surname,username);
-    }
-	*/
+	/*
+	 * public ArrayList<User> searchUsers(String name, String surname, String
+	 * username) {
+	 * return usersDao.searchUsers(name,surname,username);
+	 * }
+	 */
 
-    public ArrayList<User> usersSearchByName(String name) throws JsonSyntaxException, IOException {
+	public ArrayList<User> usersSearchByName(String name) throws JsonSyntaxException, IOException {
 		return usersDao.searchByName(name);
-    }
+	}
 
 	public ArrayList<User> usersSearchByUserName(String username) throws JsonSyntaxException, IOException {
 		return usersDao.searchByUsername(username);
-		}
+	}
 
-    public ArrayList<User> usersSearchBySurname(String surname) throws JsonSyntaxException, IOException {
-		return usersDao.searchBySurname(surname); 
-	  }
+	public ArrayList<User> usersSearchBySurname(String surname) throws JsonSyntaxException, IOException {
+		return usersDao.searchBySurname(surname);
+	}
 
 	public List<User> userSortByNameAsc() throws JsonSyntaxException, IOException {
-		return usersDao.userSortByNameAsc();  
-	  }
+		return usersDao.userSortByNameAsc();
+	}
 
 	public List<User> userSortByNameDesc() throws JsonSyntaxException, IOException {
-		return usersDao.userSortByNameDesc();  
+		return usersDao.userSortByNameDesc();
 	}
 
 	public List<User> userSortBySurnameAsc() throws JsonSyntaxException, IOException {
-		return usersDao.userSortBySurnameAsc();  
+		return usersDao.userSortBySurnameAsc();
 	}
 
-    public List<User> userSortBySurnameDesc() throws JsonSyntaxException, IOException {
-        return usersDao.userSortBySurnameDesc();
-    }
+	public List<User> userSortBySurnameDesc() throws JsonSyntaxException, IOException {
+		return usersDao.userSortBySurnameDesc();
+	}
 
-    public List<User> userSortByUsernameDesc() throws JsonSyntaxException, IOException {
-        return usersDao.userSortByUsernameDesc();
-    }
+	public List<User> userSortByUsernameDesc() throws JsonSyntaxException, IOException {
+		return usersDao.userSortByUsernameDesc();
+	}
 
-    public List<User> userSortByUsernameAsc() throws JsonSyntaxException, IOException {
-        return usersDao.userSortByUsernameAsc();
-    }
+	public List<User> userSortByUsernameAsc() throws JsonSyntaxException, IOException {
+		return usersDao.userSortByUsernameAsc();
+	}
 
 	public List<User> usersFiltrateByRole(String role) throws JsonSyntaxException, IOException {
-        return usersDao.usersFiltrateByRole(role);
+		return usersDao.usersFiltrateByRole(role);
 	}
 
-   /* public List<User> combineSearchUser(String name, String surname, String username) throws JsonSyntaxException, IOException {
-		return usersDao.combineSearchUser(name,surname,username);    }
-*/
-  
+	/*
+	 * public List<User> combineSearchUser(String name, String surname, String
+	 * username) throws JsonSyntaxException, IOException {
+	 * return usersDao.combineSearchUser(name,surname,username); }
+	 */
+
 }

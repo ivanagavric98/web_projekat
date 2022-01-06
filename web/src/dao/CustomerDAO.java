@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import javafx.css.CssMetaData;
 import model.Customer;
 import model.User;
 
@@ -38,7 +39,7 @@ public class CustomerDAO implements IDAO<Customer, String> {
     @Override
     public ArrayList<Customer> getAll() throws JsonSyntaxException, IOException {
         Gson gson = new Gson();
-        Type token = new TypeToken<ArrayList<User>>() {
+        Type token = new TypeToken<ArrayList<Customer>>() {
         }.getType();
         BufferedReader br = new BufferedReader(new FileReader("web/data/customers.json"));
         this.customers = gson.fromJson(br, token);
@@ -60,14 +61,29 @@ public class CustomerDAO implements IDAO<Customer, String> {
 
     @Override
     public Customer getByID(String id) throws JsonSyntaxException, IOException {
-        // TODO Auto-generated method stub
-        return null;
+        Customer wantedUser = null;
+        ArrayList<Customer> users = (ArrayList<Customer>) getAll();
+        if (users.size() != 0) {
+            for (Customer user : users) {
+                if (user.getUsername().equals(id)) {
+                    wantedUser = user;
+                    break;
+                }
+            }
+        }
+        return wantedUser;
     }
 
     @Override
     public void update(Customer entity) throws JsonSyntaxException, IOException {
-        // TODO Auto-generated method stub
-
+        ArrayList<Customer> users = getAll();
+        for (Customer user : users) {
+            if (user.getUsername().equals(entity.getUsername())) {
+                users.set(users.indexOf(user), entity);
+                break;
+            }
+        }
+        saveAll(users);
     }
 
     @Override
@@ -101,7 +117,7 @@ public class CustomerDAO implements IDAO<Customer, String> {
         }
 
         List<Customer> resultList = toSort.stream()
-                .sorted((e1, e2) -> Integer.valueOf(e1.getPoints()).compareTo(Integer.valueOf(e2.getPoints())))
+                .sorted((e1, e2) -> Double.valueOf(e1.getPoints()).compareTo(Double.valueOf(e2.getPoints())))
                 .collect(Collectors.toList());
 
         return resultList;
@@ -116,7 +132,7 @@ public class CustomerDAO implements IDAO<Customer, String> {
         }
 
         List<Customer> resultList = toSort.stream()
-                .sorted((e1, e2) -> Integer.valueOf(e1.getPoints()).compareTo(Integer.valueOf(e2.getPoints())))
+                .sorted((e1, e2) -> Double.valueOf(e1.getPoints()).compareTo(Double.valueOf(e2.getPoints())))
                 .collect(Collectors.toList());
         Collections.reverse(resultList);
         return resultList;
@@ -131,5 +147,24 @@ public class CustomerDAO implements IDAO<Customer, String> {
             }
         }
         return resultList;
+    }
+
+    public Customer updateUsersPoints(String customerName, double price) throws JsonSyntaxException, IOException {
+        Customer customer = getByID(customerName);
+        Double points = price / 1000 * 133;
+        Double userPoints = customer.getPoints();
+        customer.setPoints(userPoints + points);
+        update(customer);
+        return customer;
+    }
+
+    public Customer updateUsersPointsAferCancellation(String customerName, Double price)
+            throws JsonSyntaxException, IOException {
+        Customer customer = getByID(customerName);
+        Double points = price / 1000 * 133 * 4;
+        Double userPoints = customer.getPoints();
+        customer.setPoints(userPoints - points);
+        update(customer);
+        return customer;
     }
 }
