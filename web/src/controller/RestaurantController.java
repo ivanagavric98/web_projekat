@@ -104,4 +104,8 @@ public class RestaurantController {
     public ArrayList<Article> getArticlesFromRestaurant(String params) throws JsonSyntaxException, IOException {
         return restaurantService.getArticlesFromRestaurant(params);
     }
+
+    public void update(Restaurant restaurant) throws JsonSyntaxException, IOException {
+        restaurantService.update(restaurant);
+    }
 }

@@ -5,24 +5,14 @@ import static spark.Spark.get;
 import static spark.Spark.port;
 import static spark.Spark.post;
 import static spark.Spark.staticFiles;
-
-import java.io.Console;
 import java.io.File;
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
-import org.eclipse.jetty.websocket.client.io.UpgradeConnection.SendUpgradeRequest;
-
 import controller.AddressController;
 import controller.ArticleController;
+import controller.CommentController;
 import controller.CustomerController;
 import controller.LocationController;
 import controller.MenagerController;
@@ -34,6 +24,7 @@ import controller.SupplierRequestController;
 import controller.UserController;
 import dao.AddressDAO;
 import dao.ArticleDAO;
+import dao.CommentDAO;
 import dao.CustomerDAO;
 import dao.LocationDAO;
 import dao.MenagerDAO;
@@ -44,11 +35,9 @@ import dao.SupplierDAO;
 import dao.SupplierRequestDAO;
 import dao.UserDAO;
 import dto.UserLogInDTO;
-import javaxt.utils.Date;
-import model.Address;
 import model.Article;
+import model.Comment;
 import model.Customer;
-import model.Location;
 import model.Menager;
 import model.Order;
 import model.OrderStatus;
@@ -56,10 +45,10 @@ import model.Restaurant;
 import model.ShoppingCart;
 import model.ShoppingCartItem;
 import model.Supplier;
-import model.SupplierRequest;
 import model.User;
 import service.AddressService;
 import service.ArticleService;
+import service.CommentService;
 import service.CustomerService;
 import service.LocationService;
 import service.MenagerService;
@@ -69,7 +58,6 @@ import service.ShoppingCartService;
 import service.SupplierRequestService;
 import service.SupplierService;
 import service.UserService;
-import spark.Request;
 import spark.Session;
 
 public class main {
@@ -124,6 +112,10 @@ public class main {
 		SupplierRequestDAO supplierRequestDAO = new SupplierRequestDAO("web/data/supplierRequest.json");
 		SupplierRequestService supplierRequestService = new SupplierRequestService(supplierRequestDAO);
 		SupplierRequestController supplierRequestController = new SupplierRequestController(supplierRequestService);
+
+		CommentDAO commentDAO = new CommentDAO("web/data/comments.json");
+		CommentService commentService = new CommentService(commentDAO);
+		CommentController commentController = new CommentController(commentService);
 
 		get("/test/", "text/html", (req, res) -> {
 			return usersService.Proba();
@@ -614,6 +606,22 @@ public class main {
 
 			}
 			return result;
+		});
+		post("/addComment", "application/json", (req, res) -> {
+			res.type("application/json");
+			Comment comment = gson.fromJson(req.body(), Comment.class);
+			Restaurant restaurant = restaurantController.getRestaurantByName(comment.getRestaurant());
+
+			ArrayList<Integer> grades = restaurant.getGrade();
+			if (grades == null) {
+				grades = new ArrayList<>();
+			}
+
+			grades.add(comment.grade);
+			restaurant.setGrade(grades);
+			restaurantController.update(restaurant);
+			commentController.addComment(comment);
+			return comment;
 		});
 
 	}

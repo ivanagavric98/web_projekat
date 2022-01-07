@@ -142,4 +142,8 @@ public class RestaurantService {
         return restaurantDAO.getArticlesFromRestaurant(params);
     }
 
+    public void update(Restaurant restaurant) throws JsonSyntaxException, IOException {
+        restaurantDAO.update(restaurant);
+    }
+
 }

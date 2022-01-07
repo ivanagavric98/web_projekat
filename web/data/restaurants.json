@@ -11,7 +11,9 @@
 			}
 		},
 		"logo": "./images/restaurants/petrus.jpg",
-		"grade": 0.0,
+		"grade": [
+			5
+		],
 		"status": "OPEN"
 	},
 	{
@@ -26,7 +28,7 @@
 			}
 		},
 		"logo": "./images/restaurants/mcdonalds.jpg",
-		"grade": 0.0,
+		"grade": [],
 		"status": "OPEN"
 	},
 	{
@@ -41,7 +43,7 @@
 			}
 		},
 		"logo": "./images/restaurants/kfc.jpg",
-		"grade": 0.0,
+		"grade": [],
 		"status": "OPEN"
 	},
 	{
@@ -56,7 +58,7 @@
 			}
 		},
 		"logo": "./images/restaurants/tortillacasa.jpg",
-		"grade": 0.0,
+		"grade": [],
 		"status": "CLOSED"
 	},
 	{
@@ -71,7 +73,7 @@
 			}
 		},
 		"logo": "./images/restaurants/walter.jpg",
-		"grade": 3.0,
+		"grade": [],
 		"status": "OPEN"
 	},
 	{
@@ -86,7 +88,7 @@
 			}
 		},
 		"logo": "./images/restaurants/girosmaster.jpg",
-		"grade": 4.0,
+		"grade": [],
 		"status": "OPEN"
 	},
 	{
@@ -101,7 +103,7 @@
 			}
 		},
 		"logo": "./images/restaurants/dvastapica.jpg",
-		"grade": 4.0,
+		"grade": [],
 		"status": "OPEN"
 	}
 ]

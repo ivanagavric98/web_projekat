@@ -6,9 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Type;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -221,33 +218,36 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 	}
 
 	public List<Restaurant> restauranSortByGradeDesc() throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants = getAll();
-		Set<Restaurant> toSort = new HashSet<>();
+		// ArrayList<Restaurant> restaurants = getAll();
+		// Set<Restaurant> toSort = new HashSet<>();
 
-		for (Restaurant object : restaurants) {
-			toSort.add(object);
-		}
+		// for (Restaurant object : restaurants) {
+		// toSort.add(object);
+		// }
 
-		List<Restaurant> resultList = toSort.stream()
-				.sorted((e1, e2) -> Double.valueOf(e1.getGrade()).compareTo(Double.valueOf(e2.getGrade())))
-				.collect(Collectors.toList());
+		// List<Restaurant> resultList = toSort.stream()
+		// .sorted((e1, e2) ->
+		// Double.valueOf(e1.getGrade()).compareTo(Double.valueOf(e2.getGrade())))
+		// .collect(Collectors.toList());
 
-		return resultList;
+		// return resultList;
+		return null;
 	}
 
 	public List<Restaurant> restaurantSortByLocationDesc() throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants = getAll();
-		Set<Restaurant> toSort = new HashSet<>();
+		// ArrayList<Restaurant> restaurants = getAll();
+		// Set<Restaurant> toSort = new HashSet<>();
 
-		for (Restaurant object : restaurants) {
-			toSort.add(object);
-		}
+		// for (Restaurant object : restaurants) {
+		// toSort.add(object);
+		// }
 
-		List<Restaurant> resultList = toSort.stream()
-				.sorted((e1, e2) -> Double.valueOf(e1.getGrade()).compareTo(Double.valueOf(e2.getGrade())))
-				.collect(Collectors.toList());
-		Collections.reverse(resultList);
-		return resultList;
+		// List<Restaurant> resultList = toSort.stream()
+		// .sorted((e1, e2) ->ze1.getGrade()).compareTo(Double.valueOf(e2.getGrade())))
+		// .collect(Collectors.toList());
+		// Collections.reverse(resultList);
+		// return resultList;
+		return null;
 	}
 
 	public List<Restaurant> restaurantsFiltrateByType(String type) throws JsonSyntaxException, IOException {
@@ -327,13 +327,13 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 		ArrayList<Restaurant> allRestaurants = getAll();
 		ArrayList<Restaurant> gradeSearchList = new ArrayList<>();
 
-		if (allRestaurants.size() != 0) {
-			for (Restaurant restaurant : allRestaurants) {
-				if (restaurant.grade == grade) {
-					gradeSearchList.add(restaurant);
-				}
-			}
-		}
+		// if (allRestaurants.size() != 0) {
+		// for (Restaurant restaurant : allRestaurants) {
+		// if (restaurant.grade == grade) {
+		// gradeSearchList.add(restaurant);
+		// }
+		// }
+		// }
 		return gradeSearchList;
 	}
 
