@@ -3,6 +3,14 @@
         "customer": "marija",
         "restaurant": "Petrus",
         "text": "sve ok",
-        "grade": 5
+        "grade": 5,
+        "status": "Rejected"
+    },
+    {
+        "customer": "ana",
+        "restaurant": "Petrus",
+        "text": "sve ok",
+        "grade": 5,
+        "status": "Approved"
     }
 ]

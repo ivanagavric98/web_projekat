@@ -111,4 +111,16 @@ public class CommentDAO implements IDAO<Comment, String> {
         // TODO Auto-generated method stub
         return null;
     }
+
+    public Comment getByRestaurantAndCustomerName(String restaurant, String customer)
+            throws JsonSyntaxException, IOException {
+        ArrayList<Comment> comments = getAll();
+        Comment result = null;
+        for (Comment c : comments) {
+            if (c.getCustomer().equals(customer) && c.getRestaurant().equals(restaurant)) {
+                result = c;
+            }
+        }
+        return result;
+    }
 }

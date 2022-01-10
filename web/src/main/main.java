@@ -37,6 +37,7 @@ import dao.UserDAO;
 import dto.UserLogInDTO;
 import model.Article;
 import model.Comment;
+import model.CommentStatus;
 import model.Customer;
 import model.Menager;
 import model.Order;
@@ -620,9 +621,41 @@ public class main {
 			grades.add(comment.grade);
 			restaurant.setGrade(grades);
 			restaurantController.update(restaurant);
+			comment.status = CommentStatus.Processing;
 			commentController.addComment(comment);
 			return comment;
 		});
 
+		post("/approveComment", "application/json", (req, res) -> {
+			res.type("application/json");
+			Comment comment = gson.fromJson(req.body(), Comment.class);
+			commentController.approveComment(comment);
+			return comment;
+		});
+
+		post("/rejectComment", "application/json", (req, res) -> {
+			res.type("application/json");
+			Comment comment = gson.fromJson(req.body(), Comment.class);
+			commentController.rejectComment(comment);
+			return comment;
+		});
+
+		get("/getCommentsWithStatusApproved", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Comment> comments = commentController.getCommentsWithStatusApproved();
+			return comments;
+		});
+
+		get("/getCommentsWithStatusRejected", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Comment> comments = commentController.getCommentsWithStatusRejected();
+			return comments;
+		});
+
+		get("/getCommentsWithStatusProcessing", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Comment> comments = commentController.getCommentsWithStatusProcessing();
+			return comments;
+		});
 	}
 }

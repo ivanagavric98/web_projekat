@@ -8,8 +8,10 @@ import java.io.PrintWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -208,30 +210,31 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 		for (Restaurant object : restaurants) {
 			toSort.add(object);
 		}
+		HashMap<Double, String> restaurantGrades = new HashMap<>();
 
-		List<Restaurant> resultList = toSort.stream().sorted(
-				(e1, e2) -> e1.getLocation().getAddress().getCity().compareTo(e2.getLocation().getAddress().getCity()))
-				.collect(Collectors.toList());
-		Collections.reverse(resultList);
-		Collections.reverse(resultList);
+		for (Restaurant restaurant : restaurants) {
+			int grade = 0;
+			Double gradePerRestaurant = 0.0;
+			for (int g : restaurant.getGrade()) {
+				grade += g;
+			}
+			gradePerRestaurant = (double) (grade * 1.0 / (restaurant.getGrade().size()));
+			restaurantGrades.put(gradePerRestaurant, restaurant.getName());
+		}
+		List<Double> grades = new ArrayList<>(restaurantGrades.keySet());
+		Collections.sort(grades);
+		ArrayList<Restaurant> resultList = new ArrayList<>();
+		for (Double i : grades) {
+			Restaurant r = getRestaurantByName(restaurantGrades.get(i));
+			resultList.add(r);
+		}
 		return resultList;
 	}
 
 	public List<Restaurant> restauranSortByGradeDesc() throws JsonSyntaxException, IOException {
-		// ArrayList<Restaurant> restaurants = getAll();
-		// Set<Restaurant> toSort = new HashSet<>();
-
-		// for (Restaurant object : restaurants) {
-		// toSort.add(object);
-		// }
-
-		// List<Restaurant> resultList = toSort.stream()
-		// .sorted((e1, e2) ->
-		// Double.valueOf(e1.getGrade()).compareTo(Double.valueOf(e2.getGrade())))
-		// .collect(Collectors.toList());
-
-		// return resultList;
-		return null;
+		List<Restaurant> restaurants = restauranSortByGradeAsc();
+		Collections.reverse(restaurants);
+		return restaurants;
 	}
 
 	public List<Restaurant> restaurantSortByLocationDesc() throws JsonSyntaxException, IOException {

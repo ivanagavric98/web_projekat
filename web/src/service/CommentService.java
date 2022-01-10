@@ -1,10 +1,12 @@
 package service;
 
 import java.io.IOException;
+import java.rmi.activation.ActivationGroupDesc.CommandEnvironment;
 import java.util.ArrayList;
 import com.google.gson.JsonSyntaxException;
 import dao.CommentDAO;
 import model.Comment;
+import model.CommentStatus;
 
 public class CommentService {
     private CommentDAO commentDAO;
@@ -30,5 +32,52 @@ public class CommentService {
 
         }
         return result;
+    }
+
+    public Comment approveComment(Comment comment) throws JsonSyntaxException, IOException {
+        Comment commentToUpdate = commentDAO.getByRestaurantAndCustomerName(comment.restaurant, comment.customer);
+        commentToUpdate.setStatus(CommentStatus.Approved);
+        commentDAO.update(commentToUpdate);
+        return commentToUpdate;
+    }
+
+    public Comment rejectComment(Comment comment) throws JsonSyntaxException, IOException {
+        Comment commentToUpdate = commentDAO.getByRestaurantAndCustomerName(comment.restaurant, comment.customer);
+        commentToUpdate.setStatus(CommentStatus.Rejected);
+        commentDAO.update(commentToUpdate);
+        return commentToUpdate;
+    }
+
+    public ArrayList<Comment> getCommentsWithStatusApproved() throws JsonSyntaxException, IOException {
+        ArrayList<Comment> allComments = commentDAO.getAll();
+        ArrayList<Comment> resultList = new ArrayList<>();
+        for (Comment comment : allComments) {
+            if (comment.status.equals(CommentStatus.Approved)) {
+                resultList.add(comment);
+            }
+        }
+        return resultList;
+    }
+
+    public ArrayList<Comment> getCommentsWithStatusRejected() throws JsonSyntaxException, IOException {
+        ArrayList<Comment> allComments = commentDAO.getAll();
+        ArrayList<Comment> resultList = new ArrayList<>();
+        for (Comment comment : allComments) {
+            if (comment.status.equals(CommentStatus.Rejected)) {
+                resultList.add(comment);
+            }
+        }
+        return resultList;
+    }
+
+    public ArrayList<Comment> getCommentsWithStatusProcessing() throws JsonSyntaxException, IOException {
+        ArrayList<Comment> allComments = commentDAO.getAll();
+        ArrayList<Comment> resultList = new ArrayList<>();
+        for (Comment comment : allComments) {
+            if (comment.status.equals(CommentStatus.Processing)) {
+                resultList.add(comment);
+            }
+        }
+        return resultList;
     }
 }
