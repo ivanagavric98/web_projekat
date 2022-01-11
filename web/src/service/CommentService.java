@@ -81,4 +81,16 @@ public class CommentService {
         
         return resultList;
     }
+
+	public ArrayList<Comment> getAllCommentsByRestaurant(String restaurantName) throws JsonSyntaxException, IOException {
+		ArrayList<Comment> allComments = commentDAO.getAll();
+        ArrayList<Comment> resultList = new ArrayList<>();
+        for (Comment comment : allComments) {
+            if (comment.getRestaurant().equals(restaurantName)) {
+                resultList.add(comment);
+            }
+        }
+        return resultList;
+
+	}
 }

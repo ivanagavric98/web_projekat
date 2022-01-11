@@ -4,11 +4,11 @@
 		"restaurant": "Petrus",
 		"text": "sve ok",
 		"grade": 5,
-		"status": "Processing"
+		"status": "Approved"
 	},
 	{
 		"customer": "Ana Novakovic",
-		"restaurant": "Petrus",
+		"restaurant": "McDonald's",
 		"text": "sve ok",
 		"grade": 5,
 		"status": "Processing"

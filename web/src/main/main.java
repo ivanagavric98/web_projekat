@@ -422,6 +422,12 @@ public class main {
 			return gson.toJson(articles);
 		});
 
+		get("/getArticlesByRestaurantName/:name", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Article> articles = articleController.gettArticlesByRestaurantName(req.params("name"));
+			return gson.toJson(articles);
+		});
+		
 		post("/addRestaurantToManager/:username", (req, res) -> {
 			res.type("application/json");
 
@@ -657,5 +663,12 @@ public class main {
 			ArrayList<Comment> comments = commentController.getCommentsWithStatusProcessing();
 			return gson.toJson(comments);
 		});
+		
+		get("/getAllCommentsByRestaurant/:name", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Comment> comments = commentController.getAllCommentsByRestaurant(req.params("name"));
+			return gson.toJson(comments);
+		});
+		
 	}
 }

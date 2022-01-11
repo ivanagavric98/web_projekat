@@ -31,7 +31,7 @@ Vue.component("adminRestaurant", {
             this.restaurant = response.data;               
         });
 		
-		axios.get("/getAllArticles")
+		axios.get("/getArticlesByRestaurantName/" + JSON.parse(localStorage.getItem('restaurant')))
 	       .then(response => {
 	           console.log(response.data)
 	           this.articles = response.data;               
@@ -48,13 +48,12 @@ Vue.component("adminRestaurant", {
 			console.log(response.data)
 			this.commentsApproved = response.data;
 		});
-		
-		axios.get("/getCommentsWithStatusProcessing")
+	
+		axios.get("/getAllCommentsByRestaurant/" +  JSON.parse(localStorage.getItem('restaurant')))
 		.then(response => {
 			console.log(response.data)
 			let customer = response.data.customer;
 			console.log(customer)
-			this.selectedComment = localStorage.setItem('commentCustomer', JSON.stringify(response.data[0].customer));
 			this.commentsProcessing = response.data;
 		});
 	},
@@ -151,13 +150,13 @@ Vue.component("adminRestaurant", {
 		</div>
 			</div>
 			
-		<div class="comment-list" v-if="status=='reviews'">
-	<div class="comment" :key=comment.customer v-for="comment in commentsProcessing" data-toggle="modal" data-target="#approveModal">
-		<div class="comment-icon">
+		<div class="comment-list" v-if="status=='reviews' && role == 'MENAGER' || role == 'ADMIN' || role == 'CUSTOMER'">
+	<div ref="comments" id="commentClass" class="comment" :key=comment.customer v-for="comment in commentsProcessing" @click= "select($event)" data-toggle="modal" data-target="#approveModal">
+		<div class="comment-icon"  v-if="role == 'CUSTOMER' && comment.status == 'Approved' || role == 'MENAGER'  || role == 'ADMIN' && comment.status=='Approved' || comment.status== 'Rejected' ">
 		<i class="fas fa-user fa-3x"></i>
-		<label></label>
+		<label>{{comment.status}}</label>
 		</div>
-		<div class="comment-section">
+		<div class="comment-section"  v-if="role == 'CUSTOMER' && comment.status == 'Approved' || role == 'MENAGER' || role == 'ADMIN' && comment.status=='Approved' || comment.status== 'Rejected'">
 			<div class="comment-top">
 				<h4>{{comment.customer}}</h4>
 				<div class="grade">
@@ -360,6 +359,7 @@ Vue.component("adminRestaurant", {
 	                        description : this.description,
 	                        quantity: this.quantity,
 	                        type: this.type,
+	                        restaurant: JSON.parse(localStorage.getItem('restaurant')),
 	                        image: this.newArticle.image
 	                    })
 	                    .then(response => {
@@ -408,6 +408,11 @@ Vue.component("adminRestaurant", {
                 }else
                     alert("That article already exists!")
             });   
+		},
+		select(event){
+			let divId= event.currentTarget.dataset;
+			let data = JSON.parse(JSON.stringify(divId));
+			
 		}
 	}
 });

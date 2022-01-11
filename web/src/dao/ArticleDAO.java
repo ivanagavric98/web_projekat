@@ -114,7 +114,7 @@ public class ArticleDAO implements IDAO<Article, String> {
 		ArrayList<Article> allArticles = getAll();
 		ArrayList<Article> result = new ArrayList<>();
 		for (Article a : allArticles) {
-			if (a.getRestaurant().trim().toLowerCase().equals(restaurantName.trim().toLowerCase())) {
+			if (a.getRestaurant().equals(restaurantName)) {
 				result.add(a);
 			}
 		}
