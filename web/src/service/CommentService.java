@@ -35,7 +35,7 @@ public class CommentService {
     }
 
     public Comment approveComment(Comment comment) throws JsonSyntaxException, IOException {
-        Comment commentToUpdate = commentDAO.getByRestaurantAndCustomerName(comment.restaurant, comment.customer);
+        Comment commentToUpdate = commentDAO.getByRestaurantAndCustomerName(comment.getRestaurant(), comment.getCustomer());
         commentToUpdate.setStatus(CommentStatus.Approved);
         commentDAO.update(commentToUpdate);
         return commentToUpdate;
@@ -66,7 +66,7 @@ public class CommentService {
             if (comment.status.equals(CommentStatus.Rejected)) {
                 resultList.add(comment);
             }
-        }
+         }
         return resultList;
     }
 
@@ -78,6 +78,7 @@ public class CommentService {
                 resultList.add(comment);
             }
         }
+        
         return resultList;
     }
 }

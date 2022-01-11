@@ -41,7 +41,7 @@ public class MenagerDAO implements IDAO<Menager, String> {
 		Gson gson = new Gson();
 		Type token = new TypeToken<ArrayList<Menager>>() {
 		}.getType();
-		BufferedReader br = new BufferedReader(new FileReader("web/data/menagers.json"));
+		BufferedReader br = new BufferedReader(new FileReader("data/menagers.json"));
 		this.users = gson.fromJson(br, token);
 		return users;
 	}

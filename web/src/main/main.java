@@ -70,51 +70,51 @@ public class main {
 		port(8080);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
-		UserDAO usersDAO = new UserDAO("web/data/users.json");
+		UserDAO usersDAO = new UserDAO("data/users.json");
 		UserService usersService = new UserService(usersDAO);
 		UserController usersController = new UserController(usersService);
 
-		CustomerDAO customersDAO = new CustomerDAO("web/data/customers.json");
+		CustomerDAO customersDAO = new CustomerDAO("data/customers.json");
 		CustomerService customerService = new CustomerService(customersDAO);
 		CustomerController customerController = new CustomerController(customerService);
 
-		SupplierDAO supplierDAO = new SupplierDAO("web/data/suppliers.json");
+		SupplierDAO supplierDAO = new SupplierDAO("data/suppliers.json");
 		SupplierService supplierService = new SupplierService(supplierDAO);
 		SupplierController supplierController = new SupplierController(supplierService);
 
-		MenagerDAO menagerDAO = new MenagerDAO("web/data/menagers.json");
+		MenagerDAO menagerDAO = new MenagerDAO("data/menagers.json");
 		MenagerService menagerService = new MenagerService(menagerDAO);
 		MenagerController menagerController = new MenagerController(menagerService);
 
-		RestaurantDAO restaurantDAO = new RestaurantDAO("web/data/restaurants.json");
+		RestaurantDAO restaurantDAO = new RestaurantDAO("data/restaurants.json");
 		RestaurantService restaurantService = new RestaurantService(restaurantDAO);
 		RestaurantController restaurantController = new RestaurantController(restaurantService);
 
-		AddressDAO addressDAO = new AddressDAO("web/data/addresses.json");
+		AddressDAO addressDAO = new AddressDAO("data/addresses.json");
 		AddressService addressService = new AddressService(addressDAO);
 		AddressController addressController = new AddressController(addressService);
 
-		LocationDAO locationDAO = new LocationDAO("web/data/locations.json");
+		LocationDAO locationDAO = new LocationDAO("data/locations.json");
 		LocationService locationService = new LocationService(locationDAO);
 		LocationController locationController = new LocationController(locationService);
 
-		ArticleDAO articleDAO = new ArticleDAO("web/data/articles.json");
+		ArticleDAO articleDAO = new ArticleDAO("data/articles.json");
 		ArticleService articleService = new ArticleService(articleDAO);
 		ArticleController articleController = new ArticleController(articleService);
 
-		ShoppingCartDAO shoppingCartDAO = new ShoppingCartDAO("web/data/shoppingCarts.json");
+		ShoppingCartDAO shoppingCartDAO = new ShoppingCartDAO("data/shoppingCarts.json");
 		ShoppingCartService shoppingCartService = new ShoppingCartService(shoppingCartDAO);
 		ShoppingCartController shoppingCartController = new ShoppingCartController(shoppingCartService);
 
-		OrderDAO orderDAO = new OrderDAO("web/data/orders.json");
+		OrderDAO orderDAO = new OrderDAO("data/orders.json");
 		OrderService orderService = new OrderService(orderDAO);
 		OrderController orderController = new OrderController(orderService);
 
-		SupplierRequestDAO supplierRequestDAO = new SupplierRequestDAO("web/data/supplierRequest.json");
+		SupplierRequestDAO supplierRequestDAO = new SupplierRequestDAO("data/supplierRequest.json");
 		SupplierRequestService supplierRequestService = new SupplierRequestService(supplierRequestDAO);
 		SupplierRequestController supplierRequestController = new SupplierRequestController(supplierRequestService);
 
-		CommentDAO commentDAO = new CommentDAO("web/data/comments.json");
+		CommentDAO commentDAO = new CommentDAO("data/comments.json");
 		CommentService commentService = new CommentService(commentDAO);
 		CommentController commentController = new CommentController(commentService);
 
@@ -643,19 +643,19 @@ public class main {
 		get("/getCommentsWithStatusApproved", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Comment> comments = commentController.getCommentsWithStatusApproved();
-			return comments;
+			return gson.toJson(comments);
 		});
 
 		get("/getCommentsWithStatusRejected", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Comment> comments = commentController.getCommentsWithStatusRejected();
-			return comments;
+			return gson.toJson(comments);
 		});
 
 		get("/getCommentsWithStatusProcessing", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Comment> comments = commentController.getCommentsWithStatusProcessing();
-			return comments;
+			return gson.toJson(comments);
 		});
 	}
 }

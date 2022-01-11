@@ -45,7 +45,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 		Gson gson = new Gson();
 		Type token = new TypeToken<ArrayList<Restaurant>>() {
 		}.getType();
-		BufferedReader br = new BufferedReader(new FileReader("web/data/restaurants.json"));
+		BufferedReader br = new BufferedReader(new FileReader("data/restaurants.json"));
 		this.restaurants = gson.fromJson(br, token);
 		return restaurants;
 	}

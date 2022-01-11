@@ -35,7 +35,7 @@ public class ShoppingCartDAO implements IDAO<ShoppingCart, String> {
         Gson gson = new Gson();
         Type token = new TypeToken<ArrayList<ShoppingCart>>() {
         }.getType();
-        BufferedReader br = new BufferedReader(new FileReader("web/data/shoppingCarts.json"));
+        BufferedReader br = new BufferedReader(new FileReader("data/shoppingCarts.json"));
         this.shoppingCarts = gson.fromJson(br, token);
         return shoppingCarts;
     }
