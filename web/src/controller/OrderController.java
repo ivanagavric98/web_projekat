@@ -56,4 +56,8 @@ public class OrderController {
     public void update(Order params) throws JsonSyntaxException, IOException {
         orderService.update(params);
     }
+
+	public ArrayList<Order> getMyOwnOrders(String customerUsername) throws JsonSyntaxException, IOException {
+		return orderService.getMyOwnOrders(customerUsername);
+	}
 }

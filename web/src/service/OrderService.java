@@ -10,6 +10,7 @@ import com.google.gson.JsonSyntaxException;
 
 import dao.OrderDAO;
 import javaxt.utils.string;
+import model.Article;
 import model.Order;
 import model.OrderStatus;
 import model.ShoppingCart;
@@ -91,6 +92,16 @@ public class OrderService {
 
     public void update(Order params) throws JsonSyntaxException, IOException {
         orderDAO.update(params);
-        ;
     }
+
+	public ArrayList<Order> getMyOwnOrders(String customerUsername) throws JsonSyntaxException, IOException {
+		ArrayList<Order> allOrders = orderDAO.getAll();
+		ArrayList<Order> result = new ArrayList<>();
+		for (Order o : allOrders) {
+			if (o.getCustomer().equals(customerUsername) && o.getOrderStatus().equals(OrderStatus.IN_TRANSPORT) || o.getOrderStatus().equals(OrderStatus.IN_PREPARATION) || o.getOrderStatus().equals(OrderStatus.WAITING_FOR_SUPPLIER)) {
+				result.add(o);
+			}
+		}
+		return result;
+	}
 }

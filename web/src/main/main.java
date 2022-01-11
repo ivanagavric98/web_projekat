@@ -670,5 +670,10 @@ public class main {
 			return gson.toJson(comments);
 		});
 		
+		get("/getMyOwnOrders/:username", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Order> orders = orderController.getMyOwnOrders(req.params("username"));
+			return gson.toJson(orders);
+		});
 	}
 }

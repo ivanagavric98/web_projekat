@@ -48,7 +48,7 @@ public class OrderDAO implements IDAO<Order, String> {
         Gson gson = new Gson();
         Type token = new TypeToken<ArrayList<Order>>() {
         }.getType();
-        BufferedReader br = new BufferedReader(new FileReader("web/data/orders.json"));
+        BufferedReader br = new BufferedReader(new FileReader("data/orders.json"));
         this.orders = gson.fromJson(br, token);
         return orders;
     }
