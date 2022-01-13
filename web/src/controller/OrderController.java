@@ -60,4 +60,12 @@ public class OrderController {
 	public ArrayList<Order> getMyOwnOrders(String customerUsername) throws JsonSyntaxException, IOException {
 		return orderService.getMyOwnOrders(customerUsername);
 	}
+
+	public ArrayList<Order> getOrdersBySupplier(String supplierUsername) throws JsonSyntaxException, IOException {
+		return orderService.getOrdersBySupplier(supplierUsername);
+	}
+
+	public ArrayList<Order> getOrdersByManager(String managerUsername) throws JsonSyntaxException, IOException {
+		return orderService.getOrdersByManager(managerUsername);
+	}
 }

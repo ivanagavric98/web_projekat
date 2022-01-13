@@ -185,6 +185,7 @@
 		"name": "Ana",
 		"surname": "Andric",
 		"gender": "FEMALE",
+		"restaurant": "Petrus",
 		"dateOfBirth": "Feb 22, 2000 12:00:00 AM",
 		"role": "MENAGER"
 	},

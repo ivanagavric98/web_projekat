@@ -107,7 +107,7 @@ public class main {
 		ShoppingCartController shoppingCartController = new ShoppingCartController(shoppingCartService);
 
 		OrderDAO orderDAO = new OrderDAO("data/orders.json");
-		OrderService orderService = new OrderService(orderDAO);
+		OrderService orderService = new OrderService(orderDAO, menagerDAO);
 		OrderController orderController = new OrderController(orderService);
 
 		SupplierRequestDAO supplierRequestDAO = new SupplierRequestDAO("data/supplierRequest.json");
@@ -546,13 +546,13 @@ public class main {
 		get("/getOrderWithStatusInPreparation", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Order> orders = orderController.getOrderWithStatusInPreparation();
-			return orders;
+			return gson.toJson(orders);
 		});
 
 		get("/getOrderWithStatusWaitingForSupplier", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Order> orders = orderController.getOrderWithStatusWaitingForSupplier();
-			return orders;
+			return gson.toJson(orders);
 		});
 
 		post("/changeStatusToInPreparation/:orderId", "application/json", (req, res) -> {
@@ -675,5 +675,18 @@ public class main {
 			ArrayList<Order> orders = orderController.getMyOwnOrders(req.params("username"));
 			return gson.toJson(orders);
 		});
+		
+		get("/getOrdersBySupplier/:username", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Order> orders = orderController.getOrdersBySupplier(req.params("username"));
+			return gson.toJson(orders);
+		});
+		
+		get("/getOrdersByManager/:username", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Order> orders = orderController.getOrdersByManager(req.params("username"));
+			return gson.toJson(orders);
+		});
+		
 	}
 }
