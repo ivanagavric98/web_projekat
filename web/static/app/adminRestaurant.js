@@ -3,6 +3,10 @@ Vue.component("adminRestaurant", {
 		return {
 				role: "",
 				articles: [],
+				commentsRejected: [],
+				commentsApproved: [],
+				commentsProcessing: [],
+				selectedComment: null,
 				restaurant: {},
 				status: 'items',
 				newArticle:{
@@ -14,7 +18,9 @@ Vue.component("adminRestaurant", {
 				description: null,
 				type: null,
 				quantity: null,
-				editedArticle: {}
+				editedArticle: {},
+				approvedComment: {},
+				status: null
 				}
 	},
 	mounted() {
@@ -25,11 +31,31 @@ Vue.component("adminRestaurant", {
             this.restaurant = response.data;               
         });
 		
-		axios.get("/getAllArticles")
+		axios.get("/getArticlesByRestaurantName/" + JSON.parse(localStorage.getItem('restaurant')))
 	       .then(response => {
 	           console.log(response.data)
 	           this.articles = response.data;               
 	       });
+		
+		axios.get("/getCommentsWithStatusRejected")
+			.then(response => {
+				console.log(response.data)
+				this.commentsRejected = response.data;
+			});
+		
+		axios.get("/getCommentsWithStatusApproved")
+		.then(response => {
+			console.log(response.data)
+			this.commentsApproved = response.data;
+		});
+	
+		axios.get("/getAllCommentsByRestaurant/" +  JSON.parse(localStorage.getItem('restaurant')))
+		.then(response => {
+			console.log(response.data)
+			let customer = response.data.customer;
+			console.log(customer)
+			this.commentsProcessing = response.data;
+		});
 	},
 	
 	template: 
@@ -122,8 +148,46 @@ Vue.component("adminRestaurant", {
 				</div>
 				</div>
 		</div>
-	
 			</div>
+			
+		<div class="comment-list" v-if="status=='reviews' && role == 'MENAGER' || role == 'ADMIN' || role == 'CUSTOMER'">
+	<div ref="comments" id="commentClass" class="comment" :key=comment.customer v-for="comment in commentsProcessing" @click= "select($event)" data-toggle="modal" data-target="#approveModal">
+		<div class="comment-icon"  v-if="role == 'CUSTOMER' && comment.status == 'Approved' || role == 'MENAGER'  || role == 'ADMIN' && comment.status=='Approved' || comment.status== 'Rejected' ">
+		<i class="fas fa-user fa-3x"></i>
+		<label>{{comment.status}}</label>
+		</div>
+		<div class="comment-section"  v-if="role == 'CUSTOMER' && comment.status == 'Approved' || role == 'MENAGER' || role == 'ADMIN' && comment.status=='Approved' || comment.status== 'Rejected'">
+			<div class="comment-top">
+				<h4>{{comment.customer}}</h4>
+				<div class="grade">
+            	<i class="fas fa-star" style="color: #FAE480"></i>
+            	<label>{{comment.grade}}</label>	
+        	</div>
+			</div>
+			<label for="">{{comment.text}}</label>
+		</div>
+	</div>
+	</div>
+	<div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModal" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLongTitle">Approve customer review</h5>
+			  <button type="button" class="close comment-button" data-dismiss="modal" aria-label="Close">
+				<i class="fas fa-times"></i>
+			  </button>
+			</div>
+			<div class="modal-body">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary" data-dismiss="modal" @click= "approveComment">Approve</button>
+			  <button type="button" class="btn btn-primary" data-dismiss="modal" @click= "rejectComment">Reject</button>
+		  </div>
+		</div>
+	  </div>
+	  </div>	
+			
+			
+			
 		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" v-if="role == 'MENAGER'">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
@@ -184,6 +248,9 @@ Vue.component("adminRestaurant", {
   </div>
 </div>
 
+
+
+
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 	  <div class="modal-content">
@@ -241,10 +308,8 @@ Vue.component("adminRestaurant", {
 	  </div>
 	</div>
   </div>
-
-		</div>
-	
-		</div>
+</div>	
+</div>
 		
 	
 	`,
@@ -294,12 +359,13 @@ Vue.component("adminRestaurant", {
 	                        description : this.description,
 	                        quantity: this.quantity,
 	                        type: this.type,
+	                        restaurant: JSON.parse(localStorage.getItem('restaurant')),
 	                        image: this.newArticle.image
 	                    })
 	                    .then(response => {
 	                        if(response.data){
 	                            alert("You have successfully added new article!")
-	                            this.$router.push('adminRestaurant');
+	                            location.reload()
 	                        }else
 	                            alert("That article already exists!")
 	                    });
@@ -311,15 +377,42 @@ Vue.component("adminRestaurant", {
 		},
 		
 		updateArticle(e){
+			e.preventDefault();
+            e.preventDefault();
 			this.errors = null;
                 axios.post('/updateArticle', this.editedArticle, {})
                     .then(response => {
                         if(response.data){
                             alert("You have successfully update article!")
-                            this.$router.push('adminRestaurant');
+                            location.reload()
                         }else
                             alert("That article already exists!")
                     });   
+		},
+		approveComment(){
+			axios.post('/approveComment', {status: 'Approved', restaurant: JSON.parse(localStorage.getItem('restaurant')), customer:  JSON.parse(localStorage.getItem('commentCustomer'))})
+            .then(response => {
+                if(response.data){
+                    alert("Your comment is approved now!")
+                    location.reload()
+                }else
+                    alert("That article already exists!")
+            });   
+		},
+		rejectComment(){
+			axios.post('/rejectComment', {status: 'Rejected', restaurant: JSON.parse(localStorage.getItem('restaurant')), customer:  JSON.parse(localStorage.getItem('commentCustomer'))})
+            .then(response => {
+                if(response.data){
+                    alert("Your comment is rejected now!")
+                    location.reload()
+                }else
+                    alert("That article already exists!")
+            });   
+		},
+		select(event){
+			let divId= event.currentTarget.dataset;
+			let data = JSON.parse(JSON.stringify(divId));
+			
 		}
 	}
 });

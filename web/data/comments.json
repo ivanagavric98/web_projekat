@@ -1,16 +1,16 @@
 [
-    {
-        "customer": "marija",
-        "restaurant": "Petrus",
-        "text": "sve ok",
-        "grade": 5,
-        "status": "Rejected"
-    },
-    {
-        "customer": "ana",
-        "restaurant": "Petrus",
-        "text": "sve ok",
-        "grade": 5,
-        "status": "Approved"
-    }
+	{
+		"customer": "Marija Milic",
+		"restaurant": "Petrus",
+		"text": "sve ok",
+		"grade": 5,
+		"status": "Approved"
+	},
+	{
+		"customer": "Ana Novakovic",
+		"restaurant": "McDonald's",
+		"text": "sve ok",
+		"grade": 5,
+		"status": "Processing"
+	}
 ]
