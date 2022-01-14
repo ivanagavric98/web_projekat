@@ -657,5 +657,70 @@ public class main {
 			ArrayList<Comment> comments = commentController.getCommentsWithStatusProcessing();
 			return comments;
 		});
+
+		get("/getOrderByRestaurantName/:restaurantName", "application/json", (req, res) -> {
+			res.type("application/json");
+			String name = req.params("restaurantName");
+			ArrayList<Order> orders = orderController.usersOrderByRestaurantName(name);
+			return gson.toJson(orders);
+		});
+
+		get("/getOrderByPriceRange/:from/:to", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Order> orders = orderController.getOrderByPriceRange(Double.parseDouble(req.params("from")),
+					Double.parseDouble(req.params("to")));
+			return gson.toJson(orders);
+		});
+
+		get("/getOrderByDateRange/:from/:to", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Order> orders = orderController.getOrderByDateRange(req.params("from"),
+					req.params("to"));
+			return gson.toJson(orders);
+		});
+
+		get("/sortOrderByRestaurantNameAsc", "application/json", (req, res) -> {
+			res.type("application/json");
+			List<Order> orders = orderController.sortOrderByRestaurantName();
+			return gson.toJson(orders);
+		});
+		get("/sortOrderByRestaurantNameDesc", "application/json", (req, res) -> {
+			res.type("application/json");
+			List<Order> orders = orderController.sortOrderByRestaurantNameDesc();
+			return gson.toJson(orders);
+		});
+
+		get("/sortOrderByPriceAsc", "application/json", (req, res) -> {
+			res.type("application/json");
+			List<Order> orders = orderController.sortOrderByPriceAsc();
+			return gson.toJson(orders);
+		});
+		get("/sortOrderByPriceDesc", "application/json", (req, res) -> {
+			res.type("application/json");
+			List<Order> orders = orderController.sortOrderByPriceDesc();
+			return gson.toJson(orders);
+		});
+		get("/sortOrderByDateAsc", "application/json", (req, res) -> {
+			res.type("application/json");
+			List<Order> orders = orderController.sortOrderByDateAsc();
+			return gson.toJson(orders);
+		});
+		get("/sortOrderByDateDesc", "application/json", (req, res) -> {
+			res.type("application/json");
+			List<Order> orders = orderController.sortOrderByDateDesc();
+			return gson.toJson(orders);
+		});
+		get("/filtrateOrderByStatus/:status", "application/json", (req, res) -> {
+			res.type("application/json");
+			List<Order> orders = orderController.filtrateOrderByStatus(req.params("status"));
+			return gson.toJson(orders);
+		});
+		get("/filtrateOrderByRestoranType/:type", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Restaurant> restaurants = restaurantController.getAll();
+			List<Order> orders = orderController.filtrateOrderByRestoranType(req.params("type"), restaurants);
+			return gson.toJson(orders);
+		});
+
 	}
 }

@@ -1,1 +1,38 @@
-[{"ID":"8970239d-5","articles":["salata","vino crveno"],"restaurant":"Petrus","dateAndTime":"2022-01-06 15:37:34.389","price":900.0,"customer":"anda","orderStatus":"WAITING_FOR_SUPPLIER"},{"ID":"8970239d-3","articles":["cezar","vino crveno"],"restaurant":"Petrus","dateAndTime":"2022-01-06 15:37:34.389","price":1500.0,"customer":"iii","orderStatus":"IN_PREPARATION"},{"ID":"8970239d-3","articles":["cezar","vino crveno"],"restaurant":"Petrus","dateAndTime":"2022-01-06 15:37:34.389","price":1500.0,"customer":"nina","orderStatus":"WAITING_FOR_SUPPLIER"}]
+[
+    {
+        "ID": "fa420586-3",
+        "articles": [
+            "salata",
+            "vino crveno"
+        ],
+        "restaurant": "Petrus",
+        "dateAndTime": "2021-05-14",
+        "price": 1404.0,
+        "customer": "Maja Milekic",
+        "orderStatus": "IN_PREPARATION"
+    },
+    {
+        "ID": "5343a4da-f",
+        "articles": [
+            "salata",
+            "vino crveno"
+        ],
+        "restaurant": "Giros Master",
+        "dateAndTime": "2022-01-14",
+        "price": 900.0,
+        "customer": "Maja Milekic",
+        "orderStatus": "IN_TRANSPORT"
+    },
+    {
+        "ID": "7b396b16-9",
+        "articles": [
+            "salata",
+            "vino crveno"
+        ],
+        "restaurant": "McDonald's",
+        "dateAndTime": "2023-01-14",
+        "price": 500.0,
+        "customer": "Maja Milekic",
+        "orderStatus": "PROCESSING"
+    }
+]

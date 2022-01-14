@@ -35,6 +35,10 @@ public class RestaurantController {
         return restaurantService.restourantSearchByName(restourantName);
     }
 
+    public ArrayList<Restaurant> getAll() throws JsonSyntaxException, IOException {
+        return restaurantService.getAllRestaurants();
+    }
+
     public ArrayList<Restaurant> restourantSearchByType(String type) throws JsonSyntaxException, IOException {
         return restaurantService.restourantSearchByType(type);
     }
