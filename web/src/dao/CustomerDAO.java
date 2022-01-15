@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.lang.model.element.TypeElement;
+import javax.swing.text.AbstractDocument.BranchElement;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -25,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 
 import javafx.css.CssMetaData;
 import model.Customer;
+import model.CustomerType;
 import model.User;
 
 public class CustomerDAO implements IDAO<Customer, String> {
@@ -149,11 +151,37 @@ public class CustomerDAO implements IDAO<Customer, String> {
         return resultList;
     }
 
-    public Customer updateUsersPoints(String customerName, double price) throws JsonSyntaxException, IOException {
+    public Customer updateUsersPoints(String customerName, double price, ArrayList<CustomerType> allTypes)
+            throws JsonSyntaxException, IOException {
         Customer customer = getByID(customerName);
         Double points = price / 1000 * 133;
         Double userPoints = customer.getPoints();
         customer.setPoints(userPoints + points);
+        CustomerType bronze = new CustomerType();
+        CustomerType silver = new CustomerType();
+        CustomerType golden = new CustomerType();
+
+        for (CustomerType ct : allTypes) {
+            if (ct.getType().toString().equals("BRONZE")) {
+                bronze = ct;
+            }
+            if (ct.getType().toString().equals("SILVER")) {
+                silver = ct;
+            }
+            if (ct.getType().toString().equals("GOLDEN")) {
+                golden = ct;
+            }
+        }
+        if (customer.getPoints() <= bronze.getRequiredPoints()) {
+            customer.setType(bronze);
+        }
+        if (customer.getPoints() > bronze.getRequiredPoints() && customer.getPoints() <= golden.getRequiredPoints()) {
+            customer.setType(silver);
+        }
+        if (customer.getPoints() > silver.getRequiredPoints()) {
+            customer.setType(golden);
+        }
+
         update(customer);
         return customer;
     }

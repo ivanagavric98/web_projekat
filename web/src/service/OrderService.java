@@ -27,6 +27,7 @@ import dto.OrderFiltrateSortSearchDTO;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.input.DragEvent;
 import javaxt.utils.string;
+import model.Customer;
 import model.Order;
 import model.OrderStatus;
 import model.Restaurant;
@@ -40,7 +41,8 @@ public class OrderService {
         this.orderDAO = orderDAO;
     }
 
-    public Order add(ShoppingCart shoppingCart) throws JsonSyntaxException, IOException {
+    public Order add(ShoppingCart shoppingCart, Customer customer, Double newPrice)
+            throws JsonSyntaxException, IOException {
         ArrayList<Order> orders = getAllOrders();
         String uniqString = UUID.randomUUID().toString().substring(0, 10);
 
@@ -54,7 +56,7 @@ public class OrderService {
         String date = LocalDate.now().toString();
         order.dateAndTime = date;
         order.customer = shoppingCart.getCustomer();
-        order.price = shoppingCart.getPrice();
+        order.price = newPrice;
         order.restaurant = shoppingCart.getRestaurantName();
         order.orderStatus = OrderStatus.PROCESSING;
 
@@ -366,5 +368,27 @@ public class OrderService {
             }
         }
         return result;
+    }
+
+    public ArrayList<Order> getOrdersByUser(String params) throws JsonSyntaxException, IOException {
+        ArrayList<Order> orders = getAllOrders();
+        ArrayList<Order> resultList = new ArrayList<>();
+        for (Order o : orders) {
+            if (o.getCustomer().equals(params)) {
+                resultList.add(o);
+            }
+        }
+        return resultList;
+    }
+
+    public ArrayList<Order> getOrdersByRestaurant(String params) throws JsonSyntaxException, IOException {
+        ArrayList<Order> orders = getAllOrders();
+        ArrayList<Order> resultList = new ArrayList<>();
+        for (Order o : orders) {
+            if (o.getRestaurant().equals(params)) {
+                resultList.add(o);
+            }
+        }
+        return resultList;
     }
 }

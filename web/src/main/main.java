@@ -14,6 +14,7 @@ import controller.AddressController;
 import controller.ArticleController;
 import controller.CommentController;
 import controller.CustomerController;
+import controller.CustomerTypeController;
 import controller.LocationController;
 import controller.MenagerController;
 import controller.OrderController;
@@ -26,6 +27,7 @@ import dao.AddressDAO;
 import dao.ArticleDAO;
 import dao.CommentDAO;
 import dao.CustomerDAO;
+import dao.CustomerTypeDAO;
 import dao.LocationDAO;
 import dao.MenagerDAO;
 import dao.OrderDAO;
@@ -40,6 +42,7 @@ import model.Article;
 import model.Comment;
 import model.CommentStatus;
 import model.Customer;
+import model.CustomerType;
 import model.Menager;
 import model.Order;
 import model.OrderStatus;
@@ -52,6 +55,7 @@ import service.AddressService;
 import service.ArticleService;
 import service.CommentService;
 import service.CustomerService;
+import service.CustomerTypeService;
 import service.LocationService;
 import service.MenagerService;
 import service.OrderService;
@@ -118,6 +122,10 @@ public class main {
 		CommentDAO commentDAO = new CommentDAO("web/data/comments.json");
 		CommentService commentService = new CommentService(commentDAO);
 		CommentController commentController = new CommentController(commentService);
+
+		CustomerTypeDAO customerTypeDAO = new CustomerTypeDAO("web/data/customerTypes.json");
+		CustomerTypeService customerTypeService = new CustomerTypeService(customerTypeDAO);
+		CustomerTypeController customerTypeController = new CustomerTypeController(customerTypeService);
 
 		get("/test/", "text/html", (req, res) -> {
 			return usersService.Proba();
@@ -520,12 +528,14 @@ public class main {
 		post("/addOrder/:username", "application/json", (req, res) -> {
 			res.type("application/json");
 			ShoppingCart shoppingCart = gson.fromJson(req.body(), ShoppingCart.class);
-			Order order = orderController.addOrder(shoppingCart);
-
+			Customer customer = customerController.getByUsername(shoppingCart.customer);
+			Double newPrice = customerTypeController.getPriceWithDiscount(shoppingCart.getPrice(), customer);
+			Order order = orderController.addOrder(shoppingCart, customer, newPrice);
+			ArrayList<CustomerType> allTypes = customerTypeController.getAllTypes();
 			// mora sa se username korisnika koji saljemo kao parametar u putanji,sacuvaj
 			// cijelog korisnika ili njegovo ime u localStoragu kad se loguje i onda ovde
 			// posalje
-			customerController.updateUsersPoints(req.params("username"), shoppingCart.price);
+			customerController.updateUsersPoints(req.params("username"), shoppingCart.price, allTypes);
 			return order;
 		});
 
@@ -728,6 +738,7 @@ public class main {
 		// return gson.toJson(orders);
 		// });
 
+		// za kupca i dostavljaca
 		get("/searchFiltreteSortOrders", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Restaurant> restaurants = restaurantController.getAll();
@@ -735,6 +746,32 @@ public class main {
 					OrderFiltrateSortSearchDTO.class);
 			List<Order> orders = orderController.searchFiltreteSortOrders(orderFiltrateSortSearchDTO, restaurants);
 			return gson.toJson(orders);
+		});
+
+		get("/getOrdersByUser/:username", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Order> orders = orderController.getOrdersByUser(req.params("username"));
+			return gson.toJson(orders);
+		});
+
+		get("/getOrdersByRestaurant/:restaurant", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Order> orders = orderController.getOrdersByRestaurant(req.params("restaurant"));
+			return gson.toJson(orders);
+		});
+
+		// post("/addCustomerType", "application/json", (req, res) -> {
+		// res.type("application/json");
+		// CustomerType customerType = gson.fromJson(req.body(), CustomerType.class);
+		// Boolean r = customerTypeController.add(customerType);
+		// return r;
+		// });
+
+		post("/updateCustomerType", "application/json", (req, res) -> {
+			res.type("application/json");
+			CustomerType customerType = gson.fromJson(req.body(), CustomerType.class);
+			customerTypeController.update(customerType);
+			return customerType;
 		});
 	}
 }

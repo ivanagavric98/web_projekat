@@ -10,6 +10,7 @@ import com.google.gson.JsonSyntaxException;
 
 import dto.OrderFiltrateSortSearchDTO;
 import javafx.scene.chart.PieChart.Data;
+import model.Customer;
 import model.Order;
 import model.Restaurant;
 import model.ShoppingCart;
@@ -23,8 +24,9 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    public Order addOrder(ShoppingCart shoppingCart) throws JsonSyntaxException, IOException {
-        return orderService.add(shoppingCart);
+    public Order addOrder(ShoppingCart shoppingCart, Customer customer, Double newPrice)
+            throws JsonSyntaxException, IOException {
+        return orderService.add(shoppingCart, customer, newPrice);
     }
 
     public Order changeStatusToInPreparation(String params) throws JsonSyntaxException, IOException {
@@ -122,5 +124,14 @@ public class OrderController {
             ArrayList<Restaurant> restaurants)
             throws JsonSyntaxException, IOException, ParseException {
         return orderService.searchFiltreteSortOrders(orderFiltrateSortSearchDTO, restaurants);
+    }
+
+    public ArrayList<Order> getOrdersByUser(String params) throws JsonSyntaxException, IOException {
+        return orderService.getOrdersByUser(params);
+    }
+
+    public ArrayList<Order> getOrdersByRestaurant(String params) throws JsonSyntaxException, IOException {
+        return orderService.getOrdersByRestaurant(params);
+
     }
 }

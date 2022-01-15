@@ -92,7 +92,6 @@ public class UserDAO implements IDAO<User, String> {
 			}
 		}
 		saveAll(users);
-
 	}
 
 	@Override

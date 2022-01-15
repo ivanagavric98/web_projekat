@@ -29,7 +29,7 @@
             "salata",
             "vino crveno"
         ],
-        "restaurant": "McDonald's",
+        "restaurant": "McDonald\u0027s",
         "dateAndTime": "2023-01-14",
         "price": 500.0,
         "customer": "Maja Milekic",
@@ -46,5 +46,41 @@
         "price": 600.0,
         "customer": "Maja Milekic",
         "orderStatus": "DELIVERED"
+    },
+    {
+        "ID": "aaa5c162-e",
+        "articles": [
+            "salata",
+            "vino crveno"
+        ],
+        "restaurant": "SARA",
+        "dateAndTime": "2022-01-15",
+        "price": 900.0,
+        "customer": "marija",
+        "orderStatus": "PROCESSING"
+    },
+    {
+        "ID": "66e2aea8-5",
+        "articles": [
+            "salata",
+            "vino crveno"
+        ],
+        "restaurant": "SARA",
+        "dateAndTime": "2022-01-15",
+        "price": 1000.0,
+        "customer": "marija",
+        "orderStatus": "PROCESSING"
+    },
+    {
+        "ID": "d326dbb9-a",
+        "articles": [
+            "salata",
+            "vino crveno"
+        ],
+        "restaurant": "SARA",
+        "dateAndTime": "2022-01-15",
+        "price": 900.0,
+        "customer": "marija",
+        "orderStatus": "PROCESSING"
     }
 ]
