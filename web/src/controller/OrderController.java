@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.google.gson.JsonSyntaxException;
 
+import dto.OrderFiltrateSortSearchDTO;
 import javafx.scene.chart.PieChart.Data;
 import model.Order;
 import model.Restaurant;
@@ -77,36 +78,49 @@ public class OrderController {
 
     }
 
-    public List<Order> sortOrderByRestaurantName() throws JsonSyntaxException, IOException {
-        return orderService.sortOrderByRestaurantName();
-    }
+    // public List<Order> sortOrderByRestaurantName() throws JsonSyntaxException,
+    // IOException {
+    // return orderService.sortOrderByRestaurantName();
+    // }
 
-    public List<Order> sortOrderByRestaurantNameDesc() throws JsonSyntaxException, IOException {
-        return orderService.sortOrderByRestaurantNameDesc();
-    }
+    // public List<Order> sortOrderByRestaurantNameDesc() throws
+    // JsonSyntaxException, IOException {
+    // return orderService.sortOrderByRestaurantNameDesc();
+    // }
 
-    public List<Order> sortOrderByPriceAsc() throws JsonSyntaxException, IOException {
-        return orderService.sortOrderByPriceAsc();
-    }
+    // public List<Order> sortOrderByPriceAsc() throws JsonSyntaxException,
+    // IOException {
+    // return orderService.sortOrderByPriceAsc();
+    // }
 
-    public List<Order> sortOrderByPriceDesc() throws JsonSyntaxException, IOException {
-        return orderService.sortOrderByPriceDesc();
-    }
+    // public List<Order> sortOrderByPriceDesc() throws JsonSyntaxException,
+    // IOException {
+    // return orderService.sortOrderByPriceDesc();
+    // }
 
-    public List<Order> sortOrderByDateDesc() throws JsonSyntaxException, IOException, ParseException {
-        return orderService.sortOrderByDateDesc();
-    }
+    // public List<Order> sortOrderByDateDesc() throws JsonSyntaxException,
+    // IOException, ParseException {
+    // return orderService.sortOrderByDateDesc();
+    // }
 
-    public List<Order> sortOrderByDateAsc() throws JsonSyntaxException, IOException, ParseException {
-        return orderService.sortOrderByDateAsc();
-    }
+    // public List<Order> sortOrderByDateAsc() throws JsonSyntaxException,
+    // IOException, ParseException {
+    // return orderService.sortOrderByDateAsc();
+    // }
 
-    public List<Order> filtrateOrderByStatus(String params) throws JsonSyntaxException, IOException {
-        return orderService.filtrateOrderByStatus(params);
-    }
+    // public List<Order> filtrateOrderByStatus(String params) throws
+    // JsonSyntaxException, IOException {
+    // return orderService.filtrateOrderByStatus(params);
+    // }
 
-    public List<Order> filtrateOrderByRestoranType(String params, ArrayList<Restaurant> restaurants)
+    public List<Order> filtrateOrderByRestoranType(String params, ArrayList<Restaurant> restaurants, List<Order> orders)
             throws JsonSyntaxException, IOException {
-        return orderService.filtrateOrderByRestoranType(params, restaurants);
+        return orderService.filtrateOrderByRestoranType(params, restaurants, orders);
+    }
+
+    public List<Order> searchFiltreteSortOrders(OrderFiltrateSortSearchDTO orderFiltrateSortSearchDTO,
+            ArrayList<Restaurant> restaurants)
+            throws JsonSyntaxException, IOException, ParseException {
+        return orderService.searchFiltreteSortOrders(orderFiltrateSortSearchDTO, restaurants);
     }
 }

@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import com.google.gson.JsonSyntaxException;
 
 import dao.OrderDAO;
+import dto.OrderFiltrateSortSearchDTO;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.input.DragEvent;
 import javaxt.utils.string;
@@ -148,8 +149,7 @@ public class OrderService {
         return resultList;
     }
 
-    public List<Order> sortOrderByRestaurantName() throws JsonSyntaxException, IOException {
-        ArrayList<Order> orders = getAllOrders();
+    public List<Order> sortOrderByRestaurantName(List<Order> orders) throws JsonSyntaxException, IOException {
         Set<Order> toSort = new HashSet<>();
 
         for (Order object : orders) {
@@ -162,15 +162,14 @@ public class OrderService {
         return resultList;
     }
 
-    public List<Order> sortOrderByRestaurantNameDesc() throws JsonSyntaxException, IOException {
-        List<Order> orders = sortOrderByRestaurantName();
-        Collections.reverse(orders);
-        return orders;
+    public List<Order> sortOrderByRestaurantNameDesc(List<Order> orders) throws JsonSyntaxException, IOException {
+        List<Order> ordersToReturn = sortOrderByRestaurantName(orders);
+        Collections.reverse(ordersToReturn);
+        return ordersToReturn;
 
     }
 
-    public List<Order> sortOrderByPriceAsc() throws JsonSyntaxException, IOException {
-        ArrayList<Order> orders = getAllOrders();
+    public List<Order> sortOrderByPriceAsc(List<Order> orders) throws JsonSyntaxException, IOException {
         Set<Order> toSort = new HashSet<>();
 
         for (Order object : orders) {
@@ -183,15 +182,13 @@ public class OrderService {
         return resultList;
     }
 
-    public List<Order> sortOrderByPriceDesc() throws JsonSyntaxException, IOException {
-        List<Order> orders = sortOrderByPriceAsc();
-        Collections.reverse(orders);
-        return orders;
+    public List<Order> sortOrderByPriceDesc(List<Order> orders) throws JsonSyntaxException, IOException {
+        List<Order> ordersToReturn = sortOrderByPriceAsc(orders);
+        Collections.reverse(ordersToReturn);
+        return ordersToReturn;
     }
 
-    public List<Order> sortOrderByDateAsc() throws JsonSyntaxException, IOException, ParseException {
-        ArrayList<Order> orders = getAllOrders();
-        Set<Order> toSort = new HashSet<>();
+    public List<Order> sortOrderByDateAsc(List<Order> orders) throws JsonSyntaxException, IOException, ParseException {
         Map<String, Date> newMap = new HashMap<>();
 
         for (Order o : orders) {
@@ -221,14 +218,14 @@ public class OrderService {
         return resultList;
     }
 
-    public List<Order> sortOrderByDateDesc() throws JsonSyntaxException, IOException, ParseException {
-        List<Order> orders = sortOrderByDateAsc();
-        Collections.reverse(orders);
-        return orders;
+    public List<Order> sortOrderByDateDesc(List<Order> orders) throws JsonSyntaxException, IOException, ParseException {
+        List<Order> ordersToReturn = sortOrderByDateAsc(orders);
+        Collections.reverse(ordersToReturn);
+        return ordersToReturn;
     }
 
-    public List<Order> filtrateOrderByStatus(String params) throws JsonSyntaxException, IOException {
-        ArrayList<Order> orders = orderDAO.getAll();
+    public List<Order> filtrateOrderByStatus(String params, List<Order> orders)
+            throws JsonSyntaxException, IOException {
         ArrayList<Order> resultList = new ArrayList<>();
         for (Order o : orders) {
             if (o.getOrderStatus().toString().equals(params)) {
@@ -238,9 +235,8 @@ public class OrderService {
         return resultList;
     }
 
-    public List<Order> filtrateOrderByRestoranType(String params, ArrayList<Restaurant> restaurants)
+    public List<Order> filtrateOrderByRestoranType(String params, ArrayList<Restaurant> restaurants, List<Order> orders)
             throws JsonSyntaxException, IOException {
-        ArrayList<Order> orders = orderDAO.getAll();
         Map<String, Restaurant> newMap = new HashMap<>();
 
         for (Order o : orders) {
@@ -263,6 +259,112 @@ public class OrderService {
             result.add(orderDAO.getByID(s));
         }
 
+        return result;
+    }
+
+    public List<Order> searchFiltreteSortOrders(OrderFiltrateSortSearchDTO orderFiltrateSortSearchDTO,
+            ArrayList<Restaurant> restaurants)
+            throws JsonSyntaxException, IOException, ParseException {
+        List<Order> searchByRestaurantName = new ArrayList<Order>();
+        List<Order> searchByprice = new ArrayList<Order>();
+        List<Order> searchByDate = new ArrayList<Order>();
+
+        if (orderFiltrateSortSearchDTO.getSearchByrestaurantName() != null) {
+            searchByRestaurantName = usersOrderByRestaurantName(orderFiltrateSortSearchDTO.getSearchByrestaurantName());
+        } else {
+            searchByRestaurantName = getAllOrders();
+        }
+
+        if (orderFiltrateSortSearchDTO.getSearchBypriceFrom() != null
+                && orderFiltrateSortSearchDTO.getSearchBypriceTo() != null) {
+            searchByprice = getOrderByPriceRange(orderFiltrateSortSearchDTO.getSearchBypriceFrom(),
+                    orderFiltrateSortSearchDTO.getSearchBypriceTo());
+        } else {
+            searchByprice = getAllOrders();
+        }
+
+        if (orderFiltrateSortSearchDTO.getSearchBydateFrom() != null
+                && orderFiltrateSortSearchDTO.getSearchBydateTo() != null) {
+            searchByDate = getOrderByDateRange(orderFiltrateSortSearchDTO.getSearchBydateFrom(),
+                    orderFiltrateSortSearchDTO.getSearchBydateTo());
+        } else {
+            searchByDate = getAllOrders();
+        }
+
+        List<Order> intersectionResult = new ArrayList<Order>();
+        List<Order> intersectionResult1 = new ArrayList<Order>();
+
+        for (Order order : searchByRestaurantName) {
+            for (Order order1 : searchByprice) {
+                if (order.getID().equals(order1.getID())) {
+                    intersectionResult.add(order);
+                }
+            }
+        }
+
+        for (Order order : intersectionResult) {
+            for (Order order2 : searchByDate) {
+                if (order.getID().equals(order2.getID())) {
+                    intersectionResult1.add(order);
+                }
+            }
+        }
+
+        List<Order> sortedList = new ArrayList<Order>();
+        if (orderFiltrateSortSearchDTO.getSortByRestaurantName() != null) {
+            if (orderFiltrateSortSearchDTO.getSortByRestaurantName().equals("ascending")) {
+                sortedList = sortOrderByRestaurantName(intersectionResult1);
+            } else {
+                sortedList = sortOrderByRestaurantNameDesc(intersectionResult1);
+            }
+        }
+
+        if (orderFiltrateSortSearchDTO.getSortByPrice() != null) {
+            if (orderFiltrateSortSearchDTO.getSortByPrice().equals("ascending")) {
+                sortedList = sortOrderByPriceAsc(intersectionResult1);
+            } else {
+                sortedList = sortOrderByPriceDesc(intersectionResult1);
+            }
+        }
+
+        if (orderFiltrateSortSearchDTO.getSortByDate() != null) {
+            if (orderFiltrateSortSearchDTO.getSortByDate().equals("ascending")) {
+                sortedList = sortOrderByDateAsc(intersectionResult1);
+            } else {
+                sortedList = sortOrderByDateDesc(intersectionResult1);
+            }
+        }
+
+        if (orderFiltrateSortSearchDTO.getSortByRestaurantName() == null
+                && orderFiltrateSortSearchDTO.getSortByPrice() == null
+                && orderFiltrateSortSearchDTO.getSortByDate() == null) {
+            sortedList = intersectionResult1;
+        }
+
+        List<Order> filtrateByOrderStatus = new ArrayList<Order>();
+        if (orderFiltrateSortSearchDTO.getFiltrateByOrderStatus() != null) {
+            filtrateByOrderStatus = filtrateOrderByStatus(orderFiltrateSortSearchDTO.getFiltrateByOrderStatus(),
+                    sortedList);
+        } else {
+            filtrateByOrderStatus = sortedList;
+        }
+
+        List<Order> filtrateByRestoranType = new ArrayList<Order>();
+        if (orderFiltrateSortSearchDTO.getFiltrateByRestaurantType() != null) {
+            filtrateByRestoranType = filtrateOrderByRestoranType(
+                    orderFiltrateSortSearchDTO.getFiltrateByRestaurantType(), restaurants, sortedList);
+        } else {
+            filtrateByRestoranType = sortedList;
+        }
+
+        List<Order> result = new ArrayList<Order>();
+        for (Order order : filtrateByOrderStatus) {
+            for (Order order1 : filtrateByRestoranType) {
+                if (order.getID().equals(order1.getID())) {
+                    result.add(order);
+                }
+            }
+        }
         return result;
     }
 }

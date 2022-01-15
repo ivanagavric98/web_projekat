@@ -34,5 +34,17 @@
         "price": 500.0,
         "customer": "Maja Milekic",
         "orderStatus": "PROCESSING"
+    },
+    {
+        "ID": "7b39sb16-9",
+        "articles": [
+            "salata",
+            "vino crveno"
+        ],
+        "restaurant": "Petrus",
+        "dateAndTime": "2020-01-14",
+        "price": 600.0,
+        "customer": "Maja Milekic",
+        "orderStatus": "DELIVERED"
     }
 ]
