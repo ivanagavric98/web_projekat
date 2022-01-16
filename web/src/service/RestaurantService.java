@@ -9,6 +9,7 @@ import com.google.gson.JsonSyntaxException;
 import dao.AddressDAO;
 import dao.LocationDAO;
 import dao.RestaurantDAO;
+import dto.RestaurantSearchSortFiltrateDTO;
 import model.Address;
 import model.Article;
 import model.Location;
@@ -72,32 +73,32 @@ public class RestaurantService {
         return restaurantDAO.restourantSearchByLocation(location);
     }
 
-    public List<Restaurant> restaurantSortByNameAsc() throws JsonSyntaxException, IOException {
-        return restaurantDAO.restaurantSortByNameAsc();
+    public List<Restaurant> restaurantSortByNameAsc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
+        return restaurantDAO.restaurantSortByNameAsc(restaurants);
     }
 
-    public List<Restaurant> restaurantSortByNameDesc() throws JsonSyntaxException, IOException {
-        return restaurantDAO.restaurantSortByNameDesc();
+    public List<Restaurant> restaurantSortByNameDesc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
+        return restaurantDAO.restaurantSortByNameDesc(restaurants);
     }
 
-    public List<Restaurant> restaurantSortByLocationAsc() throws JsonSyntaxException, IOException {
-        return restaurantDAO.restaurantSortByLocationAsc();
+    public List<Restaurant> restaurantSortByLocationAsc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
+        return restaurantDAO.restaurantSortByLocationAsc(restaurants);
     }
 
-    public List<Restaurant> restauranSortByGradeAsc() throws JsonSyntaxException, IOException {
-        return restaurantDAO.restauranSortByGradeAsc();
+    public List<Restaurant> restauranSortByGradeAsc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
+        return restaurantDAO.restauranSortByGradeAsc(restaurants);
     }
 
-    public List<Restaurant> restauranSortByGradeDesc() throws JsonSyntaxException, IOException {
-        return restaurantDAO.restauranSortByGradeDesc();
+    public List<Restaurant> restauranSortByGradeDesc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
+        return restaurantDAO.restauranSortByGradeDesc(restaurants);
     }
 
-    public List<Restaurant> restaurantSortByLocationDesc() throws JsonSyntaxException, IOException {
-        return restaurantDAO.restaurantSortByLocationDesc();
+    public List<Restaurant> restaurantSortByLocationDesc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
+        return restaurantDAO.restaurantSortByLocationDesc(restaurants);
     }
 
-    public List<Restaurant> restaurantsFiltrateByType(String type) throws JsonSyntaxException, IOException {
-        return restaurantDAO.restaurantsFiltrateByType(type);
+    public List<Restaurant> restaurantsFiltrateByType(String type, List<Restaurant> sortedList) throws JsonSyntaxException, IOException {
+        return restaurantDAO.restaurantsFiltrateByType(type,sortedList);
     }
 
     public List<Restaurant> restaurantsFiltrateByStatus(String status) throws JsonSyntaxException, IOException {
@@ -117,9 +118,18 @@ public class RestaurantService {
     public Restaurant getRestaurantByName(String name) throws JsonSyntaxException, IOException {
         return restaurantDAO.getByID(name);
     }
+    public List<Restaurant> getRestaurantsByName(String name) throws JsonSyntaxException, IOException {
+       ArrayList<Restaurant> restaurants=getAllRestaurants();
+       List<Restaurant> resultList=new ArrayList<>();
+       for(Restaurant res :restaurants){
+           if(res.getName().toLowerCase().contains(name.toLowerCase())){
+               resultList.add(res);
+           }
+       }
+       return resultList;
+    }
 
-    public ArrayList<Restaurant> getOpenedRestaurants() throws JsonSyntaxException, IOException {
-        ArrayList<Restaurant> allRestaurants = restaurantDAO.getAll();
+    public ArrayList<Restaurant> getOpenedRestaurants(List<Restaurant> allRestaurants) throws JsonSyntaxException, IOException {
         ArrayList<Restaurant> openedRestaurants = new ArrayList<Restaurant>();
 
         for (Restaurant r : allRestaurants) {
@@ -128,6 +138,17 @@ public class RestaurantService {
             }
         }
         return openedRestaurants;
+    }
+    public ArrayList<Restaurant> getRestaurantsByType(String type) throws JsonSyntaxException, IOException {
+        ArrayList<Restaurant> allRestaurants = restaurantDAO.getAll();
+        ArrayList<Restaurant> resultList = new ArrayList<Restaurant>();
+
+        for (Restaurant r : allRestaurants) {
+            if (r.getType().equals(type)) {
+                resultList.add(r);
+            }
+        }
+        return resultList;
     }
 
     public ArrayList<Restaurant> restaurantSearchByGrade(double grade) throws JsonSyntaxException, IOException {
@@ -145,5 +166,122 @@ public class RestaurantService {
     public void update(Restaurant restaurant) throws JsonSyntaxException, IOException {
         restaurantDAO.update(restaurant);
     }
+
+    public List<Restaurant> searchFiltreteSortRestaurants(
+            RestaurantSearchSortFiltrateDTO restaurantSearchSortFiltrateDTO) throws JsonSyntaxException, IOException {
+                List<Restaurant> searchByRestaurantName = new ArrayList<Restaurant>();
+                List<Restaurant> searchByRestaurantType = new ArrayList<Restaurant>();
+                List<Restaurant> searchByLocation = new ArrayList<Restaurant>();
+                List<Restaurant> searchByGrade = new ArrayList<Restaurant>();
+
+                if (restaurantSearchSortFiltrateDTO.getSearchByrestaurantName() != null) {
+                    searchByRestaurantName = getRestaurantsByName(restaurantSearchSortFiltrateDTO.getSearchByrestaurantName());
+                } else {
+                    searchByRestaurantName = restaurantDAO.getAll();
+                }
+        
+                if (restaurantSearchSortFiltrateDTO.getSearchByRestaurantType() != null) {
+                    searchByRestaurantType = getRestaurantsByType(restaurantSearchSortFiltrateDTO.getSearchByRestaurantType());          
+                } else {
+                    searchByRestaurantType =  restaurantDAO.getAll();
+                }
+        
+                if (restaurantSearchSortFiltrateDTO.getSearchByLocation() != null) {
+                    searchByLocation = restourantSearchByLocation(restaurantSearchSortFiltrateDTO.getSearchByLocation());
+                } else {
+                    searchByLocation =  restaurantDAO.getAll();
+                }
+
+                if (restaurantSearchSortFiltrateDTO.getSearchByAverageGrade() != null) {
+                    searchByGrade = restaurantSearchByGrade(restaurantSearchSortFiltrateDTO.getSearchByAverageGrade());
+                } else {
+                    searchByGrade =  restaurantDAO.getAll();
+                }
+        
+        
+                List<Restaurant> intersectionResult = new ArrayList<Restaurant>();
+                List<Restaurant> intersectionResult1 = new ArrayList<Restaurant>();
+                List<Restaurant> intersectionResult2 = new ArrayList<Restaurant>();
+
+                for (Restaurant restaurant : searchByRestaurantName) {
+                    for (Restaurant restaurant1 : searchByRestaurantType) {
+                        if (restaurant.getName().equals(restaurant1.getName())) {
+                            intersectionResult.add(restaurant);
+                        }
+                    }
+                }
+        
+                for (Restaurant restaurant : intersectionResult) {
+                    for (Restaurant restaurant2 : searchByLocation) {
+                        if (restaurant.getName().equals(restaurant2.getName())) {
+                            intersectionResult1.add(restaurant);
+                        }
+                    }
+                }
+
+                for (Restaurant restaurant : intersectionResult1) {
+                    for (Restaurant restaurant2 : searchByGrade) {
+                        if (restaurant.getName().equals(restaurant2.getName())) {
+                            intersectionResult2.add(restaurant);
+                        }
+                    }
+                }
+        
+                List<Restaurant> sortedList = new ArrayList<Restaurant>();
+                if (restaurantSearchSortFiltrateDTO.getSortByRestaurantName() != null) {
+                    if (restaurantSearchSortFiltrateDTO.getSortByRestaurantName().equals("ascending")) {
+                        sortedList = restaurantSortByNameAsc(intersectionResult2);
+                    } else {
+                        sortedList = restaurantSortByNameDesc(intersectionResult2);
+                    }
+                }
+        
+                if (restaurantSearchSortFiltrateDTO.getSortByLocation() != null) {
+                    if (restaurantSearchSortFiltrateDTO.getSortByLocation().equals("ascending")) {
+                        sortedList = restaurantSortByLocationAsc(intersectionResult2);
+                    } else {
+                        sortedList = restaurantSortByLocationDesc(intersectionResult2);
+                    }
+                }
+        
+                if (restaurantSearchSortFiltrateDTO.getSortByAverageGrade() != null) {
+                    if (restaurantSearchSortFiltrateDTO.getSortByAverageGrade().equals("ascending")) {
+                        sortedList = restauranSortByGradeAsc(intersectionResult2);
+                    } else {
+                        sortedList = restauranSortByGradeDesc(intersectionResult2);
+                    }
+                }
+        
+                if (restaurantSearchSortFiltrateDTO.getSortByRestaurantName() == null
+                        && restaurantSearchSortFiltrateDTO.getSortByAverageGrade() == null
+                        && restaurantSearchSortFiltrateDTO.getSortByLocation() == null) {
+                    sortedList = intersectionResult2;
+                }
+        
+                List<Restaurant> filtrateByRestaurantType = new ArrayList<Restaurant>();
+                if (restaurantSearchSortFiltrateDTO.getFiltrateByRestaurantType() != null) {
+                    filtrateByRestaurantType = restaurantsFiltrateByType(restaurantSearchSortFiltrateDTO.getFiltrateByRestaurantType(),
+                            sortedList);
+                } else {
+                    filtrateByRestaurantType = sortedList;
+                }
+        
+                List<Restaurant> filtrateByRestoranStatusOpen = new ArrayList<Restaurant>();
+                if (restaurantSearchSortFiltrateDTO.getFiltrateByRestaurantStatusOpen() != null) {
+                    filtrateByRestoranStatusOpen = getOpenedRestaurants(sortedList);
+                } else {
+                    filtrateByRestoranStatusOpen = sortedList;
+                }
+        
+                List<Restaurant> result = new ArrayList<Restaurant>();
+                for (Restaurant restaurant : filtrateByRestaurantType) {
+                    for (Restaurant restaurant1 : filtrateByRestoranStatusOpen) {
+                        if (restaurant.getName().equals(restaurant1.getName())) {
+                            result.add(restaurant);
+                        }
+                    }
+                }
+                return result;   
+             }
 
 }

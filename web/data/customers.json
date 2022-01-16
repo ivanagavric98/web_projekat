@@ -1,1 +1,22 @@
-[{"orders":[],"cart":{"id":0,"price":0.0},"points":444.7,"type":{"type":"GOLDEN","discount":10,"requiredPoints":100},"username":"marija","password":"KKK","name":"KK","surname":"KKK","gender":"MALE","dateOfBirth":"Dec 22, 2021 12:00:00 AM","role":"CUSTOMER"}]
+[
+    {
+        "orders": [],
+        "cart": {
+            "id": 0,
+            "price": 0.0
+        },
+        "points": 444.7,
+        "type": {
+            "type": "GOLDEN",
+            "discount": 10,
+            "requiredPoints": 100
+        },
+        "username": "marija",
+        "password": "KKK",
+        "name": "KK",
+        "surname": "KKK",
+        "gender": "MALE",
+        "dateOfBirth": "Dec 22, 2021 12:00:00 AM",
+        "role": "CUSTOMER"
+    }
+]

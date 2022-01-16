@@ -37,6 +37,8 @@ import dao.SupplierDAO;
 import dao.SupplierRequestDAO;
 import dao.UserDAO;
 import dto.OrderFiltrateSortSearchDTO;
+import dto.RestaurantSearchSortFiltrateDTO;
+import dto.RestaurantSearchSortFiltrateDTO;
 import dto.UserLogInDTO;
 import model.Article;
 import model.Comment;
@@ -346,65 +348,59 @@ public class main {
 			return gson.toJson(restaurants);
 		});
 
-		get("/restaurantSortByNameAsc", "application/json", (req, res) -> {
-			res.type("application/json");
-			List<Restaurant> restaurants = restaurantController.restaurantSortByNameAsc();
-			return gson.toJson(restaurants);
-		});
+		// get("/restaurantSortByNameAsc", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	List<Restaurant> restaurants = restaurantController.restaurantSortByNameAsc();
+		// 	return gson.toJson(restaurants);
+		// });
 
-		get("/restaurantSortByNameDesc", "application/json", (req, res) -> {
-			res.type("application/json");
-			List<Restaurant> restaurants = restaurantController.restaurantSortByNameDesc();
-			return gson.toJson(restaurants);
-		});
+		// get("/restaurantSortByNameDesc", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	List<Restaurant> restaurants = restaurantController.restaurantSortByNameDesc();
+		// 	return gson.toJson(restaurants);
+		// });
 
-		get("/restaurantSortByLocationAsc", "application/json", (req, res) -> {
-			res.type("application/json");
-			List<Restaurant> restaurants = restaurantController.restaurantSortByLocationAsc();
-			return gson.toJson(restaurants);
-		});
+		// get("/restaurantSortByLocationAsc", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	List<Restaurant> restaurants = restaurantController.restaurantSortByLocationAsc();
+		// 	return gson.toJson(restaurants);
+		// });
 
-		get("/restaurantSortByLocationDesc", "application/json", (req, res) -> {
-			res.type("application/json");
-			List<Restaurant> restaurants = restaurantController.restaurantSortByLocationDesc();
-			return gson.toJson(restaurants);
-		});
+		// get("/restaurantSortByLocationDesc", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	List<Restaurant> restaurants = restaurantController.restaurantSortByLocationDesc();
+		// 	return gson.toJson(restaurants);
+		// });
 
-		get("/restauranSortByGradeAsc", "application/json", (req, res) -> {
-			res.type("application/json");
-			List<Restaurant> restaurants = restaurantController.restauranSortByGradeAsc();
-			return gson.toJson(restaurants);
-		});
+		// get("/restauranSortByGradeAsc", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	List<Restaurant> restaurants = restaurantController.restauranSortByGradeAsc();
+		// 	return gson.toJson(restaurants);
+		// });
 
-		get("/restauranSortByGradeDesc", "application/json", (req, res) -> {
-			res.type("application/json");
-			List<Restaurant> restaurants = restaurantController.restauranSortByGradeDesc();
-			return gson.toJson(restaurants);
-		});
+		// get("/restauranSortByGradeDesc", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	List<Restaurant> restaurants = restaurantController.restauranSortByGradeDesc();
+		// 	return gson.toJson(restaurants);
+		// });
 
-		get("/restaurantsFiltrateByType/:type", "application/json", (req, res) -> {
-			res.type("application/json");
-			String type = req.params("type");
-			List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByType(type);
-			return gson.toJson(restaurants);
-		});
+		// get("/restaurantsFiltrateByType/:type", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	String type = req.params("type");
+		// 	List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByType(type);
+		// 	return gson.toJson(restaurants);
+		// });
 
-		get("/restaurantsFiltrateByStatus/:status", "application/json", (req, res) -> {
-			res.type("application/json");
-			String role = req.params("status");
-			List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByStatus(role);
-			return gson.toJson(restaurants);
-		});
+		// get("/restaurantsFiltrateByStatus/:status", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	String role = req.params("status");
+		// 	List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByStatus(role);
+		// 	return gson.toJson(restaurants);
+		// });
 
-		/*
-		 * get("/combineSearchRestaurant", "application/json", (req, res) -> {
-		 * res.type("application/json");
-		 * String type= req.queryParams("type");
-		 * String status= req.queryParams("status");
-		 * 
-		 * return restaurantController.combineSearchRestaurant(type,status);
-		 * });
-		 */
+		
+		
+		 
 		get("/getRestaurantsOpenAndClosed", "application/json", (req, res) -> {
 			res.type("application/json");
 			List<Restaurant> restaurants = restaurantController.getRestaurantsOpenAndClosed();
@@ -448,10 +444,10 @@ public class main {
 			return gson.toJson(restaurant);
 		});
 
-		get("/getOpenedRestaurants", "application/json", (req, res) -> {
-			ArrayList<Restaurant> restaurants = restaurantController.getOpenedRestaurants();
-			return gson.toJson(restaurants);
-		});
+		// get("/getOpenedRestaurants", "application/json", (req, res) -> {
+		// 	ArrayList<Restaurant> restaurants = restaurantController.getOpenedRestaurants();
+		// 	return gson.toJson(restaurants);
+		// });
 
 		get("/isRestaurantOpen", "application/json", (req, res) -> {
 			Boolean result = restaurantController.isRestaurantOpen(req.params("restaurantName"));
@@ -747,6 +743,14 @@ public class main {
 			List<Order> orders = orderController.searchFiltreteSortOrders(orderFiltrateSortSearchDTO, restaurants);
 			return gson.toJson(orders);
 		});
+
+		get("/searchFiltreteSortRestaurants", "application/json", (req, res) -> {
+			res.type("application/json");
+			RestaurantSearchSortFiltrateDTO restaurantSearchSortFiltrateDTO = gson.fromJson(req.body(),
+			RestaurantSearchSortFiltrateDTO.class);
+			List<Restaurant> restaurants = restaurantController.searchFiltreteSortRestaurants(restaurantSearchSortFiltrateDTO);
+			return gson.toJson(restaurants);
+			});
 
 		get("/getOrdersByUser/:username", "application/json", (req, res) -> {
 			res.type("application/json");

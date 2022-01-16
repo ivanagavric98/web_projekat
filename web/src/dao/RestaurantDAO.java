@@ -151,7 +151,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 
 		if (allRestaurants.size() != 0) {
 			for (Restaurant restaurant : allRestaurants) {
-				if (restaurant.location.getAddress().getStreet().toLowerCase().contains(location.toLowerCase()) ||
+				if (restaurant.location.getAddress().getCountry().toLowerCase().contains(location.toLowerCase()) ||
 						restaurant.location.getAddress().getCity().toLowerCase().contains(location.toLowerCase())) {
 					locationSearchList.add(restaurant);
 				}
@@ -160,8 +160,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 		return locationSearchList;
 	}
 
-	public List<Restaurant> restaurantSortByNameAsc() throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants = getAll();
+	public List<Restaurant> restaurantSortByNameAsc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
 		Set<Restaurant> toSort = new HashSet<>();
 
 		for (Restaurant object : restaurants) {
@@ -174,8 +173,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 		return resultList;
 	}
 
-	public List<Restaurant> restaurantSortByNameDesc() throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants = getAll();
+	public List<Restaurant> restaurantSortByNameDesc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
 		Set<Restaurant> toSort = new HashSet<>();
 
 		for (Restaurant object : restaurants) {
@@ -188,8 +186,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 		return resultList;
 	}
 
-	public List<Restaurant> restaurantSortByLocationAsc() throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants = getAll();
+	public List<Restaurant> restaurantSortByLocationAsc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
 		Set<Restaurant> toSort = new HashSet<>();
 
 		for (Restaurant object : restaurants) {
@@ -203,8 +200,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 		return resultList;
 	}
 
-	public List<Restaurant> restauranSortByGradeAsc() throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants = getAll();
+	public List<Restaurant> restauranSortByGradeAsc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
 		Set<Restaurant> toSort = new HashSet<>();
 
 		for (Restaurant object : restaurants) {
@@ -231,30 +227,19 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 		return resultList;
 	}
 
-	public List<Restaurant> restauranSortByGradeDesc() throws JsonSyntaxException, IOException {
-		List<Restaurant> restaurants = restauranSortByGradeAsc();
-		Collections.reverse(restaurants);
-		return restaurants;
+	public List<Restaurant> restauranSortByGradeDesc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
+		List<Restaurant> restaurants2 = restauranSortByGradeAsc(restaurants);
+		Collections.reverse(restaurants2);
+		return restaurants2;
 	}
 
-	public List<Restaurant> restaurantSortByLocationDesc() throws JsonSyntaxException, IOException {
-		// ArrayList<Restaurant> restaurants = getAll();
-		// Set<Restaurant> toSort = new HashSet<>();
-
-		// for (Restaurant object : restaurants) {
-		// toSort.add(object);
-		// }
-
-		// List<Restaurant> resultList = toSort.stream()
-		// .sorted((e1, e2) ->ze1.getGrade()).compareTo(Double.valueOf(e2.getGrade())))
-		// .collect(Collectors.toList());
-		// Collections.reverse(resultList);
-		// return resultList;
-		return null;
+	public List<Restaurant> restaurantSortByLocationDesc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
+		List<Restaurant> restaurants2 = restaurantSortByLocationAsc(restaurants);
+		Collections.reverse(restaurants2);
+		return restaurants2;
 	}
 
-	public List<Restaurant> restaurantsFiltrateByType(String type) throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants = getAll();
+	public List<Restaurant> restaurantsFiltrateByType(String type, List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
 		ArrayList<Restaurant> resultList = new ArrayList<>();
 		for (Restaurant restaurant : restaurants) {
 			if (restaurant.getType().toLowerCase().equals(type.toLowerCase())) {
@@ -326,18 +311,34 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 		return result;
 	}
 
-	public ArrayList<Restaurant> restaurantSearchByGrade(double grade) throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> allRestaurants = getAll();
-		ArrayList<Restaurant> gradeSearchList = new ArrayList<>();
+	public ArrayList<Restaurant> restaurantSearchByGrade(double gradeToCompare) throws JsonSyntaxException, IOException {
+		Set<Restaurant> toSort = new HashSet<>();
+		ArrayList<Restaurant> restaurants=getAll();
+		for (Restaurant object : restaurants) {
+			toSort.add(object);
+		}
+		HashMap<Double, String> restaurantGrades = new HashMap<>();
 
-		// if (allRestaurants.size() != 0) {
-		// for (Restaurant restaurant : allRestaurants) {
-		// if (restaurant.grade == grade) {
-		// gradeSearchList.add(restaurant);
-		// }
-		// }
-		// }
-		return gradeSearchList;
+		for (Restaurant restaurant : restaurants) {
+			int grade = 0;
+			Double gradePerRestaurant = 0.0;
+			for (int g : restaurant.getGrade()) {
+				grade += g;
+			}
+			gradePerRestaurant = (double) (grade * 1.0 / (restaurant.getGrade().size()));
+			restaurantGrades.put(gradePerRestaurant, restaurant.getName());
+		}
+		List<Double> grades = new ArrayList<>(restaurantGrades.keySet());
+		Collections.sort(grades);
+		ArrayList<Restaurant> resultList = new ArrayList<>();
+		for (Double i : grades) {
+			Restaurant r = getRestaurantByName(restaurantGrades.get(i));
+			if(i==gradeToCompare){
+				resultList.add(r);
+			}
+		}
+
+		return resultList;
 	}
 
 	public Boolean isRestaurantOpen(String params) throws JsonSyntaxException, IOException {
