@@ -23,7 +23,7 @@ import model.User;
 public class MenagerDAO implements IDAO<Menager, String> {
 
 	private String path;
-	private ArrayList<Menager> users;
+	private ArrayList<Menager> menagers;
 
 	public MenagerDAO(String path) {
 		super();
@@ -42,8 +42,8 @@ public class MenagerDAO implements IDAO<Menager, String> {
 		Type token = new TypeToken<ArrayList<Menager>>() {
 		}.getType();
 		BufferedReader br = new BufferedReader(new FileReader("web/data/menagers.json"));
-		this.users = gson.fromJson(br, token);
-		return users;
+		this.menagers = gson.fromJson(br, token);
+		return menagers;
 	}
 
 	@Override

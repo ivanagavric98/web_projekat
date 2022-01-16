@@ -9,6 +9,7 @@ import com.google.gson.JsonSyntaxException;
 import dao.AddressDAO;
 import dao.LocationDAO;
 import dao.RestaurantDAO;
+import dto.RestaurantSearchDTO;
 import dto.RestaurantSearchSortFiltrateDTO;
 import model.Address;
 import model.Article;
@@ -167,7 +168,7 @@ public class RestaurantService {
         restaurantDAO.update(restaurant);
     }
 
-    public List<Restaurant> searchFiltreteSortRestaurants(
+    public List<RestaurantSearchDTO> searchFiltreteSortRestaurants(
             RestaurantSearchSortFiltrateDTO restaurantSearchSortFiltrateDTO) throws JsonSyntaxException, IOException {
                 List<Restaurant> searchByRestaurantName = new ArrayList<Restaurant>();
                 List<Restaurant> searchByRestaurantType = new ArrayList<Restaurant>();
@@ -267,7 +268,7 @@ public class RestaurantService {
                 }
         
                 List<Restaurant> filtrateByRestoranStatusOpen = new ArrayList<Restaurant>();
-                if (restaurantSearchSortFiltrateDTO.getFiltrateByRestaurantStatusOpen() != null) {
+                if (restaurantSearchSortFiltrateDTO.getFiltrateByRestaurantStatusOpen() != null && restaurantSearchSortFiltrateDTO.getFiltrateByRestaurantStatusOpen().equals("OPEN")) {
                     filtrateByRestoranStatusOpen = getOpenedRestaurants(sortedList);
                 } else {
                     filtrateByRestoranStatusOpen = sortedList;
@@ -281,7 +282,13 @@ public class RestaurantService {
                         }
                     }
                 }
-                return result;   
+
+                List<RestaurantSearchDTO> resultListToReturn=new ArrayList<>();
+                for(Restaurant res : result){
+                    Double grade=restaurantDAO.getRestauratAverageGrade(res);
+                    resultListToReturn.add(new RestaurantSearchDTO(res.getName(), res.getType(), res.getLocation(), res.getLogo(),grade));
+                }
+                return resultListToReturn;   
              }
 
 }

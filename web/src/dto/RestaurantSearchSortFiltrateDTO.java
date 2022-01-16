@@ -4,14 +4,14 @@ public class RestaurantSearchSortFiltrateDTO {
     private String searchByrestaurantName;
     private String searchByRestaurantType;
     private String searchByLocation;
-    private Double searchByAverageGrade;
+    private Double searchByAverageGrade;  
 
     private String sortByRestaurantName;
     private String sortByLocation;
     private String sortByAverageGrade;
 
-    private String filtrateByRestaurantType;
-    private String filtrateByRestaurantStatusOpen;
+    private String filtrateByRestaurantType;// stavi sve tipove koje imamo pa odatle da bira
+    private String filtrateByRestaurantStatusOpen; //moze da ima samo vrijednost open,u suprotnom je null
 
     public String getSearchByrestaurantName() {
         return searchByrestaurantName;

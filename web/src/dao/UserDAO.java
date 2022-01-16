@@ -74,11 +74,9 @@ public class UserDAO implements IDAO<User, String> {
 	public void create(User entity) throws JsonSyntaxException, IOException {
 		ArrayList<User> users = getAll();
 		if (users == null) {
-			System.out.println("yser");
 			users = new ArrayList<User>();
 		}
 		users.add(entity);
-		System.out.println("pppp" + " " + users.get(0).name);
 		saveAll(users);
 	}
 
@@ -165,8 +163,7 @@ public class UserDAO implements IDAO<User, String> {
 		return usernameSearchList;
 	}
 
-	public List<User> userSortByNameAsc() throws JsonSyntaxException, IOException {
-		ArrayList<User> users = getAll();
+	public List<User> userSortByNameAsc(List<User> users) throws JsonSyntaxException, IOException {
 		Set<User> toSort = new HashSet<>();
 
 		for (User object : users) {
@@ -179,23 +176,14 @@ public class UserDAO implements IDAO<User, String> {
 		return resultList;
 	}
 
-	public List<User> userSortByNameDesc() throws JsonSyntaxException, IOException {
-		ArrayList<User> users = getAll();
-		Set<User> toSort = new HashSet<>();
+	public List<User> userSortByNameDesc(List<User> users) throws JsonSyntaxException, IOException {
+		List<User> usersToReturn=userSortByNameAsc(users);
+		Collections.reverse(usersToReturn);
 
-		for (User object : users) {
-			toSort.add(object);
-		}
-
-		List<User> resultList = toSort.stream().sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
-				.collect(Collectors.toList());
-		Collections.reverse(resultList);
-
-		return resultList;
+		return usersToReturn;
 	}
 
-	public List<User> userSortBySurnameAsc() throws JsonSyntaxException, IOException {
-		ArrayList<User> users = getAll();
+	public List<User> userSortBySurnameAsc(List<User> users) throws JsonSyntaxException, IOException {
 		Set<User> toSort = new HashSet<>();
 
 		for (User object : users) {
@@ -208,38 +196,20 @@ public class UserDAO implements IDAO<User, String> {
 		return resultList;
 	}
 
-	public List<User> userSortBySurnameDesc() throws JsonSyntaxException, IOException {
-		ArrayList<User> users = getAll();
-		Set<User> toSort = new HashSet<>();
-
-		for (User object : users) {
-			toSort.add(object);
-		}
-
-		List<User> resultList = toSort.stream().sorted((e1, e2) -> e1.getSurname().compareTo(e2.getSurname()))
-				.collect(Collectors.toList());
-		Collections.reverse(resultList);
-
-		return resultList;
+	public List<User> userSortBySurnameDesc(List<User> intersectionResult) throws JsonSyntaxException, IOException {
+		List<User> usersToReturn=userSortByUsernameAsc(intersectionResult);
+		Collections.reverse(usersToReturn);
+		return usersToReturn;
 	}
 
-	public List<User> userSortByUsernameDesc() throws JsonSyntaxException, IOException {
-		ArrayList<User> users = getAll();
-		Set<User> toSort = new HashSet<>();
+	public List<User> userSortByUsernameDesc(List<User> intersectionResult) throws JsonSyntaxException, IOException {
+		List<User> usersToReturn=userSortByUsernameAsc(intersectionResult);
+		Collections.reverse(usersToReturn);
 
-		for (User object : users) {
-			toSort.add(object);
-		}
-
-		List<User> resultList = toSort.stream().sorted((e1, e2) -> e1.getUsername().compareTo(e2.getUsername()))
-				.collect(Collectors.toList());
-		Collections.reverse(resultList);
-
-		return resultList;
+		return usersToReturn;
 	}
 
-	public List<User> userSortByUsernameAsc() throws JsonSyntaxException, IOException {
-		ArrayList<User> users = getAll();
+	public List<User> userSortByUsernameAsc(List<User> users) throws JsonSyntaxException, IOException {
 		Set<User> toSort = new HashSet<>();
 
 		for (User object : users) {
@@ -252,8 +222,7 @@ public class UserDAO implements IDAO<User, String> {
 		return resultList;
 	}
 
-	public List<User> usersFiltrateByRole(String role) throws JsonSyntaxException, IOException {
-		ArrayList<User> users = getAll();
+	public List<User> usersFiltrateByRole(String role, List<User> users) throws JsonSyntaxException, IOException {
 		ArrayList<User> resultList = new ArrayList<>();
 		for (User user : users) {
 			if (user.getRole().toString().toLowerCase().equals(role.toLowerCase())) {

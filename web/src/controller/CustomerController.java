@@ -38,6 +38,9 @@ public class CustomerController {
     public List<Customer> userSortByUserPointsDesc() throws JsonSyntaxException, IOException {
         return customerService.userSortByUserPointsDesc();
     }
+    public List<Customer> getAll() throws JsonSyntaxException, IOException {
+        return customerService.getAllCustomers();
+    }
 
     public List<Customer> customerFiltrateByType(String type) throws JsonSyntaxException, IOException {
         return customerService.customerFiltrateByType(type);

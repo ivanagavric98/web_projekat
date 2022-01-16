@@ -1,25 +1,12 @@
 [
     {
-        "orders": [
-            {
-                "ID": "8970239d-5",
-                "articles": [
-                    "salata",
-                    "vino crveno"
-                ],
-                "restaurant": "SARA",
-                "dateAndTime": "2022-01-06 15:37:34.389",
-                "price": 900.0,
-                "customer": "Maja Milekic",
-                "orderStatus": "IN_TRANSPORT"
-            }
-        ],
-        "username": "nina",
-        "password": "nina",
-        "name": "Nina",
-        "surname": "Nikolic",
+        "orders": [],
+        "username": "userns4ddxdaxme5Ana",
+        "password": "123",
+        "name": "Ana",
+        "surname": "Anic",
         "gender": "FEMALE",
-        "dateOfBirth": "Nov 11, 1998 12:00:00 AM",
+        "dateOfBirth": "Jul 8, 2021 12:00:00 AM",
         "role": "SUPPLIER"
     }
 ]

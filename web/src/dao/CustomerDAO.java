@@ -50,9 +50,12 @@ public class CustomerDAO implements IDAO<Customer, String> {
 
     @Override
     public void create(Customer entity) throws JsonSyntaxException, IOException {
-        ArrayList<Customer> customers = getAll();
-        customers.add(entity);
-        saveAll(customers);
+        ArrayList<Customer> users = getAll();
+		if (users == null) {
+			users = new ArrayList<Customer>();
+		}
+		users.add(entity);
+		saveAll(users);
     }
 
     @Override

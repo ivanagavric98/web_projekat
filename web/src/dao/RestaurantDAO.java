@@ -227,6 +227,17 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 		return resultList;
 	}
 
+	public Double getRestauratAverageGrade(Restaurant restaurant) throws JsonSyntaxException, IOException {
+		Double averageGrade=0.0;
+		Integer totalGrade=0;
+		for(Integer i : restaurant.getGrade()){
+			totalGrade+=i;
+		}
+		averageGrade=(double) (totalGrade/restaurant.getGrade().size());
+		return averageGrade;
+	}
+
+
 	public List<Restaurant> restauranSortByGradeDesc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
 		List<Restaurant> restaurants2 = restauranSortByGradeAsc(restaurants);
 		Collections.reverse(restaurants2);

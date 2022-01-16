@@ -5,18 +5,38 @@
             "id": 0,
             "price": 0.0
         },
-        "points": 444.7,
+        "points": 10.0,
         "type": {
-            "type": "GOLDEN",
-            "discount": 10,
-            "requiredPoints": 100
+            "type": "BRONZE",
+            "discount": 0,
+            "requiredPoints": 0
         },
-        "username": "marija",
-        "password": "KKK",
-        "name": "KK",
-        "surname": "KKK",
-        "gender": "MALE",
-        "dateOfBirth": "Dec 22, 2021 12:00:00 AM",
+        "username": "nn",
+        "password": "123",
+        "name": "Nikola",
+        "surname": "Nikolica",
+        "gender": "FEMALE",
+        "dateOfBirth": "Jul 8, 2021 12:00:00 AM",
+        "role": "CUSTOMER"
+    },
+    {
+        "orders": [],
+        "cart": {
+            "id": 0,
+            "price": 0.0
+        },
+        "points": 50.0,
+        "type": {
+            "type": "SILVER",
+            "discount": 0,
+            "requiredPoints": 50
+        },
+        "username": "aa",
+        "password": "123",
+        "name": "Marija",
+        "surname": "Marijanic",
+        "gender": "FEMALE",
+        "dateOfBirth": "Jul 8, 2021 12:00:00 AM",
         "role": "CUSTOMER"
     }
 ]

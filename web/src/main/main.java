@@ -6,6 +6,7 @@ import static spark.Spark.port;
 import static spark.Spark.post;
 import static spark.Spark.staticFiles;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
@@ -37,7 +38,9 @@ import dao.SupplierDAO;
 import dao.SupplierRequestDAO;
 import dao.UserDAO;
 import dto.OrderFiltrateSortSearchDTO;
+import dto.RestaurantSearchDTO;
 import dto.RestaurantSearchSortFiltrateDTO;
+import dto.SearchFiltrateSortUsersDTO;
 import dto.RestaurantSearchSortFiltrateDTO;
 import dto.UserLogInDTO;
 import model.Article;
@@ -247,35 +250,35 @@ public class main {
 
 		});
 
-		get("/userSortByNameAsc", "application/json", (req, res) -> {
-			res.type("application/json");
-			return usersController.userSortByNameAsc();
-		});
+		// get("/userSortByNameAsc", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	return usersController.userSortByNameAsc();
+		// });
 
-		get("/userSortByNameDesc", "application/json", (req, res) -> {
-			res.type("application/json");
-			return usersController.userSortByNameDesc();
-		});
+		// get("/userSortByNameDesc", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	return usersController.userSortByNameDesc();
+		// });
 
-		get("/userSortBySurnameAsc", "application/json", (req, res) -> {
-			res.type("application/json");
-			return usersController.userSortBySurnameAsc();
-		});
+		// get("/userSortBySurnameAsc", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	return usersController.userSortBySurnameAsc();
+		// });
 
-		get("/userSortBySurnameDesc", "application/json", (req, res) -> {
-			res.type("application/json");
-			return usersController.userSortBySurnameDesc();
-		});
+		// get("/userSortBySurnameDesc", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	return usersController.userSortBySurnameDesc();
+		// });
 
-		get("/userSortByUsernameAsc", "application/json", (req, res) -> {
-			res.type("application/json");
-			return usersController.userSortByUsernameAsc();
-		});
+		// get("/userSortByUsernameAsc", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	return usersController.userSortByUsernameAsc();
+		// });
 
-		get("/userSortByUsernameDesc", "application/json", (req, res) -> {
-			res.type("application/json");
-			return usersController.userSortByUsernameDesc();
-		});
+		// get("/userSortByUsernameDesc", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	return usersController.userSortByUsernameDesc();
+		// });
 
 		get("/customerSortByUserPointAsc", "application/json", (req, res) -> {
 			res.type("application/json");
@@ -294,23 +297,12 @@ public class main {
 			return gson.toJson(customers);
 		});
 
-		get("/usersFiltrateByRole/:role", "application/json", (req, res) -> {
-			res.type("application/json");
-			String role = req.params("role");
-			List<User> users = usersController.usersFiltrateByRole(role);
-			return gson.toJson(users);
-		});
-
-		/*
-		 * get("/combineSearchUser", "application/json", (req, res) -> {
-		 * res.type("application/json");
-		 * String name= req.queryParams("name");
-		 * String username= req.params("username");
-		 * String surname= req.params("surname");
-		 * 
-		 * return usersController.combineSearchUser(name,surname,username);
-		 * });
-		 */
+		// get("/usersFiltrateByRole/:role", "application/json", (req, res) -> {
+		// 	res.type("application/json");
+		// 	String role = req.params("role");
+		// 	List<User> users = usersController.usersFiltrateByRole(role);
+		// 	return gson.toJson(users);
+		// });
 
 		get("/getAllMenagersWithoutRestaurant", "application/json", (req, res) -> {
 			res.type("application/json");
@@ -748,9 +740,18 @@ public class main {
 			res.type("application/json");
 			RestaurantSearchSortFiltrateDTO restaurantSearchSortFiltrateDTO = gson.fromJson(req.body(),
 			RestaurantSearchSortFiltrateDTO.class);
-			List<Restaurant> restaurants = restaurantController.searchFiltreteSortRestaurants(restaurantSearchSortFiltrateDTO);
+			List<RestaurantSearchDTO> restaurants = restaurantController.searchFiltreteSortRestaurants(restaurantSearchSortFiltrateDTO);
 			return gson.toJson(restaurants);
 			});
+
+		get("/searchFiltreteSortUsers", "application/json", (req, res) -> {
+				res.type("application/json");
+				SearchFiltrateSortUsersDTO searchFiltrateSortUsersDTO = gson.fromJson(req.body(),
+				SearchFiltrateSortUsersDTO.class);
+				List<Customer> customers=customerController.userSortByUserPointAsc();
+				List<User> users = usersController.searchFiltreteSortUsers(searchFiltrateSortUsersDTO,customers);
+				return gson.toJson(users);
+			 });
 
 		get("/getOrdersByUser/:username", "application/json", (req, res) -> {
 			res.type("application/json");

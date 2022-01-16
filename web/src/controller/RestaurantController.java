@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
+import dto.RestaurantSearchDTO;
 import dto.RestaurantSearchSortFiltrateDTO;
 import model.Article;
 import model.Menager;
@@ -110,7 +111,7 @@ public class RestaurantController {
         restaurantService.update(restaurant);
     }
 
-    public List<Restaurant> searchFiltreteSortRestaurants(
+    public List<RestaurantSearchDTO> searchFiltreteSortRestaurants(
             RestaurantSearchSortFiltrateDTO restaurantSearchSortFiltrateDTO) throws JsonSyntaxException, IOException {
         return restaurantService.searchFiltreteSortRestaurants(restaurantSearchSortFiltrateDTO);
     }

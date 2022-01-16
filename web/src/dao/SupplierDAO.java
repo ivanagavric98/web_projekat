@@ -22,7 +22,7 @@ import model.User;
 public class SupplierDAO implements IDAO<Supplier, String> {
 
 	private String path;
-	private ArrayList<Supplier> users;
+	private ArrayList<Supplier> suppliers;
 
 	public SupplierDAO(String path) {
 		super();
@@ -40,8 +40,8 @@ public class SupplierDAO implements IDAO<Supplier, String> {
 		Type token = new TypeToken<ArrayList<Supplier>>() {
 		}.getType();
 		BufferedReader br = new BufferedReader(new FileReader("web/data/suppliers.json"));
-		this.users = gson.fromJson(br, token);
-		return users;
+		this.suppliers = gson.fromJson(br, token);
+		return suppliers;
 	}
 
 	@Override
@@ -62,9 +62,8 @@ public class SupplierDAO implements IDAO<Supplier, String> {
 	@Override
 	public void create(Supplier entity) throws JsonSyntaxException, IOException {
 		ArrayList<Supplier> suppliers = getAll();
-		if (users == null) {
-			System.out.println("yser");
-			users = new ArrayList<Supplier>();
+		if (suppliers == null) {
+			suppliers = new ArrayList<Supplier>();
 		}
 		suppliers.add(entity);
 		saveAll(suppliers);
