@@ -1,5 +1,5 @@
 const WebShop = { template: '<web-shop></web-shop>' }
-const ShoppingCart = { template: '<shopping-cart></shopping-cart>' }
+const ShoppingCart = { template: '<shoppingCart></shoppingCart>' }
 const Registration = { template: '<registration></registration>' }
 const LogIn = { template: '<login></login>' }
 const EditPersonalInfo = { template: '<editPersonalInfo></editPersonalInfo>' }
@@ -26,8 +26,10 @@ const router = new VueRouter({
 		{ path: '/createRestaurant', component: CreateRestaurant },
 		{ path: '/restaurants', component: RestaurantsOverview },
 		{ path: '/adminRestaurant', component: AdminRestaurant },
-		{ path: '/orders', component: Orders }
-		]
+		{ path: '/orders', component: Orders },
+		{ path: '/shoppingCart', component: ShoppingCart }
+
+	  ]
 });
 
 var app = new Vue({

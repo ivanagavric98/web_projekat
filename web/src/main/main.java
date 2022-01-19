@@ -493,14 +493,14 @@ public class main {
 			return gson.toJson(article);
 		});
 
-		post("/deteleArticlesFromCart/:shoppingCartId", "application/json", (req, res) -> {
+		post("/deleteArticlesFromCart/:shoppingCartId", "application/json", (req, res) -> {
 			res.type("application/json");
 			ShoppingCartItem shoppingCartItem = gson.fromJson(req.body(), ShoppingCartItem.class);
 			ShoppingCart shoppingCart = shoppingCartController.getById(req.params("shoppingCartId"));
 			Double priceForArticle = articleController.getPricePerArticle(shoppingCart.restaurantName,
 					shoppingCartItem);
-			return shoppingCartService.deteleArticlesFromCart(priceForArticle, req.params("shoppingCartId"),
-					shoppingCartItem);
+			ShoppingCart sc = shoppingCartService.deteleArticlesFromCart(priceForArticle, req.params("shoppingCartId"), shoppingCartItem);
+		    return gson.toJson(sc);
 		});
 
 		post("/updateArticleFromCart/:shoppingCartId", "application/json", (req, res) -> {
@@ -511,7 +511,7 @@ public class main {
 					shoppingCartItem);
 			ShoppingCartItem oldShoppingCartItem = new ShoppingCartItem();
 			for (ShoppingCartItem sci : shoppingCart.getItems()) {
-				if (sci.getArticle().equals(shoppingCartItem.getArticle())) {
+				if (sci.getArticleName().equals(shoppingCartItem.getArticleName())) {
 					oldShoppingCartItem = sci;
 				}
 			}
@@ -595,11 +595,11 @@ public class main {
 		post("/processSupplierRequetst/:orderId/:supplierUsername/:par", "application/json", (req, res) -> {
 			res.type("application/json");
 			// par salji sa fronta, vrijednost ili cancel ili approve
-			Boolean result = supplierRequestController.processSupplierRequetst(req.params("orderId"),
+			Boolean result = supplierRequestController.processSupplierRequetst(req.params("ID"),
 					req.params("supplierUsername"),
 					req.params("par"));
 			if (result) {
-				Supplier supplier = supplierController.getByUsername(req.params("supplierUsername"));
+				Supplier supplier = supplierController.getByUsername(req.params("u0sername"));
 				Order order = orderController.getByID(req.params("orderId"));
 				ArrayList<Order> orders = supplier.getOrders();
 				if (orders == null) {

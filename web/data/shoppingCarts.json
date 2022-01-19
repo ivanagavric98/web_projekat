@@ -1,18 +1,1 @@
-[
-    {
-        "id": 1,
-        "items": [
-            {
-                "articleName": "salata",
-                "quantity": 5
-            },
-            {
-                "articleName": "vino crveno",
-                "quantity": 1
-            }
-        ],
-        "customer": "Maja Milekic",
-        "price": 900.0,
-        "restaurantName": "SARA"
-    }
-]
+[{"id":47,"items":[{"articleName":"Cezar Salata","quantity":3,"image":"./images/articles/cezarSalat.jpg","price":670.0},{"articleName":"salata","quantity":2,"image":"./images/articles/salat.jpg","price":100.0}],"customer":"iii","price":2210.0,"restaurantName":"Petrus"}]
