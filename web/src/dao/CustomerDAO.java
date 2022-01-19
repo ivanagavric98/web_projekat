@@ -40,7 +40,7 @@ public class CustomerDAO implements IDAO<Customer, String> {
         Gson gson = new Gson();
         Type token = new TypeToken<ArrayList<Customer>>() {
         }.getType();
-        BufferedReader br = new BufferedReader(new FileReader("web/data/customers.json"));
+        BufferedReader br = new BufferedReader(new FileReader("data/customers.json"));
         this.customers = gson.fromJson(br, token);
         return customers;
     }

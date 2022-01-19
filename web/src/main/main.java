@@ -517,9 +517,9 @@ public class main {
 			}
 			Double priceToSub = articleController.getPricePerArticle(shoppingCart.restaurantName,
 					oldShoppingCartItem);
-			return shoppingCartService.updateArticleFromCart(newPrice, priceToSub, req.params("shoppingCartId"),
+			ShoppingCart sc = shoppingCartService.updateArticleFromCart(newPrice, priceToSub, req.params("shoppingCartId"),
 					shoppingCartItem);
-
+			 return gson.toJson(sc);
 		});
 
 		post("/addOrder/:username", "application/json", (req, res) -> {
@@ -531,7 +531,7 @@ public class main {
 			// cijelog korisnika ili njegovo ime u localStoragu kad se loguje i onda ovde
 			// posalje
 			customerController.updateUsersPoints(req.params("username"), shoppingCart.price);
-			return order;
+			return gson.toJson(order);
 		});
 
 		// mozda staviti neku listu samo onih porudybina koje su u statusu obrada pa

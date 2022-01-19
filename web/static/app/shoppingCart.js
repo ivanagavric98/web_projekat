@@ -16,8 +16,12 @@ Vue.component("shoppingCart", {
 	template: ` 
 	<div class="sc-items-list">
 
-		<h2 class="text-center">Shopping Cart</h2>
-		
+		<div style="width: 800px; margin: auto" class="headr">
+	
+			<h2 class="text-center">Shopping Cart</h2>
+			<button class="btn btn-primary" @click = "createOrder"><span class="headr-new-item">Create Order </span></button>
+
+		</div>		
 			<div class="item-wrapper">
 		<div class="item" :key="index" v-for="(shoppingCartItems, index) in shoppingCart.items">
 			<div class="item-image-container">
@@ -92,6 +96,17 @@ Vue.component("shoppingCart", {
 						}else
 							alert("That article already exists!")
 					});
+			},
+			createOrder(){
+				axios.post('/addOrder/' + localStorage.getItem("username"), this.shoppingCart)
+					.then(response => {
+						if(response.data){
+							alert("Your order is created!")
+							location.reload()
+						}else
+							alert("That article already exists!")
+					});
+
 			}
 	}
 });
