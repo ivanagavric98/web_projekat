@@ -58,7 +58,7 @@ public class Order {
 		this.dateAndTime = dateAndTime;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import model.Customer;
+import model.CustomerType;
 import model.User;
 
 import static spark.Spark.get;
@@ -11,6 +12,7 @@ import static spark.Spark.post;
 import static spark.Spark.put;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import service.CustomerService;
@@ -36,13 +38,21 @@ public class CustomerController {
     public List<Customer> userSortByUserPointsDesc() throws JsonSyntaxException, IOException {
         return customerService.userSortByUserPointsDesc();
     }
+    public List<Customer> getAll() throws JsonSyntaxException, IOException {
+        return customerService.getAllCustomers();
+    }
 
     public List<Customer> customerFiltrateByType(String type) throws JsonSyntaxException, IOException {
         return customerService.customerFiltrateByType(type);
     }
 
-    public Customer updateUsersPoints(String customer, double price) throws JsonSyntaxException, IOException {
-        return customerService.updateCustomerssPoints(customer, price);
+    public Customer updateUsersPoints(String customer, double price, ArrayList<CustomerType> allTypes)
+            throws JsonSyntaxException, IOException {
+        return customerService.updateCustomerssPoints(customer, price, allTypes);
+    }
+
+    public Customer getByUsername(String customerUsername) throws JsonSyntaxException, IOException {
+        return customerService.getByUsername(customerUsername);
     }
 
     public Customer updateUsersPointsAferCancellation(String params, Double price)

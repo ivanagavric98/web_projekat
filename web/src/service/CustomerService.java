@@ -8,6 +8,7 @@ import com.google.gson.JsonSyntaxException;
 
 import dao.CustomerDAO;
 import model.Customer;
+import model.CustomerType;
 import model.User;
 
 public class CustomerService {
@@ -52,14 +53,19 @@ public class CustomerService {
 		return customerDao.customerFiltrateByType(type);
 	}
 
-	public Customer updateCustomerssPoints(String customer, double price) throws JsonSyntaxException, IOException {
-		return customerDao.updateUsersPoints(customer, price);
+	public Customer updateCustomerssPoints(String customer, double price, ArrayList<CustomerType> allTypes)
+			throws JsonSyntaxException, IOException {
+		return customerDao.updateUsersPoints(customer, price, allTypes);
 
 	}
 
 	public Customer updateUsersPointsAferCancellation(String customer, Double price)
 			throws JsonSyntaxException, IOException {
 		return customerDao.updateUsersPointsAferCancellation(customer, price);
+	}
+
+	public Customer getByUsername(String customerUsername) throws JsonSyntaxException, IOException {
+		return customerDao.getByID(customerUsername);
 	}
 
 }
