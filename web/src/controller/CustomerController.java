@@ -45,12 +45,12 @@ public class CustomerController {
     public List<Customer> customerFiltrateByType(String type) throws JsonSyntaxException, IOException {
         return customerService.customerFiltrateByType(type);
     }
-
+/*
     public Customer updateUsersPoints(String customer, double price, ArrayList<CustomerType> allTypes)
             throws JsonSyntaxException, IOException {
         return customerService.updateCustomerssPoints(customer, price, allTypes);
     }
-
+*/
     public Customer getByUsername(String customerUsername) throws JsonSyntaxException, IOException {
         return customerService.getByUsername(customerUsername);
     }

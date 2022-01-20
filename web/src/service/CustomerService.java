@@ -52,13 +52,13 @@ public class CustomerService {
 	public List<Customer> customerFiltrateByType(String type) throws JsonSyntaxException, IOException {
 		return customerDao.customerFiltrateByType(type);
 	}
-
+/*
 	public Customer updateCustomerssPoints(String customer, double price, ArrayList<CustomerType> allTypes)
 			throws JsonSyntaxException, IOException {
 		return customerDao.updateUsersPoints(customer, price, allTypes);
 
 	}
-
+*/
 	public Customer updateUsersPointsAferCancellation(String customer, Double price)
 			throws JsonSyntaxException, IOException {
 		return customerDao.updateUsersPointsAferCancellation(customer, price);

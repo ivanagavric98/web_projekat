@@ -73,7 +73,7 @@ public class RestaurantService {
     public ArrayList<Restaurant> restourantSearchByLocation(String location) throws JsonSyntaxException, IOException {
         return restaurantDAO.restourantSearchByLocation(location);
     }
-
+/*
     public List<Restaurant> restaurantSortByNameAsc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
         return restaurantDAO.restaurantSortByNameAsc(restaurants);
     }
@@ -106,7 +106,7 @@ public class RestaurantService {
         return restaurantDAO.restaurantsFiltrateByStatus(status);
     }
 
-    /*
+    
      * public List<Restaurant> combineSearchRestaurant(String type, String status)
      * throws JsonSyntaxException, IOException {
      * return restaurantDAO.combineSearchRestaurant(type,status);
@@ -168,7 +168,7 @@ public class RestaurantService {
         restaurantDAO.update(restaurant);
     }
 
-    public List<RestaurantSearchDTO> searchFiltreteSortRestaurants(
+  /*  public List<RestaurantSearchDTO> searchFiltreteSortRestaurants(
             RestaurantSearchSortFiltrateDTO restaurantSearchSortFiltrateDTO) throws JsonSyntaxException, IOException {
                 List<Restaurant> searchByRestaurantName = new ArrayList<Restaurant>();
                 List<Restaurant> searchByRestaurantType = new ArrayList<Restaurant>();
@@ -290,5 +290,5 @@ public class RestaurantService {
                 }
                 return resultListToReturn;   
              }
-
+*/
 }

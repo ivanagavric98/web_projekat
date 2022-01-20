@@ -235,7 +235,7 @@ public class main {
 			return gson.toJson(users);
 
 		});
-
+/*
 		get("/userSortByNameAsc", "application/json", (req, res) -> {
 			res.type("application/json");
 			return usersController.userSortByNameAsc();
@@ -337,7 +337,7 @@ public class main {
 			return gson.toJson(restaurants);
 		});
 
-		get("/restaurantSortByNameAsc", "application/json", (req, res) -> {
+		/*get("/restaurantSortByNameAsc", "application/json", (req, res) -> {
 			res.type("application/json");
 			List<Restaurant> restaurants = restaurantController.restaurantSortByNameAsc();
 			return gson.toJson(restaurants);
@@ -444,12 +444,12 @@ public class main {
 			Restaurant restaurant = restaurantController.getRestaurantByName(req.params("name"));
 			return gson.toJson(restaurant);
 		});
-
+/*
 		get("/getOpenedRestaurants", "application/json", (req, res) -> {
 			ArrayList<Restaurant> restaurants = restaurantController.getOpenedRestaurants();
 			return gson.toJson(restaurants);
 		});
-
+*/
 		get("/isRestaurantOpen", "application/json", (req, res) -> {
 			Boolean result = restaurantController.isRestaurantOpen(req.params("restaurantName"));
 			return gson.toJson(result);
@@ -521,7 +521,7 @@ public class main {
 					shoppingCartItem);
 			 return gson.toJson(sc);
 		});
-
+/*
 		post("/addOrder/:username", "application/json", (req, res) -> {
 			res.type("application/json");
 			ShoppingCart shoppingCart = gson.fromJson(req.body(), ShoppingCart.class);
@@ -533,7 +533,7 @@ public class main {
 			customerController.updateUsersPoints(req.params("username"), shoppingCart.price);
 			return gson.toJson(order);
 		});
-
+*/
 		// mozda staviti neku listu samo onih porudybina koje su u statusu obrada pa
 		// odatle da ih otkazuje
 		post("/cancelOrder/:username/:orderId", "application/json", (req, res) -> {

@@ -75,7 +75,7 @@ public class UserController {
 	// public List<User> usersFiltrateByRole(String role) throws JsonSyntaxException, IOException {
 	// 	return userService.usersFiltrateByRole(role);
 	// }
-
+/*
     public List<User> searchFiltreteSortUsers(SearchFiltrateSortUsersDTO searchFiltrateSortUsersDTO, List<Customer> customers) throws JsonSyntaxException, IOException {
         return userService.searchFiltreteSortUsers(searchFiltrateSortUsersDTO,customers);
     }

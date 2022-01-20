@@ -72,7 +72,7 @@ public class RestaurantController {
     // public List<Restaurant> restaurantsFiltrateByType(String type) throws JsonSyntaxException, IOException {
     //     return restaurantService.restaurantsFiltrateByType(type);
     // }
-
+/*
     public List<Restaurant> restaurantsFiltrateByStatus(String status) throws JsonSyntaxException, IOException {
         return restaurantService.restaurantsFiltrateByStatus(status);
     }
@@ -110,9 +110,9 @@ public class RestaurantController {
     public void update(Restaurant restaurant) throws JsonSyntaxException, IOException {
         restaurantService.update(restaurant);
     }
-
+/*
     public List<RestaurantSearchDTO> searchFiltreteSortRestaurants(
             RestaurantSearchSortFiltrateDTO restaurantSearchSortFiltrateDTO) throws JsonSyntaxException, IOException {
         return restaurantService.searchFiltreteSortRestaurants(restaurantSearchSortFiltrateDTO);
-    }
+    }*/
 }
