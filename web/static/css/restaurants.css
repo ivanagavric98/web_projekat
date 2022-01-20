@@ -150,6 +150,7 @@ div.container rest{
 	display: flex;
 	flex-direction: column;
 }
+
 .item-price {
 	color: #42405f;
 	font-weight: 500;
@@ -359,4 +360,38 @@ div.container rest{
 .align{
     margin-right: -20px;
 
+}
+.sc-items-list {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 40px;
+    position: relative;
+    width: 100%;
+    min-height: calc(100% - 350px);
+}
+
+.sc-item-image {
+    width: 200px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.sc-item-body {
+    flex: 1;
+    padding-left: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.sc-item-pricing {
+    text-align: center;
+}
+
+.sc-subtotal-items {
+    text-align: right;
+    color: #8F8FA1;
+}
+.sc-subtotal-items-label{
+    font-size: x-large;
 }

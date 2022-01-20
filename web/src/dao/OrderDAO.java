@@ -48,7 +48,7 @@ public class OrderDAO implements IDAO<Order, String> {
         Gson gson = new Gson();
         Type token = new TypeToken<ArrayList<Order>>() {
         }.getType();
-        BufferedReader br = new BufferedReader(new FileReader("web/data/orders.json"));
+        BufferedReader br = new BufferedReader(new FileReader("data/orders.json"));
         this.orders = gson.fromJson(br, token);
         return orders;
     }
@@ -129,6 +129,7 @@ public class OrderDAO implements IDAO<Order, String> {
     public Order changeStatusToWaitingForSupplier(String params)
             throws JsonSyntaxException, IOException {
         Order order = getByID(params);
+        System.out.println(order.ID);
         order.setOrderStatus(OrderStatus.WAITING_FOR_SUPPLIER);
         update(order);
         return order;

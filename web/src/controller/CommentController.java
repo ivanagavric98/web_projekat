@@ -46,4 +46,8 @@ public class CommentController {
     public ArrayList<Comment> getCommentsWithStatusProcessing() throws JsonSyntaxException, IOException {
         return commentService.getCommentsWithStatusProcessing();
     }
+
+	public ArrayList<Comment> getAllCommentsByRestaurant(String restaurantName) throws JsonSyntaxException, IOException {
+		return commentService.getAllCommentsByRestaurant(restaurantName);
+	}
 }

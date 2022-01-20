@@ -82,5 +82,29 @@
         "price": 900.0,
         "customer": "marija",
         "orderStatus": "PROCESSING"
-    }
+    },
+	{
+		"ID": "5209650f-2",
+		"articles": [
+			"Cezar Salata",
+			"salata"
+		],
+		"restaurant": "Petrus",
+		"dateAndTime": "2022-01-19 04:17:48.202",
+		"price": 2210.0,
+		"customer": "iii",
+		"orderStatus": "IN_TRANSPORT"
+	},
+	{
+		"ID": "5209650f-33",
+		"articles": [
+			"Pizza",
+			"Coca Cola"
+		],
+		"restaurant": "Petrus",
+		"dateAndTime": "2022-01-19 04:17:48.202",
+		"price": 2210.0,
+		"customer": "iii",
+		"orderStatus": "IN_TRANSPORT"
+	}
 ]

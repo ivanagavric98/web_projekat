@@ -42,7 +42,7 @@ public class ArticleDAO implements IDAO<Article, String> {
 		Gson gson = new Gson();
 		Type token = new TypeToken<ArrayList<Article>>() {
 		}.getType();
-		BufferedReader br = new BufferedReader(new FileReader("web/data/articles.json"));
+		BufferedReader br = new BufferedReader(new FileReader("data/articles.json"));
 		this.articles = gson.fromJson(br, token);
 		return articles;
 	}
@@ -114,7 +114,7 @@ public class ArticleDAO implements IDAO<Article, String> {
 		ArrayList<Article> allArticles = getAll();
 		ArrayList<Article> result = new ArrayList<>();
 		for (Article a : allArticles) {
-			if (a.getRestaurant().trim().toLowerCase().equals(restaurantName.trim().toLowerCase())) {
+			if (a.getRestaurant().equals(restaurantName)) {
 				result.add(a);
 			}
 		}

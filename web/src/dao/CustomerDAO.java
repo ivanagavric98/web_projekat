@@ -24,7 +24,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import javafx.css.CssMetaData;
 import model.Customer;
 import model.CustomerType;
 import model.User;
@@ -43,7 +42,7 @@ public class CustomerDAO implements IDAO<Customer, String> {
         Gson gson = new Gson();
         Type token = new TypeToken<ArrayList<Customer>>() {
         }.getType();
-        BufferedReader br = new BufferedReader(new FileReader("web/data/customers.json"));
+        BufferedReader br = new BufferedReader(new FileReader("data/customers.json"));
         this.customers = gson.fromJson(br, token);
         return customers;
     }

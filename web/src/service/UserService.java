@@ -92,6 +92,7 @@ public class UserService {
 		return usersDao.searchBySurname(surname);
 	}
 
+
 	public List<User> userSortByNameAsc(List<User> intersectionResult) throws JsonSyntaxException, IOException {
 		return usersDao.userSortByNameAsc(intersectionResult);
 	}

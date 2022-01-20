@@ -35,7 +35,7 @@ public class CommentService {
     }
 
     public Comment approveComment(Comment comment) throws JsonSyntaxException, IOException {
-        Comment commentToUpdate = commentDAO.getByRestaurantAndCustomerName(comment.restaurant, comment.customer);
+        Comment commentToUpdate = commentDAO.getByRestaurantAndCustomerName(comment.getRestaurant(), comment.getCustomer());
         commentToUpdate.setStatus(CommentStatus.Approved);
         commentDAO.update(commentToUpdate);
         return commentToUpdate;
@@ -66,7 +66,7 @@ public class CommentService {
             if (comment.status.equals(CommentStatus.Rejected)) {
                 resultList.add(comment);
             }
-        }
+         }
         return resultList;
     }
 
@@ -78,6 +78,19 @@ public class CommentService {
                 resultList.add(comment);
             }
         }
+        
         return resultList;
     }
+
+	public ArrayList<Comment> getAllCommentsByRestaurant(String restaurantName) throws JsonSyntaxException, IOException {
+		ArrayList<Comment> allComments = commentDAO.getAll();
+        ArrayList<Comment> resultList = new ArrayList<>();
+        for (Comment comment : allComments) {
+            if (comment.getRestaurant().equals(restaurantName)) {
+                resultList.add(comment);
+            }
+        }
+        return resultList;
+
+	}
 }

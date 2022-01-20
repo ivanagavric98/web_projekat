@@ -41,7 +41,7 @@ public class CommentDAO implements IDAO<Comment, String> {
         Gson gson = new Gson();
         Type token = new TypeToken<ArrayList<Comment>>() {
         }.getType();
-        BufferedReader br = new BufferedReader(new FileReader("web/data/comments.json"));
+        BufferedReader br = new BufferedReader(new FileReader("data/comments.json"));
         this.comments = gson.fromJson(br, token);
         return comments;
     }

@@ -3,22 +3,26 @@ package model;
 public class ShoppingCartItem {
 	public String articleName;
 	public int quantity;
+	public String image;
+	public double price;
 
 	public ShoppingCartItem() {
 	}
 
-	public ShoppingCartItem(String article, int quantity) {
+	public ShoppingCartItem(String articleName, int quantity, String image, double price) {
 		super();
-		this.articleName = article;
+		this.articleName = articleName;
 		this.quantity = quantity;
+		this.image = image;
+		this.price = price;
 	}
 
-	public String getArticle() {
+	public String getArticleName() {
 		return articleName;
 	}
 
-	public void setArticle(String article) {
-		this.articleName = article;
+	public void setArticleName(String articleName) {
+		this.articleName = articleName;
 	}
 
 	public int getQuantity() {
@@ -29,4 +33,20 @@ public class ShoppingCartItem {
 		this.quantity = quantity;
 	}
 
-}
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	
+	}

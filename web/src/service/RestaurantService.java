@@ -106,7 +106,7 @@ public class RestaurantService {
         return restaurantDAO.restaurantsFiltrateByStatus(status);
     }
 
-    /*
+/*    
      * public List<Restaurant> combineSearchRestaurant(String type, String status)
      * throws JsonSyntaxException, IOException {
      * return restaurantDAO.combineSearchRestaurant(type,status);
@@ -290,5 +290,4 @@ public class RestaurantService {
                 }
                 return resultListToReturn;   
              }
-
 }

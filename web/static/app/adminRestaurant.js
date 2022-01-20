@@ -20,7 +20,13 @@ Vue.component("adminRestaurant", {
 				quantity: null,
 				editedArticle: {},
 				approvedComment: {},
-				status: null
+				status: null,
+				articleName: null,
+				selectedItem: null,
+				quantitySC: null,
+				shoppingCartItems: [],
+				itemsPrice: 0,
+				shoppingCartt: {}
 				}
 	},
 	mounted() {
@@ -102,10 +108,12 @@ Vue.component("adminRestaurant", {
 	</div>
 	
 	
-	<div class="items-list" v-if="status=='items'">
+	<div class="items-list" v-if="status =='items'">
 	<div style="width: 888px; margin: auto" class="headr">
 			<h3>Articles</h3>
 		<button data-toggle="modal" class="modal-button" data-target="#exampleModalCenter"><span class="headr-new-item" v-if="role == 'MENAGER'"> <i class="fas fa-plus"></i> New Article </span></button>
+		<button class="btn btn-primary" @click="createShoppingCart" v-if="role == 'CUSTOMER'"><span class="headr-new-item"> <i class="fas fa-plus"></i> Shopping Cart </span></button>
+
 		</div>
 	<div :key="index" v-for="(article, index) in articles" class="item-wrapper">
 		<div class="item" >
@@ -123,8 +131,13 @@ Vue.component("adminRestaurant", {
 					<label class="item-description">{{ article.description }}</label>
 				</div>
 				<div class="item-pricing">
+					<button class="btn btn-success" data-toggle="modal" data-target="#addToCartDialog" @click="setEditableArticle(article)"
+						>Add to Shopping Cart<b></b></button
+					>
+				</div>
+				<div class="item-pricing">
 					<label class="item-price" for="username"
-						>Quantity: <b>{{ article.quantity }} GR </b></label
+						>Quantity: <b>{{ article.quantity }}</b></label
 					>
 				</div>
 				<div class="item-pricing">
@@ -136,7 +149,7 @@ Vue.component("adminRestaurant", {
 		</div>
 		
 	
-			<div class="item-options" v-if="role == 'MENAGER'">
+			<div class="item-options" >
 				<div class="space"> Edit </div>
 				<div class="item-options-panel">
 					<div class="single-option" data-toggle="modal" data-target="#editModal" @click=setEditableArticle(article)  style="color: #edf5e1">
@@ -149,6 +162,7 @@ Vue.component("adminRestaurant", {
 				</div>
 		</div>
 			</div>
+	
 			
 		<div class="comment-list" v-if="status=='reviews' && role == 'MENAGER' || role == 'ADMIN' || role == 'CUSTOMER'">
 	<div ref="comments" id="commentClass" class="comment" :key=comment.customer v-for="comment in commentsProcessing" @click= "select($event)" data-toggle="modal" data-target="#approveModal">
@@ -189,6 +203,10 @@ Vue.component("adminRestaurant", {
 			
 			
 		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" v-if="role == 'MENAGER'">
+
+	<!-- ADD NEW ARTICLE DIALOG -->		
+			
+		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" <!--v-if="role == 'MENAGER'-->>
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 			<div class="modal-header">
@@ -246,7 +264,48 @@ Vue.component("adminRestaurant", {
 		
 		</div>
   </div>
-</div>
+
+
+<!-- ADD TO CART DIALOG -->
+
+<div class="modal fade" id="addToCartDialog" tabindex="-1" role="dialog" aria-labelledby="addToCartDialogTitle" aria-hidden="true" >
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+			<div class="modal-header">
+        		<h5 class="modal-title" id="exampleModalLongTitle">Add to Shopping Cart</h5>
+        	<button type="button" class="close comment-button" data-dismiss="modal" aria-label="Close">
+				<i class="fas fa-times"></i>
+		  	</button>
+		</div>
+	<div class="modal-body">
+		  <form name='new-item-form'>
+		<div class="form-group row mb-2" >
+			<label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
+			<div class="col-sm-10">
+				<label type="text">{{editedArticle.name}}</label>
+
+			</div>
+		  </div>
+		  <div class="form-group row mb-2">
+			<label for="staticEmail" class="col-sm-2 col-form-label">Quantity</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" placeholder="Quantity"  ref="name" v-model="quantitySC">
+				<small type="text" style="color:red">Quantity must be greater than 1!</small>
+			</div>
+		  </div>
+		
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"  data-dismiss="modal" @click="addArticleToSC(editedArticle)">Add</button>
+      </div>
+	</form>
+    </div>	
+		</div>
+  </div>
+  </div>
+
+<!-- EDIT ARTICLE DIALOG -->
+
 
 
 
@@ -412,7 +471,50 @@ Vue.component("adminRestaurant", {
 		select(event){
 			let divId= event.currentTarget.dataset;
 			let data = JSON.parse(JSON.stringify(divId));
-			
+		},
+		addArticleToSC(){
+			let items = {
+				articleName: this.editedArticle.name,
+				quantity: this.quantitySC,
+				image: this.editedArticle.image,
+				price: this.editedArticle.price
+			}
+			if(this.quantitySC ==  0){
+				alert("Quantity must be greater than 1!")
+			}else {
+				let itemsPrice = this.quantitySC * this.editedArticle.price
+				this.itemsPrice += itemsPrice
+				this.shoppingCartItems.push(items)
+			}
+		},
+		createShoppingCart(event){
+			if(this.shoppingCartItems !== null){
+
+				var shoppingCart = {
+					id: new Date().getSeconds(),
+					items: this.shoppingCartItems,
+					customer: localStorage.getItem('username'),
+					price: this.itemsPrice,
+					restaurantName: JSON.parse(localStorage.getItem('restaurant'))
+				};
+
+				axios.post('/createShoppingCart', shoppingCart)
+					.then(response => {
+						if(response.data){
+							alert("Your shopping cart is created!")
+							localStorage.setItem("shoppingCartID", shoppingCart.id.valueOf())
+							this.$router.push('shoppingCart')
+						}else
+							alert("That shopping cart already exists!")
+					});
+			}
+
+
+		},
+		handlerFunc(event){
+			console.log(event.target)
+			this.selectedItem = event.name
+			console.log(this.selectedItem)
 		}
 	}
 });

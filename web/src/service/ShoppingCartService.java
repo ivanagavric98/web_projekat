@@ -72,7 +72,7 @@ public class ShoppingCartService {
             ArrayList<ShoppingCartItem> itemsToRemove = new ArrayList<>();
 
             for (ShoppingCartItem shi : items) {
-                if (shi.getArticle().equals(shoppingCartItem.articleName)) {
+                if (shi.getArticleName().equals(shoppingCartItem.articleName)) {
                     itemsToRemove.add(shi);
                 }
             }
@@ -101,7 +101,7 @@ public class ShoppingCartService {
             ;
 
             for (ShoppingCartItem shi : items) {
-                if (shi.getArticle().equals(shoppingCartItem.articleName)) {
+                if (shi.getArticleName().equals(shoppingCartItem.articleName)) {
                     itemsToRemove.add(shi);
                 }
             }

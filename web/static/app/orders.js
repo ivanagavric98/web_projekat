@@ -21,12 +21,14 @@ Vue.component("orders", {
 		            console.log(response.data)
 		            this.orders = response.data;               
 		        });
+			
 			 axios.get("/getOrderWithStatusWaitingForSupplier")
+
 		        .then(response => {
 		            console.log(response.data)
 		            this.orders = response.data;               
 		        });
-			 
+
 		 }else {
 			 axios.get("/getOrdersByManager/" + localStorage.getItem('username'))
 		        .then(response => {
@@ -119,8 +121,10 @@ Vue.component("orders", {
 			  <label for="staticEmail" class="col-sm-2 col-form-label">Order Status</label>
 			  <div class="col-sm-10">
 				            <select id="form3Example1q"  class="form-control"  v-model="order.orderStatus">
-							  	<option value="WAITING_FOR_SUPPLIER" >Waiting For Supplier</option>
-							  	<option value="IN_PREPARATION" >In Preparation</option>
+							  	<option value="WAITING_FOR_SUPPLIER">Waiting For Supplier</option>
+							  	<option value="IN_PREPARATION">In Preparation</option>
+							  	<option value="IN_TRANSPORT">In Transport</option>
+							  	<option value="DELIVERED">Delivered</option>
 						    </select>
 				  </div>			  
 			</div>

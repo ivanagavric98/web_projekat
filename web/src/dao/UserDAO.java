@@ -50,7 +50,7 @@ public class UserDAO implements IDAO<User, String> {
 		Gson gson = new Gson();
 		Type token = new TypeToken<ArrayList<User>>() {
 		}.getType();
-		BufferedReader br = new BufferedReader(new FileReader("web/data/users.json"));
+		BufferedReader br = new BufferedReader(new FileReader("data/users.json"));
 		this.users = gson.fromJson(br, token);
 		return users;
 	}

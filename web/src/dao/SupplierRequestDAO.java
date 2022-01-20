@@ -40,7 +40,7 @@ public class SupplierRequestDAO implements IDAO<SupplierRequest, String> {
         Gson gson = new Gson();
         Type token = new TypeToken<ArrayList<SupplierRequest>>() {
         }.getType();
-        BufferedReader br = new BufferedReader(new FileReader("web/data/supplierRequest.json"));
+        BufferedReader br = new BufferedReader(new FileReader("data/supplierRequest.json"));
         this.articles = gson.fromJson(br, token);
         return articles;
     }

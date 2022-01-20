@@ -22,12 +22,15 @@ import java.util.stream.Collectors;
 
 import com.google.gson.JsonSyntaxException;
 
+import dao.MenagerDAO;
 import dao.OrderDAO;
 import dto.OrderFiltrateSortSearchDTO;
-import javafx.scene.chart.PieChart.Data;
-import javafx.scene.input.DragEvent;
 import javaxt.utils.string;
 import model.Customer;
+import dao.UserDAO;
+import javaxt.utils.string;
+import model.Article;
+import model.Menager;
 import model.Order;
 import model.OrderStatus;
 import model.Restaurant;
@@ -36,9 +39,11 @@ import model.ShoppingCartItem;
 
 public class OrderService {
     private OrderDAO orderDAO;
+    private MenagerDAO managerDAO;
 
-    public OrderService(OrderDAO orderDAO) {
+    public OrderService(OrderDAO orderDAO, MenagerDAO managerDAO) {
         this.orderDAO = orderDAO;
+        this.managerDAO = managerDAO;
     }
 
     public Order add(ShoppingCart shoppingCart, Customer customer, Double newPrice)
@@ -391,4 +396,39 @@ public class OrderService {
         }
         return resultList;
     }
+
+	public ArrayList<Order> getMyOwnOrders(String customerUsername) throws JsonSyntaxException, IOException {
+		ArrayList<Order> allOrders = orderDAO.getAll();
+		ArrayList<Order> result = new ArrayList<>();
+		for (Order o : allOrders) {
+			if (o.getCustomer().equals(customerUsername) && o.getOrderStatus().equals(OrderStatus.IN_TRANSPORT) || o.getOrderStatus().equals(OrderStatus.IN_PREPARATION) || o.getOrderStatus().equals(OrderStatus.WAITING_FOR_SUPPLIER)) {
+				result.add(o);
+			}
+		}
+		return result;
+	}
+
+	public ArrayList<Order> getOrdersBySupplier(String supplierUsername) throws JsonSyntaxException, IOException {
+		ArrayList<Order> allOrders = orderDAO.getAll();
+		ArrayList<Order> result = new ArrayList<>();
+		for (Order o : allOrders) {
+			if (o.getCustomer().equals(supplierUsername) && o.getOrderStatus().equals(OrderStatus.IN_TRANSPORT) || o.getOrderStatus().equals(OrderStatus.IN_PREPARATION) || o.getOrderStatus().equals(OrderStatus.WAITING_FOR_SUPPLIER)) {
+				result.add(o);
+			}
+		}	
+		return result;	
+		}
+
+	public ArrayList<Order> getOrdersByManager(String managerUsername) throws JsonSyntaxException, IOException {
+		ArrayList<Order> allOrders = orderDAO.getAll();
+		ArrayList<Menager> managers = managerDAO.getAll();
+		ArrayList<Order> result = new ArrayList<>();
+		for (Order o : allOrders) {
+			for(Menager m : managers) {
+				if (o.getCustomer().equals(managerUsername) && o.getRestaurant().equals(m.getRestaurant()) && m.getUsername().equals(managerUsername)) {
+					result.add(o);
+				}
+			}
+		}	
+		return result;		}
 }

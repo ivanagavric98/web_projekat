@@ -80,51 +80,51 @@ public class main {
 		port(8080);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
-		UserDAO usersDAO = new UserDAO("web/data/users.json");
+		UserDAO usersDAO = new UserDAO("data/users.json");
 		UserService usersService = new UserService(usersDAO);
 		UserController usersController = new UserController(usersService);
 
-		CustomerDAO customersDAO = new CustomerDAO("web/data/customers.json");
+		CustomerDAO customersDAO = new CustomerDAO("data/customers.json");
 		CustomerService customerService = new CustomerService(customersDAO);
 		CustomerController customerController = new CustomerController(customerService);
 
-		SupplierDAO supplierDAO = new SupplierDAO("web/data/suppliers.json");
+		SupplierDAO supplierDAO = new SupplierDAO("data/suppliers.json");
 		SupplierService supplierService = new SupplierService(supplierDAO);
 		SupplierController supplierController = new SupplierController(supplierService);
 
-		MenagerDAO menagerDAO = new MenagerDAO("web/data/menagers.json");
+		MenagerDAO menagerDAO = new MenagerDAO("data/menagers.json");
 		MenagerService menagerService = new MenagerService(menagerDAO);
 		MenagerController menagerController = new MenagerController(menagerService);
 
-		RestaurantDAO restaurantDAO = new RestaurantDAO("web/data/restaurants.json");
+		RestaurantDAO restaurantDAO = new RestaurantDAO("data/restaurants.json");
 		RestaurantService restaurantService = new RestaurantService(restaurantDAO);
 		RestaurantController restaurantController = new RestaurantController(restaurantService);
 
-		AddressDAO addressDAO = new AddressDAO("web/data/addresses.json");
+		AddressDAO addressDAO = new AddressDAO("data/addresses.json");
 		AddressService addressService = new AddressService(addressDAO);
 		AddressController addressController = new AddressController(addressService);
 
-		LocationDAO locationDAO = new LocationDAO("web/data/locations.json");
+		LocationDAO locationDAO = new LocationDAO("data/locations.json");
 		LocationService locationService = new LocationService(locationDAO);
 		LocationController locationController = new LocationController(locationService);
 
-		ArticleDAO articleDAO = new ArticleDAO("web/data/articles.json");
+		ArticleDAO articleDAO = new ArticleDAO("data/articles.json");
 		ArticleService articleService = new ArticleService(articleDAO);
 		ArticleController articleController = new ArticleController(articleService);
 
-		ShoppingCartDAO shoppingCartDAO = new ShoppingCartDAO("web/data/shoppingCarts.json");
+		ShoppingCartDAO shoppingCartDAO = new ShoppingCartDAO("data/shoppingCarts.json");
 		ShoppingCartService shoppingCartService = new ShoppingCartService(shoppingCartDAO);
 		ShoppingCartController shoppingCartController = new ShoppingCartController(shoppingCartService);
 
-		OrderDAO orderDAO = new OrderDAO("web/data/orders.json");
-		OrderService orderService = new OrderService(orderDAO);
+		OrderDAO orderDAO = new OrderDAO("data/orders.json");
+		OrderService orderService = new OrderService(orderDAO, menagerDAO);
 		OrderController orderController = new OrderController(orderService);
 
-		SupplierRequestDAO supplierRequestDAO = new SupplierRequestDAO("web/data/supplierRequest.json");
+		SupplierRequestDAO supplierRequestDAO = new SupplierRequestDAO("data/supplierRequest.json");
 		SupplierRequestService supplierRequestService = new SupplierRequestService(supplierRequestDAO);
 		SupplierRequestController supplierRequestController = new SupplierRequestController(supplierRequestService);
 
-		CommentDAO commentDAO = new CommentDAO("web/data/comments.json");
+		CommentDAO commentDAO = new CommentDAO("data/comments.json");
 		CommentService commentService = new CommentService(commentDAO);
 		CommentController commentController = new CommentController(commentService);
 
@@ -254,6 +254,10 @@ public class main {
 		// 	res.type("application/json");
 		// 	return usersController.userSortByNameAsc();
 		// });
+		get("/userSortByNameAsc", "application/json", (req, res) -> {
+			res.type("application/json");
+			return usersController.userSortByNameAsc();
+		});
 
 		// get("/userSortByNameDesc", "application/json", (req, res) -> {
 		// 	res.type("application/json");
@@ -389,10 +393,66 @@ public class main {
 		// 	List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByStatus(role);
 		// 	return gson.toJson(restaurants);
 		// });
+	
+		get("/restaurantSortByNameAsc", "application/json", (req, res) -> {
+		res.type("application/json");
+		List<Restaurant> restaurants = restaurantController.restaurantSortByNameAsc();
+		return gson.toJson(restaurants);
+	});
 
-		
-		
-		 
+		get("/restaurantSortByNameDesc", "application/json", (req, res) -> {
+			res.type("application/json");
+			List<Restaurant> restaurants = restaurantController.restaurantSortByNameDesc();
+			return gson.toJson(restaurants);
+		});
+
+		get("/restaurantSortByLocationAsc", "application/json", (req, res) -> {
+			res.type("application/json");
+			List<Restaurant> restaurants = restaurantController.restaurantSortByLocationAsc();
+			return gson.toJson(restaurants);
+		});
+
+		get("/restaurantSortByLocationDesc", "application/json", (req, res) -> {
+			res.type("application/json");
+			List<Restaurant> restaurants = restaurantController.restaurantSortByLocationDesc();
+			return gson.toJson(restaurants);
+		});
+
+		get("/restauranSortByGradeAsc", "application/json", (req, res) -> {
+			res.type("application/json");
+			List<Restaurant> restaurants = restaurantController.restauranSortByGradeAsc();
+			return gson.toJson(restaurants);
+		});
+
+		get("/restauranSortByGradeDesc", "application/json", (req, res) -> {
+			res.type("application/json");
+			List<Restaurant> restaurants = restaurantController.restauranSortByGradeDesc();
+			return gson.toJson(restaurants);
+		});
+
+		get("/restaurantsFiltrateByType/:type", "application/json", (req, res) -> {
+			res.type("application/json");
+			String type = req.params("type");
+			List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByType(type);
+			return gson.toJson(restaurants);
+		});
+
+		get("/restaurantsFiltrateByStatus/:status", "application/json", (req, res) -> {
+			res.type("application/json");
+			String role = req.params("status");
+			List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByStatus(role);
+			return gson.toJson(restaurants);
+		});
+
+		/*
+		 * get("/combineSearchRestaurant", "application/json", (req, res) -> {
+		 * res.type("application/json");
+		 * String type= req.queryParams("type");
+		 * String status= req.queryParams("status");
+		 * 
+		 * return restaurantController.combineSearchRestaurant(type,status);
+		 * });
+		 */
 		get("/getRestaurantsOpenAndClosed", "application/json", (req, res) -> {
 			res.type("application/json");
 			List<Restaurant> restaurants = restaurantController.getRestaurantsOpenAndClosed();
@@ -419,6 +479,12 @@ public class main {
 			return gson.toJson(articles);
 		});
 
+		get("/getArticlesByRestaurantName/:name", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Article> articles = articleController.gettArticlesByRestaurantName(req.params("name"));
+			return gson.toJson(articles);
+		});
+		
 		post("/addRestaurantToManager/:username", (req, res) -> {
 			res.type("application/json");
 
@@ -440,6 +506,11 @@ public class main {
 		// 	ArrayList<Restaurant> restaurants = restaurantController.getOpenedRestaurants();
 		// 	return gson.toJson(restaurants);
 		// });
+
+		get("/getOpenedRestaurants", "application/json", (req, res) -> {
+			ArrayList<Restaurant> restaurants = restaurantController.getOpenedRestaurants();
+			return gson.toJson(restaurants);
+		});
 
 		get("/isRestaurantOpen", "application/json", (req, res) -> {
 			Boolean result = restaurantController.isRestaurantOpen(req.params("restaurantName"));
@@ -484,14 +555,14 @@ public class main {
 			return gson.toJson(article);
 		});
 
-		post("/deteleArticlesFromCart/:shoppingCartId", "application/json", (req, res) -> {
+		post("/deleteArticlesFromCart/:shoppingCartId", "application/json", (req, res) -> {
 			res.type("application/json");
 			ShoppingCartItem shoppingCartItem = gson.fromJson(req.body(), ShoppingCartItem.class);
 			ShoppingCart shoppingCart = shoppingCartController.getById(req.params("shoppingCartId"));
 			Double priceForArticle = articleController.getPricePerArticle(shoppingCart.restaurantName,
 					shoppingCartItem);
-			return shoppingCartService.deteleArticlesFromCart(priceForArticle, req.params("shoppingCartId"),
-					shoppingCartItem);
+			ShoppingCart sc = shoppingCartService.deteleArticlesFromCart(priceForArticle, req.params("shoppingCartId"), shoppingCartItem);
+		    return gson.toJson(sc);
 		});
 
 		post("/updateArticleFromCart/:shoppingCartId", "application/json", (req, res) -> {
@@ -502,15 +573,15 @@ public class main {
 					shoppingCartItem);
 			ShoppingCartItem oldShoppingCartItem = new ShoppingCartItem();
 			for (ShoppingCartItem sci : shoppingCart.getItems()) {
-				if (sci.getArticle().equals(shoppingCartItem.getArticle())) {
+				if (sci.getArticleName().equals(shoppingCartItem.getArticleName())) {
 					oldShoppingCartItem = sci;
 				}
 			}
 			Double priceToSub = articleController.getPricePerArticle(shoppingCart.restaurantName,
 					oldShoppingCartItem);
-			return shoppingCartService.updateArticleFromCart(newPrice, priceToSub, req.params("shoppingCartId"),
+			ShoppingCart sc = shoppingCartService.updateArticleFromCart(newPrice, priceToSub, req.params("shoppingCartId"),
 					shoppingCartItem);
-
+			 return gson.toJson(sc);
 		});
 
 		post("/addOrder/:username", "application/json", (req, res) -> {
@@ -523,8 +594,8 @@ public class main {
 			// mora sa se username korisnika koji saljemo kao parametar u putanji,sacuvaj
 			// cijelog korisnika ili njegovo ime u localStoragu kad se loguje i onda ovde
 			// posalje
-			customerController.updateUsersPoints(req.params("username"), shoppingCart.price, allTypes);
-			return order;
+			customerController.updateUsersPoints(req.params("username"), shoppingCart.price);
+			return gson.toJson(order);
 		});
 
 		// mozda staviti neku listu samo onih porudybina koje su u statusu obrada pa
@@ -539,13 +610,13 @@ public class main {
 		get("/getOrderWithStatusInPreparation", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Order> orders = orderController.getOrderWithStatusInPreparation();
-			return orders;
+			return gson.toJson(orders);
 		});
 
 		get("/getOrderWithStatusWaitingForSupplier", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Order> orders = orderController.getOrderWithStatusWaitingForSupplier();
-			return orders;
+			return gson.toJson(orders);
 		});
 
 		post("/changeStatusToInPreparation/:orderId", "application/json", (req, res) -> {
@@ -588,11 +659,11 @@ public class main {
 		post("/processSupplierRequetst/:orderId/:supplierUsername/:par", "application/json", (req, res) -> {
 			res.type("application/json");
 			// par salji sa fronta, vrijednost ili cancel ili approve
-			Boolean result = supplierRequestController.processSupplierRequetst(req.params("orderId"),
+			Boolean result = supplierRequestController.processSupplierRequetst(req.params("ID"),
 					req.params("supplierUsername"),
 					req.params("par"));
 			if (result) {
-				Supplier supplier = supplierController.getByUsername(req.params("supplierUsername"));
+				Supplier supplier = supplierController.getByUsername(req.params("u0sername"));
 				Order order = orderController.getByID(req.params("orderId"));
 				ArrayList<Order> orders = supplier.getOrders();
 				if (orders == null) {
@@ -642,19 +713,43 @@ public class main {
 		get("/getCommentsWithStatusApproved", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Comment> comments = commentController.getCommentsWithStatusApproved();
-			return comments;
+			return gson.toJson(comments);
 		});
 
 		get("/getCommentsWithStatusRejected", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Comment> comments = commentController.getCommentsWithStatusRejected();
-			return comments;
+			return gson.toJson(comments);
 		});
 
 		get("/getCommentsWithStatusProcessing", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Comment> comments = commentController.getCommentsWithStatusProcessing();
-			return comments;
+			return gson.toJson(comments);
+		});
+		
+		get("/getAllCommentsByRestaurant/:name", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Comment> comments = commentController.getAllCommentsByRestaurant(req.params("name"));
+			return gson.toJson(comments);
+		});
+		
+		get("/getMyOwnOrders/:username", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Order> orders = orderController.getMyOwnOrders(req.params("username"));
+			return gson.toJson(orders);
+		});
+		
+		get("/getOrdersBySupplier/:username", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Order> orders = orderController.getOrdersBySupplier(req.params("username"));
+			return gson.toJson(orders);
+		});
+		
+		get("/getOrdersByManager/:username", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Order> orders = orderController.getOrdersByManager(req.params("username"));
+			return gson.toJson(orders);
 		});
 
 		// get("/getOrderByRestaurantName/:restaurantName", "application/json", (req,
