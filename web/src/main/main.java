@@ -254,11 +254,11 @@ public class main {
 		// 	res.type("application/json");
 		// 	return usersController.userSortByNameAsc();
 		// });
-		get("/userSortByNameAsc", "application/json", (req, res) -> {
+/*		get("/userSortByNameAsc", "application/json", (req, res) -> {
 			res.type("application/json");
 			return usersController.userSortByNameAsc();
 		});
-
+*/
 		// get("/userSortByNameDesc", "application/json", (req, res) -> {
 		// 	res.type("application/json");
 		// 	return usersController.userSortByNameDesc();
@@ -393,7 +393,7 @@ public class main {
 		// 	List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByStatus(role);
 		// 	return gson.toJson(restaurants);
 		// });
-	
+	/*
 		get("/restaurantSortByNameAsc", "application/json", (req, res) -> {
 		res.type("application/json");
 		List<Restaurant> restaurants = restaurantController.restaurantSortByNameAsc();
@@ -502,13 +502,11 @@ public class main {
 			return gson.toJson(restaurant);
 		});
 
-		// get("/getOpenedRestaurants", "application/json", (req, res) -> {
-		// 	ArrayList<Restaurant> restaurants = restaurantController.getOpenedRestaurants();
-		// 	return gson.toJson(restaurants);
-		// });
 
 		get("/getOpenedRestaurants", "application/json", (req, res) -> {
-			ArrayList<Restaurant> restaurants = restaurantController.getOpenedRestaurants();
+			res.type("application/json");
+			ArrayList<Restaurant> allRestaurants = restaurantController.getAll();
+			ArrayList<Restaurant> restaurants = restaurantController.getOpenedRestaurants(allRestaurants);
 			return gson.toJson(restaurants);
 		});
 
@@ -594,7 +592,7 @@ public class main {
 			// mora sa se username korisnika koji saljemo kao parametar u putanji,sacuvaj
 			// cijelog korisnika ili njegovo ime u localStoragu kad se loguje i onda ovde
 			// posalje
-			customerController.updateUsersPoints(req.params("username"), shoppingCart.price);
+			customerController.updateUsersPoints(req.params("username"), shoppingCart.price, allTypes);
 			return gson.toJson(order);
 		});
 
