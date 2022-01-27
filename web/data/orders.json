@@ -1,96 +1,96 @@
 [
-    {
-        "ID": "fa420586-3",
-        "articles": [
-            "salata",
-            "vino crveno"
-        ],
-        "restaurant": "Petrus",
-        "dateAndTime": "2021-05-14",
-        "price": 1404.0,
-        "customer": "Maja Milekic",
-        "orderStatus": "IN_PREPARATION"
-    },
-    {
-        "ID": "5343a4da-f",
-        "articles": [
-            "salata",
-            "vino crveno"
-        ],
-        "restaurant": "Giros Master",
-        "dateAndTime": "2022-01-14",
-        "price": 900.0,
-        "customer": "Maja Milekic",
-        "orderStatus": "IN_TRANSPORT"
-    },
-    {
-        "ID": "7b396b16-9",
-        "articles": [
-            "salata",
-            "vino crveno"
-        ],
-        "restaurant": "McDonald\u0027s",
-        "dateAndTime": "2023-01-14",
-        "price": 500.0,
-        "customer": "Maja Milekic",
-        "orderStatus": "PROCESSING"
-    },
-    {
-        "ID": "7b39sb16-9",
-        "articles": [
-            "salata",
-            "vino crveno"
-        ],
-        "restaurant": "Petrus",
-        "dateAndTime": "2020-01-14",
-        "price": 600.0,
-        "customer": "Maja Milekic",
-        "orderStatus": "DELIVERED"
-    },
-    {
-        "ID": "aaa5c162-e",
-        "articles": [
-            "salata",
-            "vino crveno"
-        ],
-        "restaurant": "SARA",
-        "dateAndTime": "2022-01-15",
-        "price": 900.0,
-        "customer": "marija",
-        "orderStatus": "PROCESSING"
-    },
-    {
-        "ID": "66e2aea8-5",
-        "articles": [
-            "salata",
-            "vino crveno"
-        ],
-        "restaurant": "SARA",
-        "dateAndTime": "2022-01-15",
-        "price": 1000.0,
-        "customer": "marija",
-        "orderStatus": "PROCESSING"
-    },
-    {
-        "ID": "d326dbb9-a",
-        "articles": [
-            "salata",
-            "vino crveno"
-        ],
-        "restaurant": "SARA",
-        "dateAndTime": "2022-01-15",
-        "price": 900.0,
-        "customer": "marija",
-        "orderStatus": "PROCESSING"
-    },
+	{
+		"ID": "fa420586-3",
+		"articles": [
+			"salata",
+			"vino crveno"
+		],
+		"restaurant": "Petrus",
+		"dateAndTime": "2021-05-14",
+		"price": 1404.0,
+		"customer": "Maja Milekic",
+		"orderStatus": "CANCELED"
+	},
+	{
+		"ID": "5343a4da-f",
+		"articles": [
+			"salata",
+			"vino crveno"
+		],
+		"restaurant": "Giros Master",
+		"dateAndTime": "2022-01-14",
+		"price": 900.0,
+		"customer": "anda",
+		"orderStatus": "IN_TRANSPORT"
+	},
+	{
+		"ID": "7b396b16-9",
+		"articles": [
+			"salata",
+			"vino crveno"
+		],
+		"restaurant": "McDonald\u0027s",
+		"dateAndTime": "2023-01-14",
+		"price": 500.0,
+		"customer": "anda",
+		"orderStatus": "PROCESSING"
+	},
+	{
+		"ID": "7b39sb16-9",
+		"articles": [
+			"salata",
+			"vino crveno"
+		],
+		"restaurant": "Petrus",
+		"dateAndTime": "2020-01-14",
+		"price": 600.0,
+		"customer": "anda",
+		"orderStatus": "WAITING_FOR_SUPPLIER"
+	},
+	{
+		"ID": "aaa5c162-e",
+		"articles": [
+			"salata",
+			"vino crveno"
+		],
+		"restaurant": "McDonald\u0027s\u0027",
+		"dateAndTime": "2022-01-15",
+		"price": 900.0,
+		"customer": "anda",
+		"orderStatus": "PROCESSING"
+	},
+	{
+		"ID": "66e2aea8-5",
+		"articles": [
+			"salata",
+			"vino crveno"
+		],
+		"restaurant": "SARA",
+		"dateAndTime": "2022-01-15",
+		"price": 1000.0,
+		"customer": "marija",
+		"orderStatus": "PROCESSING"
+	},
+	{
+		"ID": "d326dbb9-a",
+		"articles": [
+			"salata",
+			"vino crveno"
+		],
+		"restaurant": "SARA",
+		"dateAndTime": "2022-01-15",
+		"price": 900.0,
+		"customer": "marija",
+		"orderStatus": "PROCESSING"
+	},
 	{
 		"ID": "5209650f-2",
 		"articles": [
 			"Cezar Salata",
 			"salata"
 		],
-		"restaurant": "Petrus",
-		"dateAndTime": "2022-01-19 04:17:48.202",
+		"restaurant": "McDonald's",
+		"dateAndTime": "2022-01-30 04:17:48.202",
 		"price": 2210.0,
 		"customer": "iii",
 		"orderStatus": "IN_TRANSPORT"
@@ -103,7 +103,7 @@
 		],
 		"restaurant": "Petrus",
 		"dateAndTime": "2022-01-19 04:17:48.202",
-		"price": 2210.0,
+		"price": 1000.0,
 		"customer": "iii",
 		"orderStatus": "IN_TRANSPORT"
 	}

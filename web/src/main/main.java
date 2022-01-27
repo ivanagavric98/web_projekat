@@ -527,7 +527,7 @@ public class main {
 			res.type("application/json");
 			ShoppingCart shoppingCart = gson.fromJson(req.body(), ShoppingCart.class);
 			Boolean r = shoppingCartService.addShoppingCart(shoppingCart);
-			return r;
+			return gson.toJson(r);
 		});
 
 		post("/addArticlesCart/:shoppingCartId", "application/json", (req, res) -> {
@@ -536,8 +536,9 @@ public class main {
 			ShoppingCart shoppingCart = shoppingCartController.getById(req.params("shoppingCartId"));
 			Double priceForArticle = articleController.getPricePerArticle(shoppingCart.restaurantName,
 					shoppingCartItem);
-			return shoppingCartService.addArticleToShoppingCart(priceForArticle, req.params("shoppingCartId"),
+			ShoppingCart sc = shoppingCartService.addArticleToShoppingCart(priceForArticle, req.params("shoppingCartId"),
 					shoppingCartItem);
+			return gson.toJson(sc);
 		});
 
 		get("/getShoppingChartById/:id", "application/json", (req, res) -> {
@@ -585,6 +586,7 @@ public class main {
 		post("/addOrder/:username", "application/json", (req, res) -> {
 			res.type("application/json");
 			ShoppingCart shoppingCart = gson.fromJson(req.body(), ShoppingCart.class);
+			System.out.println("aaa");
 			Customer customer = customerController.getByUsername(shoppingCart.customer);
 			Double newPrice = customerTypeController.getPriceWithDiscount(shoppingCart.getPrice(), customer);
 			Order order = orderController.addOrder(shoppingCart, customer, newPrice);
@@ -602,7 +604,7 @@ public class main {
 			res.type("application/json");
 			Order order = orderController.changeStatusToCanceled(req.params("orderId"));
 			customerController.updateUsersPointsAferCancellation(req.params("username"), order.getPrice());
-			return order;
+			return gson.toJson(order);
 		});
 
 		get("/getOrderWithStatusInPreparation", "application/json", (req, res) -> {
@@ -626,19 +628,19 @@ public class main {
 		post("/changeStatusToWaitingForSupplier/:orderId", "application/json", (req, res) -> {
 			res.type("application/json");
 			Order order = orderController.changeStatusToWaitingForSupplier(req.params("orderId"));
-			return order;
+			return gson.toJson(order);
 		});
 
 		post("/changeStatusToInTransport/:orderId", "application/json", (req, res) -> {
 			res.type("application/json");
 			Order order = orderController.changeStatusToInTransport(req.params("orderId"));
-			return order;
+			return gson.toJson(order);
 		});
 
 		post("/changeStatusToDelivered/:orderId", "application/json", (req, res) -> {
 			res.type("application/json");
 			Order order = orderController.changeStatusToDelivered(req.params("orderId"));
-			return order;
+			return gson.toJson(order);
 		});
 
 		post("/changeStatusToCanceled/:orderId", "application/json", (req, res) -> {
@@ -693,6 +695,7 @@ public class main {
 			commentController.addComment(comment);
 			return comment;
 		});
+		
 
 		post("/approveComment", "application/json", (req, res) -> {
 			res.type("application/json");
@@ -820,24 +823,25 @@ public class main {
 		// });
 
 		// za kupca i dostavljaca
-		get("/searchFiltreteSortOrders", "application/json", (req, res) -> {
+		post("/searchFiltrateSortOrders", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Restaurant> restaurants = restaurantController.getAll();
 			OrderFiltrateSortSearchDTO orderFiltrateSortSearchDTO = gson.fromJson(req.body(),
 					OrderFiltrateSortSearchDTO.class);
+			System.out.println(orderFiltrateSortSearchDTO.getSearchByrestaurantName());
 			List<Order> orders = orderController.searchFiltreteSortOrders(orderFiltrateSortSearchDTO, restaurants);
 			return gson.toJson(orders);
 		});
 
-		get("/searchFiltreteSortRestaurants", "application/json", (req, res) -> {
+		post("/searchFiltreteSortRestaurants", "application/json", (req, res) -> {
 			res.type("application/json");
 			RestaurantSearchSortFiltrateDTO restaurantSearchSortFiltrateDTO = gson.fromJson(req.body(),
 			RestaurantSearchSortFiltrateDTO.class);
-			List<RestaurantSearchDTO> restaurants = restaurantController.searchFiltreteSortRestaurants(restaurantSearchSortFiltrateDTO);
+			List<Restaurant> restaurants = restaurantController.searchFiltreteSortRestaurants(restaurantSearchSortFiltrateDTO);
 			return gson.toJson(restaurants);
 			});
 
-		get("/searchFiltreteSortUsers", "application/json", (req, res) -> {
+		post("/searchFiltreteSortUsers", "application/json", (req, res) -> {
 				res.type("application/json");
 				SearchFiltrateSortUsersDTO searchFiltrateSortUsersDTO = gson.fromJson(req.body(),
 				SearchFiltrateSortUsersDTO.class);
@@ -845,19 +849,25 @@ public class main {
 				List<User> users = usersController.searchFiltreteSortUsers(searchFiltrateSortUsersDTO,customers);
 				return gson.toJson(users);
 			 });
-
+/*
 		get("/getOrdersByUser/:username", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Order> orders = orderController.getOrdersByUser(req.params("username"));
 			return gson.toJson(orders);
 		});
-
+*/
 		get("/getOrdersByRestaurant/:restaurant", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Order> orders = orderController.getOrdersByRestaurant(req.params("restaurant"));
 			return gson.toJson(orders);
 		});
 
+		get("/getOrdersByRestaurantWithStatusDelivered", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Order> orders = orderController.getOrdersByRestaurantWithStatusDelivered();
+			return gson.toJson(orders);
+		});
+		
 		// post("/addCustomerType", "application/json", (req, res) -> {
 		// res.type("application/json");
 		// CustomerType customerType = gson.fromJson(req.body(), CustomerType.class);

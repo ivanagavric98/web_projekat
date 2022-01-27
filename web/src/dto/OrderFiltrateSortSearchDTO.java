@@ -14,11 +14,37 @@ public class OrderFiltrateSortSearchDTO {
     private String sortByDate; // dozvoliti jedino vrijednost ascending ili descending
     // dozvoliti da se sortira samo po jednom parametru pa nek bira po kom,znaci
     // jedan ako je popunje ostala dva su null!
+    private String user;
 
     private String filtrateByRestaurantType; // staviti listu da bira, sve tipove koje mi imamo u bazi
     private String filtrateByOrderStatus; // staviti listu da bira,sve tipove koje mi imamo u bazi
 
-    public String getSearchByrestaurantName() {
+    public OrderFiltrateSortSearchDTO(String searchByrestaurantName, Double searchBypriceFrom, Double searchBypriceTo,
+			String searchBydateFrom, String searchBydateTo, String sortByRestaurantName, String sortByPrice,
+			String sortByDate, String user, String filtrateByRestaurantType, String filtrateByOrderStatus) {
+		super();
+		this.searchByrestaurantName = searchByrestaurantName;
+		this.searchBypriceFrom = searchBypriceFrom;
+		this.searchBypriceTo = searchBypriceTo;
+		this.searchBydateFrom = searchBydateFrom;
+		this.searchBydateTo = searchBydateTo;
+		this.sortByRestaurantName = sortByRestaurantName;
+		this.sortByPrice = sortByPrice;
+		this.sortByDate = sortByDate;
+		this.user = user;
+		this.filtrateByRestaurantType = filtrateByRestaurantType;
+		this.filtrateByOrderStatus = filtrateByOrderStatus;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getSearchByrestaurantName() {
         return searchByrestaurantName;
     }
 

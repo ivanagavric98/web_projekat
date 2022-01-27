@@ -110,7 +110,7 @@ public class RestaurantController {
         restaurantService.update(restaurant);
     }
 
-    public List<RestaurantSearchDTO> searchFiltreteSortRestaurants(
+    public List<Restaurant> searchFiltreteSortRestaurants(
             RestaurantSearchSortFiltrateDTO restaurantSearchSortFiltrateDTO) throws JsonSyntaxException, IOException {
         return restaurantService.searchFiltreteSortRestaurants(restaurantSearchSortFiltrateDTO);
     }

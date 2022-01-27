@@ -65,12 +65,12 @@ public class OrderController {
         orderService.update(params);
     }
 
-    public ArrayList<Order> usersOrderByRestaurantName(String name) throws JsonSyntaxException, IOException {
-        return orderService.usersOrderByRestaurantName(name);
+    public ArrayList<Order> usersOrderByRestaurantName(String name, OrderFiltrateSortSearchDTO orderFiltrateSortSearchDTO) throws JsonSyntaxException, IOException {
+        return orderService.usersOrderByRestaurantName(name, orderFiltrateSortSearchDTO);
     }
 
-    public ArrayList<Order> getOrderByPriceRange(Double from, Double to) throws JsonSyntaxException, IOException {
-        return orderService.getOrderByPriceRange(from, to);
+    public ArrayList<Order> getOrderByPriceRange(Double from, Double to, OrderFiltrateSortSearchDTO orderFiltrateSortSearchDTO) throws JsonSyntaxException, IOException {
+        return orderService.getOrderByPriceRange(from, to, orderFiltrateSortSearchDTO);
     }
 
     public ArrayList<Order> getOrderByDateRange(String from, String to)
@@ -125,15 +125,18 @@ public class OrderController {
         return orderService.searchFiltreteSortOrders(orderFiltrateSortSearchDTO, restaurants);
     }
 
-    public ArrayList<Order> getOrdersByUser(String params) throws JsonSyntaxException, IOException {
-        return orderService.getOrdersByUser(params);
+    public ArrayList<Order> getOrdersByUser(OrderFiltrateSortSearchDTO orderFiltrateSortSearchDTO) throws JsonSyntaxException, IOException {
+        return orderService.getOrdersByUser(orderFiltrateSortSearchDTO);
     }
 
     public ArrayList<Order> getOrdersByRestaurant(String params) throws JsonSyntaxException, IOException {
         return orderService.getOrdersByRestaurant(params);
 
     }
+    public ArrayList<Order> getOrdersByRestaurantWithStatusDelivered() throws JsonSyntaxException, IOException {
+        return orderService.getOrdersByRestaurantWithStatusDelivered();
 
+    }
     public ArrayList<Order> getMyOwnOrders(String customerUsername) throws JsonSyntaxException, IOException {
 		return orderService.getMyOwnOrders(customerUsername);
 	}
@@ -144,5 +147,9 @@ public class OrderController {
 
 	public ArrayList<Order> getOrdersByManager(String managerUsername) throws JsonSyntaxException, IOException {
 		return orderService.getOrdersByManager(managerUsername);
+	}
+	
+	public ArrayList<Order> getAll() throws JsonSyntaxException, IOException {
+		return orderService.getAllOrders();
 	}
 }

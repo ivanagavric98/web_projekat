@@ -145,7 +145,7 @@ public class RestaurantService {
         ArrayList<Restaurant> resultList = new ArrayList<Restaurant>();
 
         for (Restaurant r : allRestaurants) {
-            if (r.getType().equals(type)) {
+            if (r.getType().contains(type)) {
                 resultList.add(r);
             }
         }
@@ -168,32 +168,34 @@ public class RestaurantService {
         restaurantDAO.update(restaurant);
     }
 
-    public List<RestaurantSearchDTO> searchFiltreteSortRestaurants(
+    public List<Restaurant> searchFiltreteSortRestaurants(
             RestaurantSearchSortFiltrateDTO restaurantSearchSortFiltrateDTO) throws JsonSyntaxException, IOException {
                 List<Restaurant> searchByRestaurantName = new ArrayList<Restaurant>();
                 List<Restaurant> searchByRestaurantType = new ArrayList<Restaurant>();
                 List<Restaurant> searchByLocation = new ArrayList<Restaurant>();
                 List<Restaurant> searchByGrade = new ArrayList<Restaurant>();
 
-                if (restaurantSearchSortFiltrateDTO.getSearchByrestaurantName() != null) {
+                if (restaurantSearchSortFiltrateDTO.getSearchByrestaurantName() != "") {
                     searchByRestaurantName = getRestaurantsByName(restaurantSearchSortFiltrateDTO.getSearchByrestaurantName());
+                    System.out.println(restaurantSearchSortFiltrateDTO.getSearchByrestaurantName());
                 } else {
                     searchByRestaurantName = restaurantDAO.getAll();
                 }
         
-                if (restaurantSearchSortFiltrateDTO.getSearchByRestaurantType() != null) {
-                    searchByRestaurantType = getRestaurantsByType(restaurantSearchSortFiltrateDTO.getSearchByRestaurantType());          
+                if (restaurantSearchSortFiltrateDTO.getSearchByRestaurantType() != "") {
+                    searchByRestaurantType = getRestaurantsByType(restaurantSearchSortFiltrateDTO.getSearchByRestaurantType()); 
+                    System.out.println(restaurantSearchSortFiltrateDTO.getSearchByRestaurantType());
                 } else {
                     searchByRestaurantType =  restaurantDAO.getAll();
                 }
         
-                if (restaurantSearchSortFiltrateDTO.getSearchByLocation() != null) {
+                if (restaurantSearchSortFiltrateDTO.getSearchByLocation() != "") {
                     searchByLocation = restourantSearchByLocation(restaurantSearchSortFiltrateDTO.getSearchByLocation());
                 } else {
                     searchByLocation =  restaurantDAO.getAll();
                 }
 
-                if (restaurantSearchSortFiltrateDTO.getSearchByAverageGrade() != null) {
+                if (restaurantSearchSortFiltrateDTO.getSearchByAverageGrade() != 0.0) {
                     searchByGrade = restaurantSearchByGrade(restaurantSearchSortFiltrateDTO.getSearchByAverageGrade());
                 } else {
                     searchByGrade =  restaurantDAO.getAll();
@@ -211,7 +213,7 @@ public class RestaurantService {
                         }
                     }
                 }
-        
+                System.out.println(intersectionResult.size());
                 for (Restaurant restaurant : intersectionResult) {
                     for (Restaurant restaurant2 : searchByLocation) {
                         if (restaurant.getName().equals(restaurant2.getName())) {
@@ -219,7 +221,7 @@ public class RestaurantService {
                         }
                     }
                 }
-
+                System.out.println(intersectionResult1.size());
                 for (Restaurant restaurant : intersectionResult1) {
                     for (Restaurant restaurant2 : searchByGrade) {
                         if (restaurant.getName().equals(restaurant2.getName())) {
@@ -227,7 +229,8 @@ public class RestaurantService {
                         }
                     }
                 }
-        
+                System.out.println(intersectionResult2.size());
+
                 List<Restaurant> sortedList = new ArrayList<Restaurant>();
                 if (restaurantSearchSortFiltrateDTO.getSortByRestaurantName() != null) {
                     if (restaurantSearchSortFiltrateDTO.getSortByRestaurantName().equals("ascending")) {
@@ -237,6 +240,7 @@ public class RestaurantService {
                     }
                 }
         
+                System.out.println(sortedList.size());
                 if (restaurantSearchSortFiltrateDTO.getSortByLocation() != null) {
                     if (restaurantSearchSortFiltrateDTO.getSortByLocation().equals("ascending")) {
                         sortedList = restaurantSortByLocationAsc(intersectionResult2);
@@ -244,29 +248,36 @@ public class RestaurantService {
                         sortedList = restaurantSortByLocationDesc(intersectionResult2);
                     }
                 }
-        
+                System.out.println(sortedList.size());
                 if (restaurantSearchSortFiltrateDTO.getSortByAverageGrade() != null) {
                     if (restaurantSearchSortFiltrateDTO.getSortByAverageGrade().equals("ascending")) {
                         sortedList = restauranSortByGradeAsc(intersectionResult2);
+                        System.out.println(sortedList.size() + "u");
                     } else {
+                        System.out.println(sortedList.size() + "o");
                         sortedList = restauranSortByGradeDesc(intersectionResult2);
                     }
                 }
         
+                System.out.println(sortedList.size());
                 if (restaurantSearchSortFiltrateDTO.getSortByRestaurantName() == null
                         && restaurantSearchSortFiltrateDTO.getSortByAverageGrade() == null
                         && restaurantSearchSortFiltrateDTO.getSortByLocation() == null) {
                     sortedList = intersectionResult2;
                 }
         
+                System.out.println(sortedList.size());
                 List<Restaurant> filtrateByRestaurantType = new ArrayList<Restaurant>();
                 if (restaurantSearchSortFiltrateDTO.getFiltrateByRestaurantType() != null) {
                     filtrateByRestaurantType = restaurantsFiltrateByType(restaurantSearchSortFiltrateDTO.getFiltrateByRestaurantType(),
                             sortedList);
+                    System.out.println("pp" + filtrateByRestaurantType.size());
                 } else {
                     filtrateByRestaurantType = sortedList;
+                    System.out.println("pp");
                 }
         
+                System.out.println("aa" + filtrateByRestaurantType.size());
                 List<Restaurant> filtrateByRestoranStatusOpen = new ArrayList<Restaurant>();
                 if (restaurantSearchSortFiltrateDTO.getFiltrateByRestaurantStatusOpen() != null && restaurantSearchSortFiltrateDTO.getFiltrateByRestaurantStatusOpen().equals("OPEN")) {
                     filtrateByRestoranStatusOpen = getOpenedRestaurants(sortedList);
@@ -274,6 +285,7 @@ public class RestaurantService {
                     filtrateByRestoranStatusOpen = sortedList;
                 }
         
+                System.out.println(filtrateByRestoranStatusOpen.size());
                 List<Restaurant> result = new ArrayList<Restaurant>();
                 for (Restaurant restaurant : filtrateByRestaurantType) {
                     for (Restaurant restaurant1 : filtrateByRestoranStatusOpen) {
@@ -288,6 +300,8 @@ public class RestaurantService {
                     Double grade=restaurantDAO.getRestauratAverageGrade(res);
                     resultListToReturn.add(new RestaurantSearchDTO(res.getName(), res.getType(), res.getLocation(), res.getLogo(),grade));
                 }
-                return resultListToReturn;   
+                System.out.println(result.size());
+                return result;   
              }
 }
+

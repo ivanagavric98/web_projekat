@@ -6,7 +6,7 @@
 		"restaurant": "McDonald\u0027s",
 		"quantity": 150,
 		"description": "odlicno je",
-		"image": "images/articles/salat"
+		"image": "./images/articles/salat"
 	},
 	{
 		"name": "salata",

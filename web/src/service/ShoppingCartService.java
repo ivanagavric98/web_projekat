@@ -42,7 +42,6 @@ public class ShoppingCartService {
         ShoppingCart shoppingCart = shoppingCartDAO.getByID(shoppingCartId);
         ArrayList<ShoppingCartItem> items = new ArrayList<>();
 
-        items.add(shoppingCartItem);
         if (shoppingCart.getItems() != null) {
             for (ShoppingCartItem sci : shoppingCart.getItems()) {
                 items.add(sci);

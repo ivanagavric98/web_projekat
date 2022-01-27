@@ -162,11 +162,9 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 
 	public List<Restaurant> restaurantSortByNameAsc(List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
 		Set<Restaurant> toSort = new HashSet<>();
-
 		for (Restaurant object : restaurants) {
 			toSort.add(object);
 		}
-
 		List<Restaurant> resultList = toSort.stream().sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
 				.collect(Collectors.toList());
 
@@ -253,7 +251,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 	public List<Restaurant> restaurantsFiltrateByType(String type, List<Restaurant> restaurants) throws JsonSyntaxException, IOException {
 		ArrayList<Restaurant> resultList = new ArrayList<>();
 		for (Restaurant restaurant : restaurants) {
-			if (restaurant.getType().toLowerCase().equals(type.toLowerCase())) {
+			if (restaurant.getType().toLowerCase().contains(type.toLowerCase())) {
 				resultList.add(restaurant);
 			}
 		}

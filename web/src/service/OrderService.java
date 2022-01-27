@@ -48,14 +48,18 @@ public class OrderService {
 
     public Order add(ShoppingCart shoppingCart, Customer customer, Double newPrice)
             throws JsonSyntaxException, IOException {
+    	System.out.println("9999999999");
         ArrayList<Order> orders = getAllOrders();
         String uniqString = UUID.randomUUID().toString().substring(0, 10);
 
         ArrayList<String> itemsToAdd = new ArrayList<>();
         Order order = new Order();
+        System.out.println("***********");
         for (ShoppingCartItem sci : shoppingCart.items) {
             itemsToAdd.add(sci.articleName);
         }
+        System.out.println(itemsToAdd.get(0));
+        
         order.articles = itemsToAdd;
         order.ID = uniqString;
         String date = LocalDate.now().toString();
@@ -118,19 +122,19 @@ public class OrderService {
         orderDAO.update(params);
     }
 
-    public ArrayList<Order> usersOrderByRestaurantName(String name) throws JsonSyntaxException, IOException {
-        ArrayList<Order> orders = orderDAO.getAll();
+    public ArrayList<Order> usersOrderByRestaurantName(String name, OrderFiltrateSortSearchDTO orderFiltrateSortSearchDTO) throws JsonSyntaxException, IOException {
+        ArrayList<Order> orders = getOrdersByUser(orderFiltrateSortSearchDTO);
         ArrayList<Order> resultList = new ArrayList<>();
         for (Order o : orders) {
-            if (o.getRestaurant().toLowerCase().equals(name.trim().toLowerCase())) {
+            if (o.getRestaurant().toLowerCase().contains(name.trim().toLowerCase())) {
                 resultList.add(o);
             }
         }
         return resultList;
     }
 
-    public ArrayList<Order> getOrderByPriceRange(Double from, Double to) throws JsonSyntaxException, IOException {
-        ArrayList<Order> orders = orderDAO.getAll();
+    public ArrayList<Order> getOrderByPriceRange(Double from, Double to, OrderFiltrateSortSearchDTO orderFiltrateSortSearchDTO) throws JsonSyntaxException, IOException {
+        ArrayList<Order> orders = getOrdersByUser(orderFiltrateSortSearchDTO);
         ArrayList<Order> resultList = new ArrayList<>();
         for (Order o : orders) {
             if (o.getPrice() >= from && o.getPrice() <= to) {
@@ -144,6 +148,7 @@ public class OrderService {
             throws JsonSyntaxException, IOException, ParseException {
         ArrayList<Order> orders = orderDAO.getAll();
         ArrayList<Order> resultList = new ArrayList<>();
+  
         for (Order o : orders) {
             Date dateFrom = new SimpleDateFormat("yyyy-MM-dd").parse(from);
             Date dateTo = new SimpleDateFormat("yyyy-MM-dd").parse(to);
@@ -276,19 +281,24 @@ public class OrderService {
         List<Order> searchByprice = new ArrayList<Order>();
         List<Order> searchByDate = new ArrayList<Order>();
 
-        if (orderFiltrateSortSearchDTO.getSearchByrestaurantName() != null) {
-            searchByRestaurantName = usersOrderByRestaurantName(orderFiltrateSortSearchDTO.getSearchByrestaurantName());
+        if (orderFiltrateSortSearchDTO.getSearchByrestaurantName() != "") {
+        	System.out.println("sssssss");
+        	searchByRestaurantName = usersOrderByRestaurantName(orderFiltrateSortSearchDTO.getSearchByrestaurantName(), orderFiltrateSortSearchDTO);
         } else {
-            searchByRestaurantName = getAllOrders();
+            searchByRestaurantName = getOrdersByUser(orderFiltrateSortSearchDTO);
         }
-
-        if (orderFiltrateSortSearchDTO.getSearchBypriceFrom() != null
-                && orderFiltrateSortSearchDTO.getSearchBypriceTo() != null) {
+    
+        System.out.println(searchByRestaurantName.size());
+        if (orderFiltrateSortSearchDTO.getSearchBypriceFrom() != 0.0
+                && orderFiltrateSortSearchDTO.getSearchBypriceTo() != 0.0) {
+        	System.out.println("sssssss");
             searchByprice = getOrderByPriceRange(orderFiltrateSortSearchDTO.getSearchBypriceFrom(),
-                    orderFiltrateSortSearchDTO.getSearchBypriceTo());
+                    orderFiltrateSortSearchDTO.getSearchBypriceTo(), orderFiltrateSortSearchDTO);
+            System.out.println("kkkkk");
         } else {
-            searchByprice = getAllOrders();
+            searchByprice = getOrdersByUser(orderFiltrateSortSearchDTO);
         }
+        System.out.println(searchByprice.size());
 
         if (orderFiltrateSortSearchDTO.getSearchBydateFrom() != null
                 && orderFiltrateSortSearchDTO.getSearchBydateTo() != null) {
@@ -298,6 +308,8 @@ public class OrderService {
             searchByDate = getAllOrders();
         }
 
+        System.out.println(searchByDate.size());
+        
         List<Order> intersectionResult = new ArrayList<Order>();
         List<Order> intersectionResult1 = new ArrayList<Order>();
 
@@ -308,6 +320,7 @@ public class OrderService {
                 }
             }
         }
+        System.out.println(intersectionResult.size());
 
         for (Order order : intersectionResult) {
             for (Order order2 : searchByDate) {
@@ -316,6 +329,7 @@ public class OrderService {
                 }
             }
         }
+        System.out.println(intersectionResult1.size());
 
         List<Order> sortedList = new ArrayList<Order>();
         if (orderFiltrateSortSearchDTO.getSortByRestaurantName() != null) {
@@ -325,6 +339,7 @@ public class OrderService {
                 sortedList = sortOrderByRestaurantNameDesc(intersectionResult1);
             }
         }
+        
 
         if (orderFiltrateSortSearchDTO.getSortByPrice() != null) {
             if (orderFiltrateSortSearchDTO.getSortByPrice().equals("ascending")) {
@@ -375,11 +390,11 @@ public class OrderService {
         return result;
     }
 
-    public ArrayList<Order> getOrdersByUser(String params) throws JsonSyntaxException, IOException {
+    public ArrayList<Order> getOrdersByUser(OrderFiltrateSortSearchDTO orderFiltrateSortSearchDTO) throws JsonSyntaxException, IOException {
         ArrayList<Order> orders = getAllOrders();
         ArrayList<Order> resultList = new ArrayList<>();
         for (Order o : orders) {
-            if (o.getCustomer().equals(params)) {
+            if (o.getCustomer().equals(orderFiltrateSortSearchDTO.getUser())) {
                 resultList.add(o);
             }
         }
@@ -397,11 +412,22 @@ public class OrderService {
         return resultList;
     }
 
+    public ArrayList<Order> getOrdersByRestaurantWithStatusDelivered() throws JsonSyntaxException, IOException {
+        ArrayList<Order> orders = getAllOrders();
+        ArrayList<Order> resultList = new ArrayList<>();
+        for (Order o : orders) {
+            if (o.getOrderStatus().equals(OrderStatus.DELIVERED)) {
+                resultList.add(o);
+            }
+        }
+        return resultList;
+    }
+    
 	public ArrayList<Order> getMyOwnOrders(String customerUsername) throws JsonSyntaxException, IOException {
 		ArrayList<Order> allOrders = orderDAO.getAll();
 		ArrayList<Order> result = new ArrayList<>();
 		for (Order o : allOrders) {
-			if (o.getCustomer().equals(customerUsername) && o.getOrderStatus().equals(OrderStatus.IN_TRANSPORT) || o.getOrderStatus().equals(OrderStatus.IN_PREPARATION) || o.getOrderStatus().equals(OrderStatus.WAITING_FOR_SUPPLIER)) {
+			if (o.getCustomer().equals(customerUsername) && (o.getOrderStatus().equals(OrderStatus.IN_TRANSPORT) || o.getOrderStatus().equals(OrderStatus.IN_PREPARATION) || o.getOrderStatus().equals(OrderStatus.WAITING_FOR_SUPPLIER))) {
 				result.add(o);
 			}
 		}

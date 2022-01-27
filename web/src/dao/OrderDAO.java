@@ -151,9 +151,12 @@ public class OrderDAO implements IDAO<Order, String> {
 
     public Order changeStatusToCanceled(String params) throws JsonSyntaxException, IOException {
         Order order = getByID(params);
-        order.setOrderStatus(OrderStatus.CANCELED);
-        update(order);
-        return order;
+        if(order.getOrderStatus().equals(OrderStatus.PROCESSING)) {
+            order.setOrderStatus(OrderStatus.CANCELED);    
+            update(order);
+            return order;
+        }else 
+        	return null;
     }
 
     public ArrayList<Order> getOrderWithStatusInPreparation() throws JsonSyntaxException, IOException {

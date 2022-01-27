@@ -104,21 +104,21 @@ Vue.component("adminRestaurant", {
 	
 		<div class="navigation">
 		<div @click="changeDisplay('items')"  v-bind:class="{ selected: status=='items' }">Items</div>
-		<div @click="changeDisplay('reviews')" v-bind:class="{ selected: status=='reviews' }">Rewievs</div>
+		<div @click="changeDisplay('reviews')" v-bind:class="{ selected: status=='reviews' }">Reviews</div>
 	</div>
 	
 	
 	<div class="items-list" v-if="status =='items'">
 	<div style="width: 888px; margin: auto" class="headr">
 			<h3>Articles</h3>
-		<button data-toggle="modal" class="modal-button" data-target="#exampleModalCenter"><span class="headr-new-item" v-if="role == 'MENAGER'"> <i class="fas fa-plus"></i> New Article </span></button>
-		<button class="btn btn-primary" @click="createShoppingCart" v-if="role == 'CUSTOMER'"><span class="headr-new-item"> <i class="fas fa-plus"></i> Shopping Cart </span></button>
+		<button data-toggle="modal" class="modal-button" data-target="#exampleModalCenter"><span class="headr-new-item" v-if="accessControlManager"> <i class="fas fa-plus"></i> New Article </span></button>
+		<button class="btn btn-success" @click="createShoppingCart" v-if="role == 'CUSTOMER'"><span class="headr-new-item" v-if="accessControlCustomer"> Shopping Cart </span></button>
 
 		</div>
 	<div :key="index" v-for="(article, index) in articles" class="item-wrapper">
 		<div class="item" >
 			<div class="item-image-container">
-				<img class="item-image" v-bind:src="'../'+restaurant.logo" alt="" />
+				<img class="sc-item-image" v-bind:src="'../'+article.image" alt="" />
 			</div>
 			<div class="item-body">
 				<div class="item-name">
@@ -137,7 +137,7 @@ Vue.component("adminRestaurant", {
 				</div>
 				<div class="item-pricing">
 					<label class="item-price" for="username"
-						>Quantity: <b>{{ article.quantity }}</b></label
+						>Quantity: <b>{{ article.quantity }} gr</b></label
 					>
 				</div>
 				<div class="item-pricing">
@@ -149,7 +149,7 @@ Vue.component("adminRestaurant", {
 		</div>
 		
 	
-			<div class="item-options" >
+			<div class="item-options" v-if="accessControlManager">
 				<div class="space"> Edit </div>
 				<div class="item-options-panel">
 					<div class="single-option" data-toggle="modal" data-target="#editModal" @click=setEditableArticle(article)  style="color: #edf5e1">
@@ -163,9 +163,10 @@ Vue.component("adminRestaurant", {
 		</div>
 			</div>
 	
+		<!-- COMMENTS-->
 			
-		<div class="comment-list" v-if="status=='reviews' && role == 'MENAGER' || role == 'ADMIN' || role == 'CUSTOMER'">
-	<div ref="comments" id="commentClass" class="comment" :key=comment.customer v-for="comment in commentsProcessing" @click= "select($event)" data-toggle="modal" data-target="#approveModal">
+		<div class="comment-list" v-if="status=='reviews'">
+		<div ref="comments" id="commentClass" class="comment" :key=comment.customer v-for="comment in commentsProcessing" @click= "select($event)" data-toggle="modal" data-target="#approveModal">
 		<div class="comment-icon"  v-if="role == 'CUSTOMER' && comment.status == 'Approved' || role == 'MENAGER'  || role == 'ADMIN' && comment.status=='Approved' || comment.status== 'Rejected' ">
 		<i class="fas fa-user fa-3x"></i>
 		<label>{{comment.status}}</label>
@@ -182,7 +183,7 @@ Vue.component("adminRestaurant", {
 		</div>
 	</div>
 	</div>
-	<div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModal" aria-hidden="true">
+	<div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModal" aria-hidden="true" v-if="accessControlManager">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 		  <div class="modal-content">
 			<div class="modal-header">
@@ -200,13 +201,10 @@ Vue.component("adminRestaurant", {
 	  </div>
 	  </div>	
 			
-			
-			
-		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" v-if="role == 'MENAGER'">
-
+	
 	<!-- ADD NEW ARTICLE DIALOG -->		
 			
-		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" <!--v-if="role == 'MENAGER'-->>
+		<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 			<div class="modal-header">
@@ -264,11 +262,12 @@ Vue.component("adminRestaurant", {
 		
 		</div>
   </div>
+  </div>
 
 
 <!-- ADD TO CART DIALOG -->
 
-<div class="modal fade" id="addToCartDialog" tabindex="-1" role="dialog" aria-labelledby="addToCartDialogTitle" aria-hidden="true" >
+<div class="modal fade" id="addToCartDialog" tabindex="-1" role="dialog" aria-labelledby="addToCartDialogTitle" aria-hidden="true" v-if="accessControlCustomer">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 			<div class="modal-header">
@@ -305,10 +304,6 @@ Vue.component("adminRestaurant", {
   </div>
 
 <!-- EDIT ARTICLE DIALOG -->
-
-
-
-
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
@@ -373,8 +368,22 @@ Vue.component("adminRestaurant", {
 	
 	`,
 	computed : {
-		
-    },
+		accessControlCustomer(){
+			let role = localStorage.getItem('role')
+			if(role == 'CUSTOMER'){
+				return true;
+			}else
+				return false;
+		},
+		accessControlManager(){
+			let role = localStorage.getItem('role')
+			if(role == 'MENAGER'){
+				return true;
+			}else
+				return false;
+		}
+
+	},
 	methods: {
 		changeDisplay(status){
 			console.log(status);
