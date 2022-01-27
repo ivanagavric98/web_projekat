@@ -148,7 +148,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 	public ArrayList<Restaurant> restourantSearchByLocation(String location) throws JsonSyntaxException, IOException {
 		ArrayList<Restaurant> allRestaurants = getAll();
 		ArrayList<Restaurant> locationSearchList = new ArrayList<>();
-
+		
 		if (allRestaurants.size() != 0) {
 			for (Restaurant restaurant : allRestaurants) {
 				if (restaurant.location.getAddress().getCountry().toLowerCase().contains(location.toLowerCase()) ||
@@ -157,6 +157,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 				}
 			}
 		}
+		System.out.println(locationSearchList.size());
 		return locationSearchList;
 	}
 

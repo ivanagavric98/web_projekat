@@ -81,21 +81,53 @@ Vue.component("orders", {
 		  </div>
 		</div>
 
-
-		 <div class="row mb-5" style = "width: 56%; margin-left: 22%;">
-				  <div class="col-3">
-				  
-				    <h6>Restaurant type: </h6>
-				  <select class="custom-select" >
-				    <option value="" disabled selected>Select restaurant type...</option>
+	 <div class="row mb-5" style = "width: 56%; margin-left: 22%;">
+               <div class="container">
+			    <div class="row">
+			      <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "filtrateByRestaurantType">
+				    <option value="" disabled selected>Filtrate by name..</option>
 				    <option value="International"> International</option>
 				    <option value="Fast Food"> Fast food</option>
 				    <option value="Traditional Food"> Traditional food</option>
 				    <option value="Chinese Food"> Chinese food</option>
-				  </select></div>
-				</div>
-		  
-		
+				  </select>
+				  </div>
+				  <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "filtrateByOrderStatus">
+				    <option value="" disabled selected>Filtrate by status...</option>
+				    <option value="PROCESSING"> Processing</option>
+				    <option value="IN_PREPARATION"> In preparation</option>
+				    <option value="WAITING_FOR_SUPPLIER"> Waiting for deliverer</option>
+				    <option value="IN_TRANSPORT"> In transport</option>
+				    <option value="DELIVERED"> Delivered</option>
+				    <option value="CANCELED"> Canceled</option>
+				  </select>
+				  </div>
+				  <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "sortByRestaurantName">
+				    <option value="" disabled selected>Sort by name...</option>
+				    <option value="ascending"> Ascending</option>
+				    <option value="descending"> Descending</option>
+				  </select>
+				  </div>
+				   <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "sortByPrice">
+				    <option value="" disabled selected>Sort by location...</option>
+				    <option value="ascending"> Ascending</option>
+				    <option value="descending"> Descending</option>
+				  </select>
+				  </div>
+				   <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "sortByDate">
+				    <option value="" disabled selected>Sort by average grade...</option>
+				    <option value="ascending"> Ascending</option>
+				    <option value="descending"> Descending</option>
+				  </select>
+				  </div>
+                </div>
+			</div>
+		</div>
         <div :key="order.ID" v-for="order in orders">
 		    <div class="container" name="rest" style= "margin-top:10px;
 			    color: #42405F;
@@ -271,8 +303,10 @@ Vue.component("orders", {
 						.then(response => {
 							if (response.data.length !== 0) {
 								this.orders = response.data
-							} else
+							} else {
 								alert("No results!")
+								location.reload()
+							}
 						});
 				}
 			}

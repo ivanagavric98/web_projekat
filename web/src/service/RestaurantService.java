@@ -145,7 +145,7 @@ public class RestaurantService {
         ArrayList<Restaurant> resultList = new ArrayList<Restaurant>();
 
         for (Restaurant r : allRestaurants) {
-            if (r.getType().contains(type)) {
+            if (r.getType().toLowerCase().contains(type.toLowerCase())) {
                 resultList.add(r);
             }
         }
@@ -252,10 +252,9 @@ public class RestaurantService {
                 if (restaurantSearchSortFiltrateDTO.getSortByAverageGrade() != null) {
                     if (restaurantSearchSortFiltrateDTO.getSortByAverageGrade().equals("ascending")) {
                         sortedList = restauranSortByGradeAsc(intersectionResult2);
-                        System.out.println(sortedList.size() + "u");
                     } else {
-                        System.out.println(sortedList.size() + "o");
                         sortedList = restauranSortByGradeDesc(intersectionResult2);
+                        System.out.println(sortedList.size() + "eh");
                     }
                 }
         
@@ -271,10 +270,8 @@ public class RestaurantService {
                 if (restaurantSearchSortFiltrateDTO.getFiltrateByRestaurantType() != null) {
                     filtrateByRestaurantType = restaurantsFiltrateByType(restaurantSearchSortFiltrateDTO.getFiltrateByRestaurantType(),
                             sortedList);
-                    System.out.println("pp" + filtrateByRestaurantType.size());
                 } else {
                     filtrateByRestaurantType = sortedList;
-                    System.out.println("pp");
                 }
         
                 System.out.println("aa" + filtrateByRestaurantType.size());

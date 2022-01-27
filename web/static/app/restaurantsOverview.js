@@ -39,33 +39,48 @@ Vue.component("restaurants", {
 		  </div>
 		</div>
 
-
 		 <div class="row mb-5" style = "width: 56%; margin-left: 22%;">
-				  <div class="col-3">
-				  
-				  <h6>Restaurant type: </h6>
-				  <select class="custom-select" @change="search" v-model = "filtrateByRestaurantType">
-				    <option value="" disabled selected>Select restaurant type...</option>
+               <div class="container">
+			    <div class="row">
+			      <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "filtrateByRestaurantType">
+				    <option value="" disabled selected>Filtrate by name..</option>
 				    <option value="International"> International</option>
 				    <option value="Fast Food"> Fast food</option>
 				    <option value="Traditional Food"> Traditional food</option>
 				    <option value="Chinese Food"> Chinese food</option>
 				  </select>
-				  <h6> Restaurant by status: </h6>
-				  <select class="custom-select" @change="search" v-model = "filtrateByRestaurantStatusOpen">
-				    <option value="" disabled selected>Select restaurant status...</option>
+				  </div>
+				  <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "filtrateByRestaurantStatusOpen">
+				    <option value="" disabled selected>Filtrate opened...</option>
 				    <option value="OPEN"> Open</option>
 				  </select>
-				  <h6> Sort by name: </h6>
-				  <select class="custom-select" @change="search" v-model = "sortByRestaurantName">
-				    <option value="" disabled selected>Select restaurant status...</option>
+				  </div>
+				  <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "sortByRestaurantName">
+				    <option value="" disabled selected>Sort by name...</option>
 				    <option value="ascending"> Ascending</option>
 				    <option value="descending"> Descending</option>
 				  </select>
 				  </div>
+				   <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "sortByLocation">
+				    <option value="" disabled selected>Sort by location...</option>
+				    <option value="ascending"> Ascending</option>
+				    <option value="descending"> Descending</option>
+				  </select>
+				  </div>
+				   <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "sortByAverageGrade">
+				    <option value="" disabled selected>Sort by average grade...</option>
+				    <option value="ascending"> Ascending</option>
+				    <option value="descending"> Descending</option>
+				  </select>
+				  </div>
+                </div>
+			</div>
 		</div>
-		  
-	
     
         <div  :key="restaurant.name" v-for="restaurant in restaurants" >
 		    <div  @click= "goToRestaurant(restaurant)">
@@ -113,12 +128,12 @@ Vue.component("restaurants", {
 	computed : {
     },
 	methods: {
-		goToRestaurant: function(restaurant){
-      	  localStorage.setItem('restaurant', JSON.stringify(restaurant.name));
-          this.$router.push("adminRestaurant")
-		},
-		
-		search(){
+        goToRestaurant: function (restaurant) {
+            localStorage.setItem('restaurant', JSON.stringify(restaurant.name));
+            this.$router.push("adminRestaurant")
+        },
+
+        search() {
 
             this.restaurantSearchSortFiltrateDTO = {
                 searchByrestaurantName: this.searchByrestaurantName,
@@ -132,74 +147,16 @@ Vue.component("restaurants", {
                 filtrateByRestaurantStatusOpen: this.filtrateByRestaurantStatusOpen
             }
 
-			axios.post("/searchFiltreteSortRestaurants", this.restaurantSearchSortFiltrateDTO)
-            .then(response => {
-                console.log(response.data)
-                if(response.data.length !== 0) {
-                    this.restaurants = response.data
-                }
-                else
-                    alert("No results!")
-            })
-		},
-		searchRestaurantsByType(){
-			axios.get("/restourantSearchByType/" + this.searchQuery)
-            .then(response => {
-                console.log(response.data)
-                if(response.data.length !== 0) {
-                    this.restaurants = response.data
-                }
-                else
-                    alert("No results!")
-            })
-		},
-		searchRestaurantsByLocation(){
-			axios.get("/restourantSearchByLocation/" + this.searchQuery)
-            .then(response => {
-                console.log(response.data)
-                if(response.data.length !== 0) {
-                    this.restaurants = response.data
-                }
-                else
-                    alert("No results!")
-            })
-		},
-		
-		searchRestaurantsByGrade(){
-			axios.get("/restourantSearchByGrade/" + this.searchQuery)
-            .then(response => {
-                console.log(response.data)
-                if(response.data.length !== 0) {
-                    this.restaurants = response.data
-                }
-                else
-                    alert("No results!")
-            })
-		},
-		
-		getOpenedRestaurants(){
-			axios.get("/getOpenedRestaurants")
-            .then(response => {
-                console.log(response.data)
-                if(response.data.length !== 0) {
-                    this.restaurants = response.data
-                }
-                else
-                    alert("No results!")
-            })
-		},
-		
-		filtrate(){
-            axios.get("/restaurantsFiltrateByType/" + this.filterParam)
-            .then(response => {
-                console.log(response.data)
-                if(response.data.length !== 0) {
-                    this.restaurants = response.data
-                }
-                else
-                    alert("No results!")
-            })
-                
+            axios.post("/searchFiltreteSortRestaurants", this.restaurantSearchSortFiltrateDTO)
+                .then(response => {
+                    console.log(response.data)
+                    if (response.data.length !== 0) {
+                        this.restaurants = response.data
+                    } else {
+                        alert("No results!")
+                        location.reload()
+                    }
+                })
         }
 	},
 });

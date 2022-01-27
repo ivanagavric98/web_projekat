@@ -395,3 +395,26 @@ div.container rest{
 .sc-subtotal-items-label{
     font-size: x-large;
 }
+.flex-container {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    -ms-box-orient: horizontal;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.row {
+    -webkit-flex-direction: row;
+    flex-direction: row;
+}
+
+.custom-select {
+    position: relative;
+    width: 100px;
+}
