@@ -74,5 +74,87 @@
 		"customer": "iii",
 		"price": 2110.0,
 		"restaurantName": "Petrus"
+	},
+	{
+		"id": 49,
+		"items": [
+			{
+				"articleName": "salata",
+				"quantity": 4,
+				"image": "./images/articles/salat.jpg",
+				"price": 100.0
+			}
+		],
+		"customer": "iii",
+		"price": 400.0,
+		"restaurantName": "Petrus"
+	},
+	{
+		"id": 14,
+		"items": [
+			{
+				"articleName": "Cezar Salata",
+				"quantity": 4,
+				"image": "./images/articles/cezarSalat.jpg",
+				"price": 670.0
+			}
+		],
+		"customer": "iii",
+		"price": 2680.0,
+		"restaurantName": "Petrus"
+	},
+	{
+		"id": 0,
+		"items": [
+			{
+				"articleName": "salata",
+				"quantity": 3,
+				"image": "./images/articles/salat.jpg",
+				"price": 100.0
+			}
+		],
+		"customer": "iii",
+		"price": 300.0,
+		"restaurantName": "Petrus"
+	},
+	{
+		"id": 57,
+		"items": [
+			{
+				"articleName": "salata",
+				"quantity": 1,
+				"image": "./images/articles/salat.jpg",
+				"price": 100.0
+			},
+			{
+				"articleName": "Cezar Salata",
+				"quantity": 3,
+				"image": "./images/articles/cezarSalat.jpg",
+				"price": 670.0
+			}
+		],
+		"customer": "iii",
+		"price": 2110.0,
+		"restaurantName": "Petrus"
+	},
+	{
+		"id": 43,
+		"items": [
+			{
+				"articleName": "salata",
+				"quantity": 1,
+				"image": "./images/articles/salat.jpg",
+				"price": 100.0
+			},
+			{
+				"articleName": "Cezar Salata",
+				"quantity": 2,
+				"image": "./images/articles/cezarSalat.jpg",
+				"price": 670.0
+			}
+		],
+		"customer": "iii",
+		"price": 1440.0,
+		"restaurantName": "Petrus"
 	}
 ]

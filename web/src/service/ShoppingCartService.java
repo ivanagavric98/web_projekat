@@ -3,19 +3,25 @@ package service;
 import java.io.IOException;
 import java.util.ArrayList;
 import com.google.gson.JsonSyntaxException;
+
+import dao.CustomerDAO;
 import dao.ShoppingCartDAO;
+import model.Customer;
 import model.ShoppingCart;
 import model.ShoppingCartItem;
 
 public class ShoppingCartService {
     private ShoppingCartDAO shoppingCartDAO;
+    private CustomerDAO customerDAO;
 
-    public ShoppingCartService(ShoppingCartDAO shoppingCartDAO) {
+    public ShoppingCartService(ShoppingCartDAO shoppingCartDAO, CustomerDAO customerDAO) {
         this.shoppingCartDAO = shoppingCartDAO;
+        this.customerDAO = customerDAO;
     }
 
-    public Boolean addShoppingCart(ShoppingCart shoppingCart) throws JsonSyntaxException, IOException {
+    public Boolean addShoppingCart(ShoppingCart shoppingCart, String username) throws JsonSyntaxException, IOException {
         ArrayList<ShoppingCart> sc = getAllCarts();
+        Customer customer = customerDAO.getByID(username);
         Boolean result = false;
         if (sc == null) {
             shoppingCartDAO.create(shoppingCart);
@@ -27,9 +33,9 @@ public class ShoppingCartService {
                 }
             }
             shoppingCartDAO.create(shoppingCart);
+            customerDAO.update(customer);
             result = true;
         }
-
         return result;
     }
 

@@ -10,7 +10,7 @@ Vue.component("adminRestaurant", {
 				restaurant: {},
 				status: 'items',
 				newArticle:{
-					image: '',
+					image: null,
 				},
 				imageFile: '',
 				name: null,
@@ -389,6 +389,21 @@ Vue.component("adminRestaurant", {
 			console.log(status);
 			this.status=status
 		},
+		addedLogo(e){
+			const file = e.target.files[0];
+			this.createBase64Image(file);
+			this.newArticle.image = URL.createObjectURL(file);
+		},
+
+		createBase64Image(file){
+			const reader= new FileReader();
+
+			reader.onload = (e) =>{
+				let img = e.target.result;
+				this.newArticle.image = img;
+			}
+			reader.readAsDataURL(file);
+		},
 		getImage(image) {
 			if(image.includes("data")){
                 return image;
@@ -404,6 +419,7 @@ Vue.component("adminRestaurant", {
 			});
 			fileReader.readAsDataURL(files[0]);
 			this.imageFile = files[0];
+			console.log(this.imageFile)
 		},
 		onPickFile() {
 			console.log('Open images');
@@ -414,6 +430,8 @@ Vue.component("adminRestaurant", {
 		},
 		
 		addNewArticle(e){
+			console.log(this.newArticle.image)
+
 			 	e.preventDefault();
 	            e.preventDefault();
 
@@ -507,7 +525,7 @@ Vue.component("adminRestaurant", {
 					restaurantName: JSON.parse(localStorage.getItem('restaurant'))
 				};
 
-				axios.post('/createShoppingCart', shoppingCart)
+				axios.post('/createShoppingCart/' + localStorage.getItem("username"), shoppingCart)
 					.then(response => {
 						if(response.data){
 							alert("Your shopping cart is created!")

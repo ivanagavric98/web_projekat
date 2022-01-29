@@ -185,6 +185,7 @@ public class CustomerDAO implements IDAO<Customer, String> {
         }
 
         update(customer);
+        
         return customer;
     }
 

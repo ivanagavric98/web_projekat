@@ -311,12 +311,6 @@ Vue.component("orders", {
 				}
 			}
 		},
-		searchByPrice(){
-			
-		},
-		searchByDate(){
-			
-		},
 		changeOrderStatus(){
 			let role = localStorage.getItem('role')
 			if(role == 'MENAGER') {
@@ -353,7 +347,6 @@ Vue.component("orders", {
 						alert("That article already exists!")
 				});
 		}
-
 
 	},
 });

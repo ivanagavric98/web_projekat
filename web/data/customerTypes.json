@@ -1,17 +1,1 @@
-[
-    {
-        "type": "GOLDEN",
-        "discount": 10,
-        "requiredPoints": 100
-    },
-    {
-        "type": "SILVER",
-        "discount": 5,
-        "requiredPoints": 60
-    },
-    {
-        "type": "BRONZE",
-        "discount": 2,
-        "requiredPoints": 45
-    }
-]
+[{"type":"GOLDEN","discount":10,"requiredPoints":500},{"type":"SILVER","discount":5,"requiredPoints":350},{"type":"BRONZE","discount":0,"requiredPoints":0}]

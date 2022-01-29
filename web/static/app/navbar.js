@@ -46,8 +46,8 @@ Vue.component("navbar", {
           <li v-if="role =='CUSTOMER' || role =='SUPPLIER' || role =='MENAGER'" class="nav-item active">
             <a class="btn btn-dark mr-1" href="/#/orders">View orders</a>
           </li>
-          <li v-if="role =='salesman' " class="nav-item active">
-            <a class="btn btn-dark mr-1" href="/#/approveComments">Comment approval</a>
+          <li v-if="role =='MENAGER' " class="nav-item active">
+            <a class="btn btn-dark mr-1" href="/#/managerRestaurant">View My Restaurant</a>
         </li>
         <li v-if="role =='customer'"  class="nav-item active">
             <a class="btn btn-dark mr-1" href="/#/ticketUser">Tickets</a>

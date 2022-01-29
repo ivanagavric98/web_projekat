@@ -4,6 +4,7 @@ public class CustomerType {
 	public Type type;
 	public int discount;
 	public int requiredPoints;
+	
 	public CustomerType(Type type, int discount, int requiredPoints) {
 		super();
 		this.type = type;

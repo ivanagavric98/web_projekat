@@ -114,4 +114,8 @@ public class RestaurantController {
             RestaurantSearchSortFiltrateDTO restaurantSearchSortFiltrateDTO) throws JsonSyntaxException, IOException {
         return restaurantService.searchFiltreteSortRestaurants(restaurantSearchSortFiltrateDTO);
     }
+
+	public Restaurant getRestaurantByManager(String username) throws JsonSyntaxException, IOException {
+		return restaurantService.getRestaurantByManager(username);
+	}
 }

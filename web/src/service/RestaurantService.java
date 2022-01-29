@@ -8,6 +8,7 @@ import com.google.gson.JsonSyntaxException;
 
 import dao.AddressDAO;
 import dao.LocationDAO;
+import dao.MenagerDAO;
 import dao.RestaurantDAO;
 import dto.RestaurantSearchDTO;
 import dto.RestaurantSearchSortFiltrateDTO;
@@ -21,15 +22,12 @@ import service.Base64ToImage;
 
 public class RestaurantService {
     private RestaurantDAO restaurantDAO;
-    private LocationDAO locationDAO;
-    private AddressDAO addressDAO;
-    private LocationService locationService;
-    private AddressService addressService;
-    private MenagerService menagerService;
+    private MenagerDAO menagerDAO;
     private Base64ToImage decoder = new Base64ToImage();
 
-    public RestaurantService(RestaurantDAO restaurantDAO) {
+    public RestaurantService(RestaurantDAO restaurantDAO, MenagerDAO menagerDAO) {
         this.restaurantDAO = restaurantDAO;
+        this.menagerDAO = menagerDAO;
     }
 
     public Boolean register(Restaurant restaurant) throws JsonSyntaxException, IOException {
@@ -300,5 +298,18 @@ public class RestaurantService {
                 System.out.println(result.size());
                 return result;   
              }
+
+		public Restaurant getRestaurantByManager(String username) throws JsonSyntaxException, IOException {
+			ArrayList<Restaurant> restaurants = getAllRestaurants();
+			ArrayList<Menager> menagers = menagerDAO.getAll();
+		    
+			for(Restaurant restaurant: restaurants){
+				for(Menager menager: menagers) {
+					if(restaurant.getName().equals(menager.getRestaurant()))
+						return restaurant;
+				}
+			}
+			return null;	
+	   }
 }
 

@@ -11,6 +11,7 @@ import model.ShoppingCartItem;
 
 public class ArticleService {
 	private ArticleDAO articleDAO;
+    private Base64ToImage decoder = new Base64ToImage();
 
 	public ArticleService(ArticleDAO articleDAO) {
 		this.articleDAO = articleDAO;
@@ -20,6 +21,13 @@ public class ArticleService {
 		ArrayList<Article> articles = articleDAO.getAll();
 		Boolean result = false;
 
+		
+		String image = new String();
+		String path = "images/articles/" + article.getName() + ".jpg";
+		decoder.Base64DecodeAndSave(article.getImage(), path);
+		path = "./" + "images/articles/" + article.getName() + ".jpg";
+		article.setImage(path);
+		
 		if (articles.size() == 0) {
 			articleDAO.create(article);
 			result = true;

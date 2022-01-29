@@ -84,20 +84,24 @@ public class main {
 		UserService usersService = new UserService(usersDAO);
 		UserController usersController = new UserController(usersService);
 
+		MenagerDAO menagerDAO = new MenagerDAO("data/menagers.json");
+		MenagerService menagerService = new MenagerService(menagerDAO);
+		MenagerController menagerController = new MenagerController(menagerService);
+
+		OrderDAO orderDAO = new OrderDAO("data/orders.json");
+		OrderService orderService = new OrderService(orderDAO, menagerDAO);
+		OrderController orderController = new OrderController(orderService);
+		
 		CustomerDAO customersDAO = new CustomerDAO("data/customers.json");
-		CustomerService customerService = new CustomerService(customersDAO);
+		CustomerService customerService = new CustomerService(customersDAO, orderDAO);
 		CustomerController customerController = new CustomerController(customerService);
 
 		SupplierDAO supplierDAO = new SupplierDAO("data/suppliers.json");
 		SupplierService supplierService = new SupplierService(supplierDAO);
 		SupplierController supplierController = new SupplierController(supplierService);
 
-		MenagerDAO menagerDAO = new MenagerDAO("data/menagers.json");
-		MenagerService menagerService = new MenagerService(menagerDAO);
-		MenagerController menagerController = new MenagerController(menagerService);
-
 		RestaurantDAO restaurantDAO = new RestaurantDAO("data/restaurants.json");
-		RestaurantService restaurantService = new RestaurantService(restaurantDAO);
+		RestaurantService restaurantService = new RestaurantService(restaurantDAO, menagerDAO);
 		RestaurantController restaurantController = new RestaurantController(restaurantService);
 
 		AddressDAO addressDAO = new AddressDAO("data/addresses.json");
@@ -113,12 +117,8 @@ public class main {
 		ArticleController articleController = new ArticleController(articleService);
 
 		ShoppingCartDAO shoppingCartDAO = new ShoppingCartDAO("data/shoppingCarts.json");
-		ShoppingCartService shoppingCartService = new ShoppingCartService(shoppingCartDAO);
+		ShoppingCartService shoppingCartService = new ShoppingCartService(shoppingCartDAO, customersDAO);
 		ShoppingCartController shoppingCartController = new ShoppingCartController(shoppingCartService);
-
-		OrderDAO orderDAO = new OrderDAO("data/orders.json");
-		OrderService orderService = new OrderService(orderDAO, menagerDAO);
-		OrderController orderController = new OrderController(orderService);
 
 		SupplierRequestDAO supplierRequestDAO = new SupplierRequestDAO("data/supplierRequest.json");
 		SupplierRequestService supplierRequestService = new SupplierRequestService(supplierRequestDAO);
@@ -128,7 +128,7 @@ public class main {
 		CommentService commentService = new CommentService(commentDAO);
 		CommentController commentController = new CommentController(commentService);
 
-		CustomerTypeDAO customerTypeDAO = new CustomerTypeDAO("web/data/customerTypes.json");
+		CustomerTypeDAO customerTypeDAO = new CustomerTypeDAO("data/customerTypes.json");
 		CustomerTypeService customerTypeService = new CustomerTypeService(customerTypeDAO);
 		CustomerTypeController customerTypeController = new CustomerTypeController(customerTypeService);
 
@@ -502,7 +502,12 @@ public class main {
 			return gson.toJson(restaurant);
 		});
 
-
+		get("/getRestaurantByManager/:username", "application/json", (req, res) -> {
+			res.type("application/json");
+			Restaurant restaurant = restaurantController.getRestaurantByManager(req.params("username"));
+			return gson.toJson(restaurant);
+		});		
+		
 		get("/getOpenedRestaurants", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Restaurant> allRestaurants = restaurantController.getAll();
@@ -523,10 +528,10 @@ public class main {
 
 		// kad napravis korpu, sacuvaj njen id u localStorage-u jer nam treba za metodu
 		// koja popunjava korpu sa artiklima
-		post("/createShoppingCart", "application/json", (req, res) -> {
+		post("/createShoppingCart/:username", "application/json", (req, res) -> {
 			res.type("application/json");
 			ShoppingCart shoppingCart = gson.fromJson(req.body(), ShoppingCart.class);
-			Boolean r = shoppingCartService.addShoppingCart(shoppingCart);
+			Boolean r = shoppingCartService.addShoppingCart(shoppingCart, req.params("username"));
 			return gson.toJson(r);
 		});
 
@@ -586,14 +591,12 @@ public class main {
 		post("/addOrder/:username", "application/json", (req, res) -> {
 			res.type("application/json");
 			ShoppingCart shoppingCart = gson.fromJson(req.body(), ShoppingCart.class);
-			System.out.println("aaa");
+
 			Customer customer = customerController.getByUsername(shoppingCart.customer);
 			Double newPrice = customerTypeController.getPriceWithDiscount(shoppingCart.getPrice(), customer);
 			Order order = orderController.addOrder(shoppingCart, customer, newPrice);
 			ArrayList<CustomerType> allTypes = customerTypeController.getAllTypes();
-			// mora sa se username korisnika koji saljemo kao parametar u putanji,sacuvaj
-			// cijelog korisnika ili njegovo ime u localStoragu kad se loguje i onda ovde
-			// posalje
+			
 			customerController.updateUsersPoints(req.params("username"), shoppingCart.price, allTypes);
 			return gson.toJson(order);
 		});
@@ -619,6 +622,12 @@ public class main {
 			return gson.toJson(orders);
 		});
 
+		get("/getCustomersWithOrderFromRestaurant/:name", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<Customer> customers = customerController.getCustomersWithOrderFromRestaurant(req.params("name"));
+			return gson.toJson(customers);
+		});
+		
 		post("/changeStatusToInPreparation/:orderId", "application/json", (req, res) -> {
 			res.type("application/json");
 			Order order = orderController.changeStatusToInPreparation(req.params("orderId"));
@@ -856,9 +865,9 @@ public class main {
 			return gson.toJson(orders);
 		});
 */
-		get("/getOrdersByRestaurant/:restaurant", "application/json", (req, res) -> {
+		get("/getOrdersByRestaurant/:name", "application/json", (req, res) -> {
 			res.type("application/json");
-			ArrayList<Order> orders = orderController.getOrdersByRestaurant(req.params("restaurant"));
+			ArrayList<Order> orders = orderController.getOrdersByRestaurant(req.params("name"));
 			return gson.toJson(orders);
 		});
 

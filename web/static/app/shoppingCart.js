@@ -2,7 +2,8 @@ Vue.component("shoppingCart", {
 	data: function () {
 		    return {
 		      shoppingCart: {},
-			  shoppingCartItems: []
+			  shoppingCartItems: [],
+			  customerType: {}
 		    }
 	},
 	mounted() {
@@ -102,6 +103,7 @@ Vue.component("shoppingCart", {
 					.then(response => {
 						if(response.data){
 							alert("Your order is created!")
+							axios.post('/updateCustomerType', this.customerType)
 							location.reload()
 						}else
 							alert("That article already exists!")

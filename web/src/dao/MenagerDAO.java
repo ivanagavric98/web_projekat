@@ -43,7 +43,8 @@ public class MenagerDAO implements IDAO<Menager, String> {
 		}.getType();
 		BufferedReader br = new BufferedReader(new FileReader("data/menagers.json"));
 		this.menagers = gson.fromJson(br, token);
-		return menagers;	}
+		return menagers;
+		}
 
 	@Override
 	public Menager getByID(String id) throws JsonSyntaxException, IOException {

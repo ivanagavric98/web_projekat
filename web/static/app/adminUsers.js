@@ -143,7 +143,7 @@ Vue.component("adminUsers", {
 	           });
 			   
 		},		
-		 sortedClass (key) {
+			sortedClass (key) {
 	            return this.sort.key === key ? `sorted ${this.sort.isAsc ? 'asc' : 'desc' }` : '';
 	        },
 	        sortBy (key) {

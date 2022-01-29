@@ -1,1 +1,42 @@
-[{"orders":[],"cart":{"id":21,"price":0.0},"points":-736.928,"type":{"type":"BRONZE","discount":0,"requiredPoints":0},"username":"iii","password":"iii","name":"Ivana","surname":"Gavric","gender":"FEMALE","dateOfBirth":"Jul 8, 2021 12:00:00 AM","role":"CUSTOMER"},{"orders":[],"cart":{"id":0,"price":0.0},"points":50.0,"type":{"type":"SILVER","discount":0,"requiredPoints":50},"username":"aa","password":"123","name":"Marija","surname":"Marijanic","gender":"FEMALE","dateOfBirth":"Jul 8, 2021 12:00:00 AM","role":"CUSTOMER"}]
+[
+	{
+		"orders": [],
+		"cart": {
+			"id": 21,
+			"price": 0.0
+		},
+		"points": 1178.272,
+		"type": {
+			"type": "GOLDEN",
+			"discount": 10,
+			"requiredPoints": 500
+		},
+		"username": "iii",
+		"password": "iii",
+		"name": "Ivana",
+		"surname": "Gavric",
+		"gender": "FEMALE",
+		"dateOfBirth": "Jul 8, 2021 12:00:00 AM",
+		"role": "CUSTOMER"
+	},
+	{
+		"orders": [],
+		"cart": {
+			"id": 0,
+			"price": 0.0
+		},
+		"points": 50.0,
+		"type": {
+			"type": "SILVER",
+			"discount": 0,
+			"requiredPoints": 50
+		},
+		"username": "aa",
+		"password": "123",
+		"name": "Marija",
+		"surname": "Marijanic",
+		"gender": "FEMALE",
+		"dateOfBirth": "Jul 8, 2021 12:00:00 AM",
+		"role": "CUSTOMER"
+	}
+]

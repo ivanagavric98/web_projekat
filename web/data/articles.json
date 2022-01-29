@@ -6,7 +6,7 @@
 		"restaurant": "McDonald\u0027s",
 		"quantity": 150,
 		"description": "odlicno je",
-		"image": "./images/articles/salat"
+		"image": "./images/articles/salat.jpg"
 	},
 	{
 		"name": "salata",
@@ -25,5 +25,14 @@
 		"quantity": 1,
 		"description": "lepa je",
 		"image": "./images/articles/cezarSalat.jpg"
+	},
+	{
+		"name": "Burger",
+		"price": 450.0,
+		"type": "Hrana",
+		"restaurant": "Petrus",
+		"quantity": 300,
+		"description": "Socno i ukusno",
+		"image": "./images/articles/Burger.jpg"
 	}
 ]

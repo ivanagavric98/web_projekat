@@ -16,8 +16,8 @@ public class ShoppingCartController {
         this.shoppingCartService = shoppingCartService;
     }
 
-    public Boolean addShoppingCart(ShoppingCart shoppingCart) throws JsonSyntaxException, IOException {
-        return shoppingCartService.addShoppingCart(shoppingCart);
+    public Boolean addShoppingCart(ShoppingCart shoppingCart, String username) throws JsonSyntaxException, IOException {
+        return shoppingCartService.addShoppingCart(shoppingCart, username);
     }
 
     public ShoppingCart getById(String params) throws JsonSyntaxException, IOException {

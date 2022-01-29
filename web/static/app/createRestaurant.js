@@ -98,24 +98,23 @@ Vue.component("createRestaurant", {
 		
     },
 	methods: {
-		
 		addedLogo(e){
 			const file = e.target.files[0];
             this.createBase64Image(file);
             this.logo = URL.createObjectURL(file);
 		},
 		
-		 createBase64Image(file){
+		createBase64Image(file){
             const reader= new FileReader();
-           
+
             reader.onload = (e) =>{
             	let img = e.target.result;
             	this.logo = img;
             }
             reader.readAsDataURL(file);
         },
-		
-		  createRestaurant(e) {
+
+		createRestaurant(e) {
 	            e.preventDefault();
 	            e.preventDefault();
 

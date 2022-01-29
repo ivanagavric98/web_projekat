@@ -60,4 +60,8 @@ public class CustomerController {
         return customerService.updateUsersPointsAferCancellation(params, price);
     }
 
+	public ArrayList<Customer> getCustomersWithOrderFromRestaurant(String restaurantName) throws JsonSyntaxException, IOException {
+		return customerService.getCustomersWithOrderFromRestaurant(restaurantName);
+	}
+
 }
