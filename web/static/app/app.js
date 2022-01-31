@@ -12,6 +12,7 @@ const RestaurantsOverview = { template: '<restaurants></restaurants>' }
 const AdminRestaurant = { template: '<adminRestaurant></adminRestaurant>' }
 const Orders = { template: '<orders></orders>' }
 const ManagerRestaurant = { template: '<managerRestaurant></managerRestaurant>' }
+const DeliveryRequests = { template: '<deliveryRequests></deliveryRequests>' }
 
 
 const router = new VueRouter({
@@ -29,7 +30,8 @@ const router = new VueRouter({
 		{ path: '/adminRestaurant', component: AdminRestaurant },
 		{ path: '/orders', component: Orders },
 		{ path: '/shoppingCart', component: ShoppingCart },
-		{ path: '/managerRestaurant', component: ManagerRestaurant }
+		{ path: '/managerRestaurant', component: ManagerRestaurant },
+		{ path: '/deliveryRequests', component: DeliveryRequests }
 	  ]
 });
 

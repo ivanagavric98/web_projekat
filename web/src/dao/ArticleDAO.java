@@ -65,6 +65,9 @@ public class ArticleDAO implements IDAO<Article, String> {
 	@Override
 	public void create(Article entity) throws JsonSyntaxException, IOException {
 		ArrayList<Article> articles = getAll();
+		if(articles == null) {
+			articles = new ArrayList<Article>();
+		}
 		articles.add(entity);
 		saveAll(articles);
 	}

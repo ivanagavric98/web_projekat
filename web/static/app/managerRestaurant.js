@@ -4,6 +4,18 @@ Vue.component("managerRestaurant", {
             restaurant: {},
             orders: [],
             customers: [],
+            orderFiltrateSortSearchDTO : {},
+            searchByrestaurantName : null,
+            searchBypriceFrom : 0.0,
+            searchBypriceTo : 0.0,
+            searchBydateFrom : null,
+            searchBydateTo : null,
+            sortByRestaurantName : null,
+            sortByPrice : null,
+            sortByDate : null,
+            filtrateByRestaurantType : null,
+            filtrateByOrderStatus : null,
+            editedOrder: {},
             sort: {
                 key: '',
                 isAsc: false,
@@ -28,6 +40,67 @@ Vue.component("managerRestaurant", {
         <div style="background-color: ;">
 		    <h2 class="text-center">My Restaurant</h2>
         </div>
+        
+        
+        <div class="input-group mb-3"  style = "width: 56%; margin-left: 22%;">
+		  <input type="text" class="form-control" placeholder="Restaurant name" aria-label="" aria-describedby="basic-addon2" v-model="searchByrestaurantName" v-if="accessControlManager">
+		  <input type="text" class="form-control" placeholder="Price From" aria-label="" aria-describedby="basic-addon2" v-model="searchBypriceFrom" >
+		  <input type="text" class="form-control" placeholder="Price To" aria-label="" aria-describedby="basic-addon2" v-model="searchBypriceTo" >
+		  <input type="text" class="form-control" placeholder="Date From" aria-label="" aria-describedby="basic-addon2" v-model="searchBydateFrom" >
+		  <input type="text" class="form-control" placeholder="Date To" aria-label="" aria-describedby="basic-addon2" v-model="searchBydateTo" >
+		  <div class="input-group-append">
+		    <button class="btn btn-success" type="button" @click="search">Search</button>
+		  </div>
+		</div>
+
+	 <div class="row mb-5" style = "width: 56%; margin-left: 22%;">
+               <div class="container">
+			    <div class="row">
+			      <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "filtrateByRestaurantType">
+				    <option value="" disabled selected>Filtrate by name..</option>
+				    <option value="International"> International</option>
+				    <option value="Fast Food"> Fast food</option>
+				    <option value="Traditional Food"> Traditional food</option>
+				    <option value="Chinese Food"> Chinese food</option>
+				  </select>
+				  </div>
+				  <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "filtrateByOrderStatus">
+				    <option value="" disabled selected>Filtrate by status...</option>
+				    <option value="PROCESSING"> Processing</option>
+				    <option value="IN_PREPARATION"> In preparation</option>
+				    <option value="WAITING_FOR_SUPPLIER"> Waiting for deliverer</option>
+				    <option value="IN_TRANSPORT"> In transport</option>
+				    <option value="DELIVERED"> Delivered</option>
+				    <option value="CANCELED"> Canceled</option>
+				  </select>
+				  </div>
+				  <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "sortByRestaurantName">
+				    <option value="" disabled selected>Sort by name...</option>
+				    <option value="ascending"> Ascending</option>
+				    <option value="descending"> Descending</option>
+				  </select>
+				  </div>
+				   <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "sortByPrice">
+				    <option value="" disabled selected>Sort by location...</option>
+				    <option value="ascending"> Ascending</option>
+				    <option value="descending"> Descending</option>
+				  </select>
+				  </div>
+				   <div class="col-sm">
+				  <select class="custom-select"  @change="search" v-model = "sortByDate">
+				    <option value="" disabled selected>Sort by average grade...</option>
+				    <option value="ascending"> Ascending</option>
+				    <option value="descending"> Descending</option>
+				  </select>
+				  </div>
+                </div>
+			</div>
+		</div>
+        
         
         <div>
 		    <div>
@@ -152,7 +225,8 @@ Vue.component("managerRestaurant", {
 		    <div class="restaurant-info" >
 		        <h3 :key="article" v-for="article in order.articles">{{article}}</h3>
 				<p class="restaurant-type">Order ID:{{order.ID}}</p>
-				
+				<button class="btn btn-success" v-if="!accessControlManager" data-toggle="modal" data-target="#editOrderModal"
+						>Edit<b></b></button>
 		    </div>
 		  
 		    <div class="restaurant-details">
@@ -172,12 +246,53 @@ Vue.component("managerRestaurant", {
 		        </div>
     	
 		    </div>
-		    </div>		  
-	</div>
-	</div>
-	</div>
+		    </div>		 
+	
+	
+	<!-- EDIT ORDER STATUS -->
+
+	<div class="modal fade" id="editOrderModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLongTitle">Change order status</h5>
+			  <button type="button" class="close comment-button" data-dismiss="modal" aria-label="Close">
+				<i class="fas fa-times"></i>
+			  </button>
+			</div>
+			<div class="modal-body">
+				<form name='new-item-form'>
+			  <div class="form-group row mb-2">
+				  <label for="staticEmail" class="col-sm-2 col-form-label">Order Status</label>
+				  <div class="col-sm-10">
+								<select id="form3Example1q"  class="form-control"  v-model="order.orderStatus">
+									<option value="WAITING_FOR_SUPPLIER" v-if="!accessControlManager">Waiting For Supplier</option>
+									<option value="IN_PREPARATION" v-if="!accessControlManager">In Preparation</option>
+								</select>
+					  </div>			  
+				</div>
+				
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary"  data-dismiss="modal" @click=setEditableOrder(order)>Save changes</button>
+			</div>
+		  </form>
+		  </div>
+		</div>
+		</div>
+		</div>
+		</div>	
+		</div>
+		</div>
 	`,
     computed : {
+        accessControlManager(){
+            let role = localStorage.getItem('role')
+            if(role !== "MENAGER"){
+                return true;
+            }else
+                return false;
+        },
         sortedItems () {
             const list = this.customers.slice();
             if (!!this.sort.key) {
@@ -192,21 +307,70 @@ Vue.component("managerRestaurant", {
         }
     },
     methods: {
-        sortedClass (key) {
-            return this.sort.key === key ? `sorted ${this.sort.isAsc ? 'asc' : 'desc' }` : '';
+        sortedClass(key) {
+            return this.sort.key === key ? `sorted ${this.sort.isAsc ? 'asc' : 'desc'}` : '';
         },
-        sortBy (key) {
+        sortBy(key) {
             this.sort.isAsc = this.sort.key === key ? !this.sort.isAsc : false;
             this.sort.key = key;
         },
-        selectRow(item){
+        selectRow(item) {
             this.selectedItem = item;
         },
         customersOverview() {
-            axios.get('/getCustomersWithOrderFromRestaurant/'+ JSON.parse(localStorage.getItem("restaurant")))
+            axios.get('/getCustomersWithOrderFromRestaurant/' + JSON.parse(localStorage.getItem("restaurant")))
                 .then(response => {
                     this.customers = response.data;
                 });
+        },
+        search() {
+            let role = localStorage.getItem('role')
+
+            this.orderFiltrateSortSearchDTO = {
+                user : localStorage.getItem("username"),
+                searchByrestaurantName : this.searchByrestaurantName,
+                searchBypriceFrom : this.searchBypriceFrom,
+                searchBypriceTo : this.searchBypriceTo,
+                searchBydateFrom : this.searchBydateFrom,
+                searchBydateTo : this.searchBydateTo,
+                sortByRestaurantName : this.sortByRestaurantName,
+                sortByPrice : this.sortByPrice,
+                sortByDate : this.sortByDate,
+                filtrateByRestaurantType : this.filtrateByRestaurantType,
+                filtrateByOrderStatus : this.filtrateByOrderStatus
+            }
+
+            if (this.searchBypriceFrom === 0 || this.searchBypriceTo === 0) {
+                this.searchBypriceFrom = 0.0;
+                this.searchBypriceTo = 0.0;
+            }
+
+                axios.post('/searchFiltrateSortOrders', this.orderFiltrateSortSearchDTO)
+                    .then(response => {
+                        if (response.data.length !== 0) {
+                            this.orders = response.data
+                        } else {
+                            alert("No results!")
+                            location.reload()
+                        }
+                    });
+            },
+        changeOrderStatus(){
+            let role = localStorage.getItem('role')
+                axios.post('/changeStatusToWaitingForSupplier/' + this.editedOrder.ID, {})
+                    .then(response => {
+                        if (response.data) {
+                            alert("You have successfully change order status!")
+                            location.reload()
+                        } else
+                            alert("That article already exists!")
+                    });
+
+        },
+        setEditableOrder(order) {
+            this.editedOrder = order;
+            this.changeOrderStatus();
+        },
         }
-    },
+
 });

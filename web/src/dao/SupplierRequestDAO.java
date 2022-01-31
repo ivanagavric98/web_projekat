@@ -22,7 +22,7 @@ import com.google.gson.JsonSyntaxException;
 public class SupplierRequestDAO implements IDAO<SupplierRequest, String> {
 
     private String path;
-    private ArrayList<SupplierRequest> articles;
+    private ArrayList<SupplierRequest> supplierRequests;
 
     public SupplierRequestDAO(String path) {
         super();
@@ -41,23 +41,12 @@ public class SupplierRequestDAO implements IDAO<SupplierRequest, String> {
         Type token = new TypeToken<ArrayList<SupplierRequest>>() {
         }.getType();
         BufferedReader br = new BufferedReader(new FileReader("data/supplierRequest.json"));
-        this.articles = gson.fromJson(br, token);
-        return articles;
+        this.supplierRequests = gson.fromJson(br, token);
+        return supplierRequests;
     }
 
     @Override
     public SupplierRequest getByID(String id) throws JsonSyntaxException, IOException {
-        // SupplierRequest wantedArticle = null;
-        // ArrayList<SupplierRequest> articles = (ArrayList<SupplierRequest>) getAll();
-        // if (articles.size() != 0) {
-        // for (SupplierRequest article : articles) {
-        // if (article.getOrderId().equals(g)) {
-        // wantedArticle = article;
-        // break;
-        // }
-        // }
-        // }
-        // return wantedArticle;
         return null;
     }
 
@@ -65,7 +54,8 @@ public class SupplierRequestDAO implements IDAO<SupplierRequest, String> {
             throws JsonSyntaxException, IOException {
         SupplierRequest wantedRequest = null;
         ArrayList<SupplierRequest> requests = (ArrayList<SupplierRequest>) getAll();
-        if (requests.size() != 0) {
+        if (requests != null) {
+        	System.out.println("aa");
             for (SupplierRequest request : requests) {
                 if (request.getOrderId().equals(orderId) && request.getSupplier().equals(supplierUsername)) {
                     wantedRequest = request;
@@ -73,17 +63,18 @@ public class SupplierRequestDAO implements IDAO<SupplierRequest, String> {
                 }
             }
         }
+        System.out.println(wantedRequest);
         return wantedRequest;
     }
 
     @Override
     public void create(SupplierRequest entity) throws JsonSyntaxException, IOException {
-        ArrayList<SupplierRequest> articles = getAll();
-        if (articles == null) {
-            articles = new ArrayList<>();
+        ArrayList<SupplierRequest> supplierRequests = getAll();
+        if (supplierRequests == null) {
+        	supplierRequests = new ArrayList<>();
         }
-        articles.add(entity);
-        saveAll(articles);
+        supplierRequests.add(entity);
+        saveAll(supplierRequests);
     }
 
     @Override
@@ -105,9 +96,9 @@ public class SupplierRequestDAO implements IDAO<SupplierRequest, String> {
 
     @Override
     public void save(SupplierRequest entity) throws JsonSyntaxException, IOException {
-        ArrayList<SupplierRequest> articles = getAll();
-        articles.add(entity);
-        saveAll(articles);
+        ArrayList<SupplierRequest> supplierRequests = getAll();
+        supplierRequests.add(entity);
+        saveAll(supplierRequests);
     }
 
     @Override

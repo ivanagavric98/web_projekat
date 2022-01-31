@@ -24,6 +24,7 @@ import com.google.gson.JsonSyntaxException;
 
 import dao.MenagerDAO;
 import dao.OrderDAO;
+import dao.SupplierDAO;
 import dto.OrderFiltrateSortSearchDTO;
 import javaxt.utils.string;
 import model.Customer;
@@ -36,14 +37,17 @@ import model.OrderStatus;
 import model.Restaurant;
 import model.ShoppingCart;
 import model.ShoppingCartItem;
+import model.Supplier;
 
 public class OrderService {
     private OrderDAO orderDAO;
     private MenagerDAO managerDAO;
+    private SupplierDAO supplierDAO;
 
-    public OrderService(OrderDAO orderDAO, MenagerDAO managerDAO) {
+    public OrderService(OrderDAO orderDAO, MenagerDAO managerDAO, SupplierDAO supplierDAO) {
         this.orderDAO = orderDAO;
         this.managerDAO = managerDAO;
+        this.supplierDAO = supplierDAO;
     }
 
     public Order add(ShoppingCart shoppingCart, Customer customer, Double newPrice)
@@ -405,9 +409,8 @@ public class OrderService {
         ArrayList<Order> orders = getAllOrders();
         ArrayList<Order> resultList = new ArrayList<>();
         for (Order o : orders) {
-            if (o.getRestaurant().equals(params)) {
+            if (o.getRestaurant().equals(params)) 
                 resultList.add(o);
-            }
         }
         return resultList;
     }
@@ -435,11 +438,16 @@ public class OrderService {
 	}
 
 	public ArrayList<Order> getOrdersBySupplier(String supplierUsername) throws JsonSyntaxException, IOException {
-		ArrayList<Order> allOrders = orderDAO.getAll();
+		ArrayList<Supplier> allSupplier = supplierDAO.getAll();
 		ArrayList<Order> result = new ArrayList<>();
-		for (Order o : allOrders) {
-			if (o.getCustomer().equals(supplierUsername) && o.getOrderStatus().equals(OrderStatus.IN_TRANSPORT) || o.getOrderStatus().equals(OrderStatus.IN_PREPARATION) || o.getOrderStatus().equals(OrderStatus.WAITING_FOR_SUPPLIER)) {
-				result.add(o);
+		
+		for (Supplier s : allSupplier) {
+			if (s.getUsername().equals(supplierUsername)) {
+				for(Order o: s.getOrders()) {
+					if(o.getOrderStatus().equals(OrderStatus.IN_TRANSPORT) || o.getOrderStatus().equals(OrderStatus.DELIVERED)) {
+						result.add(o);
+					}
+				}
 			}
 		}	
 		return result;	

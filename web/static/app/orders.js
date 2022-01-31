@@ -43,13 +43,6 @@ Vue.component("orders", {
 		            console.log(response.data)
 		            this.orders = response.data;               
 		        });
-			
-			 axios.get("/getOrderWithStatusWaitingForSupplier")
-
-		        .then(response => {
-		            console.log(response.data)
-		            this.orders = response.data;               
-		        });
 
 		 }else {
 			 axios.get("/getOrdersByManager/" + localStorage.getItem('username'))
@@ -71,7 +64,7 @@ Vue.component("orders", {
 
 		   
     	<div class="input-group mb-3"  style = "width: 56%; margin-left: 22%;">
-		  <input type="text" class="form-control" placeholder="Restaurant name" aria-label="" aria-describedby="basic-addon2" v-model="searchByrestaurantName" >
+		  <input type="text" class="form-control" placeholder="Restaurant name" aria-label="" aria-describedby="basic-addon2" v-model="searchByrestaurantName" v-if="accessControlManagerAndDeliverer">
 		  <input type="text" class="form-control" placeholder="Price From" aria-label="" aria-describedby="basic-addon2" v-model="searchBypriceFrom" >
 		  <input type="text" class="form-control" placeholder="Price To" aria-label="" aria-describedby="basic-addon2" v-model="searchBypriceTo" >
 		  <input type="text" class="form-control" placeholder="Date From" aria-label="" aria-describedby="basic-addon2" v-model="searchBydateFrom" >
@@ -128,6 +121,7 @@ Vue.component("orders", {
                 </div>
 			</div>
 		</div>
+		
         <div :key="order.ID" v-for="order in orders">
 		    <div class="container" name="rest" style= "margin-top:10px;
 			    color: #42405F;
@@ -141,7 +135,7 @@ Vue.component("orders", {
 			    min-width: 800px;
 			    width: 80%;">
 	    
-		    <div class="restaurant-info" >
+		    <div class="restaurant-info" data-toggle="modal" data-target="#requestModal">
 		        <h3 :key="article" v-for="article in order.articles">{{article}}</h3>
 				<p class="restaurant-type">Order ID:{{order.ID}}</p>
 				<button class="btn btn-danger" @click="cancelOrder(order)" v-if="accessControlCustomer"
@@ -167,11 +161,9 @@ Vue.component("orders", {
 		            <i class="fas fa-star" style="color: #FAE480"></i>
 		            <label>Price: {{order.price}} DIN</label>
 		        </div>
-
-    
-    	
 		    </div>
 		    </div>		  
+		
 		
 		<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
@@ -188,7 +180,7 @@ Vue.component("orders", {
 				  <label for="staticEmail" class="col-sm-2 col-form-label">Order Status</label>
 				  <div class="col-sm-10">
 								<select id="form3Example1q"  class="form-control"  v-model="order.orderStatus">
-									<option value="WAITING_FOR_SUPPLIER" v-if="accessControlManagerAndDeliverer">Waiting For Supplier</option>
+									<option value="WAITING_FOR_DELIVERER" v-if="accessControlManagerAndDeliverer">Waiting For Supplier</option>
 									<option value="IN_PREPARATION" v-if="accessControlManager">In Preparation</option>
 									<option value="IN_TRANSPORT" v-if="accessControlDeliverer">In Transport</option>
 									<option value="DELIVERED" v-if="accessControlDeliverer">Delivered</option>
@@ -205,46 +197,38 @@ Vue.component("orders", {
 		</div>
 		</div>	
 		</div>
-    </div>   
-
-
-		<!--ADD COMMENT -->		
-			<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-			<div class="modal-header">
-        		<h5 class="modal-title" id="exampleModalLongTitle">Add comment</h5>
-        	<button type="button" class="close comment-button" data-dismiss="modal" aria-label="Close">
-				<i class="fas fa-times"></i>
-		  	</button>
-		</div>
-	<div class="modal-body">
-		  <form name='new-item-form'>
-		  
-		<div class="form-group row mb-2">
-			<label for="staticEmail" class="col-sm-2 col-form-label">Your comment:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" placeholder="Name"  ref="name" v-model="commentText">
-			</div>
-		  </div>
-		  <div class="col-sm-10">
-				<input type="text" class="form-control" placeholder="Name"  ref="name" v-model="grade">
-			</div>
-		  </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary"  data-dismiss="modal" >Save changes</button>
-      </div>
-	</form>
-    </div>	
 		
+		<!-- SUPPLIER REQUEST FOR DELIVERING -->
+		
+		<div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="requestModal" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLongTitle">Send request for delivering</h5>
+			  <button type="button" class="close comment-button" data-dismiss="modal" aria-label="Close">
+				<i class="fas fa-times"></i>
+			  </button>
+			</div>
+			<div class="modal-body">
+				<form name='new-item-form'>
+			  <div class="form-group row mb-2">
+				  <label for="staticEmail" class="label label-default text-center">I want to deliver this order.</label> 
+				</div>
+				
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary"  data-dismiss="modal" @click="sendRequest(order)">Send</button>
+			</div>
+		  </form>
+		  </div>
 		</div>
+		</div>	
+		</div>
+		
   </div>
   </div>
-
 
 	
-	</div>
 	`,
 	computed : {
 		accessControlCustomer(){
@@ -270,7 +254,7 @@ Vue.component("orders", {
 		},
 		accessControlManagerAndDeliverer(){
 			let role = localStorage.getItem('role')
-			if(role == 'SUPPLIER' || role == 'MENAGER'){
+			if(role !== 'SUPPLIER' || role !== 'MENAGER'){
 				return true;
 			}else
 				return false;
@@ -294,10 +278,10 @@ Vue.component("orders", {
 				filtrateByOrderStatus : this.filtrateByOrderStatus
 			}
 
-			if(role == 'CUSTOMER' || role == 'SUPPLIER') {
-				if (this.searchBypriceFrom == "" || this.searchBypriceTo == "") {
+				if (this.searchBypriceFrom === 0 || this.searchBypriceTo === 0) {
 					this.searchBypriceFrom = 0.0;
 					this.searchBypriceTo = 0.0;
+				}
 
 					axios.post('/searchFiltrateSortOrders', this.orderFiltrateSortSearchDTO)
 						.then(response => {
@@ -308,8 +292,7 @@ Vue.component("orders", {
 								location.reload()
 							}
 						});
-				}
-			}
+
 		},
 		changeOrderStatus(){
 			let role = localStorage.getItem('role')
@@ -343,6 +326,15 @@ Vue.component("orders", {
 					if(response.data){
 						alert("You have successfully cancel order!")
 						location.reload()
+					}else
+						alert("That article already exists!")
+				});
+		},
+		sendRequest(order) {
+			axios.post('/addRequest/'+ localStorage.getItem("username") + "/" + order.ID)
+				.then(response => {
+					if(response.data){
+						alert("You have successfully sent request!")
 					}else
 						alert("That article already exists!")
 				});

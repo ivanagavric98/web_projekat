@@ -1,7 +1,1 @@
-[
-    {
-        "supplier": "nina",
-        "orderId": "8970239d-5",
-        "status": "ACCEPTED"
-    }
-]
+[{"supplier":"nina","orderId":"fa420586-3","status":"ACCEPTED"}]

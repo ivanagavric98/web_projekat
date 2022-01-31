@@ -14,23 +14,24 @@ public class SupplierRequestService {
         this.supplierRequestDAO = supplierRequestDAO;
     }
 
-    public Boolean register(String supplier, String orderId) throws JsonSyntaxException, IOException {
-        ArrayList<SupplierRequest> users = getAllSupplierRequests();
+    public Boolean sendRequest(String supplier, String orderId) throws JsonSyntaxException, IOException {
+        ArrayList<SupplierRequest> requests = getAllSupplierRequests();
+        
         SupplierRequest supplierRequest = new SupplierRequest();
         supplierRequest.orderId = orderId;
         supplierRequest.status = RequestStatus.PROCESSING;
         supplierRequest.supplier = supplier;
 
         Boolean result = false;
-        if (users == null) {
+        if (requests == null) {
             supplierRequestDAO.create(supplierRequest);
             result = true;
         } else {
-            for (SupplierRequest u : users) {
-                if (u.supplier.equals(supplierRequest.supplier) && u.orderId.equals(supplierRequest.orderId)) {
+        	for (SupplierRequest r : requests) {
+                if (r.getSupplier().equals(supplierRequest.supplier) && r.getOrderId().equals(supplierRequest.orderId)) {
                     result = false;
                 } else {
-                    supplierRequestDAO.create(u);
+                    supplierRequestDAO.create(r);
                     result = true;
                 }
             }
@@ -39,7 +40,14 @@ public class SupplierRequestService {
     }
 
     public ArrayList<SupplierRequest> getAllSupplierRequests() throws JsonSyntaxException, IOException {
-        return supplierRequestDAO.getAll();
+    	ArrayList<SupplierRequest> requests = supplierRequestDAO.getAll();
+    	ArrayList<SupplierRequest> result = new ArrayList<SupplierRequest>();
+    	
+    	for(SupplierRequest r : requests) {
+    		if(r.getStatus().equals(RequestStatus.PROCESSING)) 
+    			result.add(r);
+    	}
+        return result;
     }
 
     public Boolean processSupplierRequetst(String params, String params3, String params2)

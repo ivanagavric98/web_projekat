@@ -56,6 +56,7 @@ import model.ShoppingCart;
 import model.ShoppingCartItem;
 import model.Supplier;
 import model.User;
+import model.SupplierRequest;
 import service.AddressService;
 import service.ArticleService;
 import service.CommentService;
@@ -88,17 +89,17 @@ public class main {
 		MenagerService menagerService = new MenagerService(menagerDAO);
 		MenagerController menagerController = new MenagerController(menagerService);
 
+		SupplierDAO supplierDAO = new SupplierDAO("data/suppliers.json");
+		SupplierService supplierService = new SupplierService(supplierDAO);
+		SupplierController supplierController = new SupplierController(supplierService);
+
 		OrderDAO orderDAO = new OrderDAO("data/orders.json");
-		OrderService orderService = new OrderService(orderDAO, menagerDAO);
+		OrderService orderService = new OrderService(orderDAO, menagerDAO, supplierDAO);
 		OrderController orderController = new OrderController(orderService);
 		
 		CustomerDAO customersDAO = new CustomerDAO("data/customers.json");
 		CustomerService customerService = new CustomerService(customersDAO, orderDAO);
 		CustomerController customerController = new CustomerController(customerService);
-
-		SupplierDAO supplierDAO = new SupplierDAO("data/suppliers.json");
-		SupplierService supplierService = new SupplierService(supplierDAO);
-		SupplierController supplierController = new SupplierController(supplierService);
 
 		RestaurantDAO restaurantDAO = new RestaurantDAO("data/restaurants.json");
 		RestaurantService restaurantService = new RestaurantService(restaurantDAO, menagerDAO);
@@ -658,23 +659,24 @@ public class main {
 			return order;
 		});
 
-		post("/addRequest/:supplierUsername/:orderId", "application/json", (req, res) -> {
+		post("/addRequest/:username/:orderId", "application/json", (req, res) -> {
 			res.type("application/json");
-			Boolean result = supplierRequestController.addRequest(req.params("supplierUsername"),
+			Boolean result = supplierRequestController.addRequest(req.params("username"),
 					req.params("orderId"));
 			return result;
 		});
 
-		post("/processSupplierRequetst/:orderId/:supplierUsername/:par", "application/json", (req, res) -> {
+		post("/processSupplierRequetst/:orderId/:username/:par", "application/json", (req, res) -> {
 			res.type("application/json");
 			// par salji sa fronta, vrijednost ili cancel ili approve
-			Boolean result = supplierRequestController.processSupplierRequetst(req.params("ID"),
-					req.params("supplierUsername"),
+			Boolean result = supplierRequestController.processSupplierRequetst(req.params("orderId"),
+					req.params("username"),
 					req.params("par"));
 			if (result) {
-				Supplier supplier = supplierController.getByUsername(req.params("u0sername"));
+				Supplier supplier = supplierController.getByUsername(req.params("username"));
 				Order order = orderController.getByID(req.params("orderId"));
 				ArrayList<Order> orders = supplier.getOrders();
+				System.out.println(orders);
 				if (orders == null) {
 					orders = new ArrayList<>();
 				}
@@ -687,6 +689,13 @@ public class main {
 			}
 			return result;
 		});
+		
+		get("/getAllRequestsForDelivering", "application/json", (req, res) -> {
+			res.type("application/json");
+			ArrayList<SupplierRequest> requests = supplierRequestController.getAllRequestsForDelivering();
+			return gson.toJson(requests);
+		});
+		
 		post("/addComment", "application/json", (req, res) -> {
 			res.type("application/json");
 			Comment comment = gson.fromJson(req.body(), Comment.class);
