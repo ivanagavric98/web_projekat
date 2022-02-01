@@ -13,6 +13,7 @@ import model.Customer;
 import model.Order;
 import model.Restaurant;
 import model.ShoppingCart;
+import service.CustomerService;
 import service.OrderService;
 import service.RestaurantService;
 
@@ -23,8 +24,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    public Order addOrder(ShoppingCart shoppingCart, Customer customer, Double newPrice)
-            throws JsonSyntaxException, IOException {
+    public Order addOrder(ShoppingCart shoppingCart, Customer customer, Double newPrice) throws JsonSyntaxException, IOException {
         return orderService.add(shoppingCart, customer, newPrice);
     }
 
@@ -41,8 +41,8 @@ public class OrderController {
         return orderService.changeStatusToInTransport(params);
     }
 
-    public Order changeStatusToDelivered(String params) throws JsonSyntaxException, IOException {
-        return orderService.changeStatusToDelivered(params);
+    public Order changeStatusToDelivered(String params, String username) throws JsonSyntaxException, IOException {
+        return orderService.changeStatusToDelivered(params, username);
     }
 
     public Order changeStatusToCanceled(String params) throws JsonSyntaxException, IOException {
@@ -145,8 +145,8 @@ public class OrderController {
 		return orderService.getOrdersBySupplier(supplierUsername);
 	}
 
-	public ArrayList<Order> getOrdersByManager(String managerUsername) throws JsonSyntaxException, IOException {
-		return orderService.getOrdersByManager(managerUsername);
+	public ArrayList<Order> getOrdersByManager() throws JsonSyntaxException, IOException {
+		return orderService.getOrdersByManager();
 	}
 	
 	public ArrayList<Order> getAll() throws JsonSyntaxException, IOException {

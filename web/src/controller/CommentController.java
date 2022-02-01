@@ -14,17 +14,8 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    public Boolean addComment(Comment comment) throws JsonSyntaxException, IOException {
-        try {
-            return commentService.addComment(comment);
-        } catch (JsonSyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return true;
+    public Boolean addComment(String username, String restaurant, Comment comment) throws JsonSyntaxException, IOException {
+        return commentService.addComment(username, restaurant, comment);    
     }
 
     public Comment approveComment(Comment comment) throws JsonSyntaxException, IOException {

@@ -1,11 +1,35 @@
 [
 	{
-		"orders": [],
+		"orders": [
+			{
+				"ID": "fa7ffa17-5",
+				"articles": [
+					"salata",
+					"Cezar Salata"
+				],
+				"restaurant": "Petrus",
+				"dateAndTime": "2022-02-01",
+				"price": 1476.0,
+				"customer": "iii",
+				"orderStatus": "DELIVERED"
+			},
+			{
+				"ID": "780ae504-c",
+				"articles": [
+					"Burger"
+				],
+				"restaurant": "McDonald's",
+				"dateAndTime": "2022-02-01",
+				"price": 2025.0,
+				"customer": "iii",
+				"orderStatus": "PROCESSING"
+			}
+		],
 		"cart": {
 			"id": 21,
 			"price": 0.0
 		},
-		"points": 1178.272,
+		"points": 1695.6419999999998,
 		"type": {
 			"type": "GOLDEN",
 			"discount": 10,

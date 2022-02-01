@@ -13,7 +13,14 @@ Vue.component("restaurants", {
                 sortByLocation: "",
                 sortByAverageGrade: "",
                 filtrateByRestaurantType: "",
-                filtrateByRestaurantStatusOpen: ""
+                filtrateByRestaurantStatusOpen: "",
+                comment : {},
+                customer: "",
+                restaurant: "",
+                text: "",
+                grade: 0,
+                restName: null,
+                commentLabel: null
 				}
 	},
 	mounted() {
@@ -83,7 +90,7 @@ Vue.component("restaurants", {
 		</div>
     
         <div  :key="restaurant.name" v-for="restaurant in restaurants" >
-		    <div  @click= "goToRestaurant(restaurant)">
+		    <div>
 		    <div class="container" name="rest" style= "margin-top:10px;
 			    color: #42405F;
 			    display: flex;
@@ -102,6 +109,8 @@ Vue.component("restaurants", {
 		    <div class="restaurant-info">
 		        <h3>{{restaurant.name}}</h3>
 		        <p class="restaurant-type">{{restaurant.type}}</p>
+		        <button type="button" class="btn btn-success" @click= "goToRestaurant(restaurant)">Go to {{restaurant.name}}</button>
+		        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addComment" @click="setTemporaryRestaurant(restaurant)" v-if="accessControlCustomer">Add comment</button>
 		    </div>
 		    <div class="restaurant-details">
 		        <div class="restaurant-location">
@@ -116,25 +125,89 @@ Vue.component("restaurants", {
 		        </div>
 		    </div>
 		    </div>
-		    </div>
-		    <!-- <div data-toggle="modal" data-target="#exampleModalCenter" >
-		        <button class="btn btn-success" 
-		        		>Add a comment<b></b></button
-					>
-					</div> -->
+	<!-- ADD COMMENT -->
+
+	<div class="modal fade" id="addComment" tabindex="-1" role="dialog" aria-labelledby="addComment" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLongTitle">Add comment</h5>
+			  <button type="button" class="close comment-button" data-dismiss="modal" aria-label="Close">
+                x
+			  </button>
+			</div>
+			<div class="modal-body">
+				<form name='new-item-form'>
+			  <div class="form-group row mb-2">
+			  <label for="staticEmail" class="col-sm-2 col-form-label">Comment:</label>
+			  <div class="col-sm-10">
+				  <input type="text" class="form-control" placeholder="Comment"  ref="name" v-model="text">
+			  </div>
+			</div>
+			<div class="form-group row mb-2">
+			  <label for="staticEmail" class="col-sm-2 col-form-label">Grade:</label>
+			  <div class="col-sm-10">
+				  <input type="text" class="form-control" placeholder="Grade"  ref="price" v-model="grade">
+				   <small id="emailHelp" class="form-text text-muted">From 1 to 5.</small>
+			  </div>
+			</div>
+				   <small id="emailHelp" class="form-text text-muted">{{commentLabel}}</small>	
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary"  data-dismiss="modal" @click= "addComment" >Save changes</button>
+			</div>
+		  </form>
+		  </div>
+		</div>
+		</div>
+		</div>
+   </div>
+		   
+		   
     </div>
 	</div>
 	`,
 	computed : {
+        accessControlCustomer(){
+            let role = localStorage.getItem("role");
+            if(role == 'CUSTOMER'){
+                return true;
+            }else
+                return false;
+        }
     },
 	methods: {
+        setTemporaryRestaurant(restaurant) {
+            this.restName = restaurant.name;
+        } ,
         goToRestaurant: function (restaurant) {
             localStorage.setItem('restaurant', JSON.stringify(restaurant.name));
             this.$router.push("adminRestaurant")
         },
 
-        search() {
+        addComment(){
+            let comment = {
+                customer: localStorage.getItem("username"),
+                restaurant: this.restName,
+                text: this.text,
+                grade: this.grade
+            }
+            if(comment.grade < 1 || comment.grade > 5){
+                alert("Grade should be between 1 and 5.")
+            }else{
+                axios.post("/addComment/" + localStorage.getItem("username") + "/" + this.restName, comment)
+                    .then(response => {
+                        console.log(response.data)
+                        if (response.data) {
+                            alert('You are successfully sent your comment.');
+                        } else {
+                            alert('You cannot leave comment on this restaurant.');
+                        }
+                    })
+            }
+        },
 
+        search() {
             this.restaurantSearchSortFiltrateDTO = {
                 searchByrestaurantName: this.searchByrestaurantName,
                 searchByLocation: this.searchByLocation,

@@ -130,7 +130,9 @@ public class OrderDAO implements IDAO<Order, String> {
             throws JsonSyntaxException, IOException {
         Order order = getByID(params);
         System.out.println(order.ID);
-        order.setOrderStatus(OrderStatus.WAITING_FOR_SUPPLIER);
+        if(order.orderStatus.equals(OrderStatus.IN_PREPARATION)) {
+        	order.setOrderStatus(OrderStatus.WAITING_FOR_SUPPLIER);
+        }
         update(order);
         return order;
     }

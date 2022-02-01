@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 import com.google.gson.JsonSyntaxException;
 
+import dao.CustomerDAO;
 import dao.MenagerDAO;
 import dao.OrderDAO;
 import dao.SupplierDAO;
@@ -43,26 +44,27 @@ public class OrderService {
     private OrderDAO orderDAO;
     private MenagerDAO managerDAO;
     private SupplierDAO supplierDAO;
+    private CustomerDAO customerDAO;
 
-    public OrderService(OrderDAO orderDAO, MenagerDAO managerDAO, SupplierDAO supplierDAO) {
+    public OrderService(OrderDAO orderDAO, MenagerDAO managerDAO, SupplierDAO supplierDAO, CustomerDAO customerDAO) {
         this.orderDAO = orderDAO;
         this.managerDAO = managerDAO;
         this.supplierDAO = supplierDAO;
+        this.customerDAO = customerDAO;
     }
 
     public Order add(ShoppingCart shoppingCart, Customer customer, Double newPrice)
             throws JsonSyntaxException, IOException {
-    	System.out.println("9999999999");
         ArrayList<Order> orders = getAllOrders();
         String uniqString = UUID.randomUUID().toString().substring(0, 10);
 
+        ArrayList<Order> customerOrders = customer.getOrders();
+        
         ArrayList<String> itemsToAdd = new ArrayList<>();
         Order order = new Order();
-        System.out.println("***********");
         for (ShoppingCartItem sci : shoppingCart.items) {
             itemsToAdd.add(sci.articleName);
         }
-        System.out.println(itemsToAdd.get(0));
         
         order.articles = itemsToAdd;
         order.ID = uniqString;
@@ -72,7 +74,20 @@ public class OrderService {
         order.price = newPrice;
         order.restaurant = shoppingCart.getRestaurantName();
         order.orderStatus = OrderStatus.PROCESSING;
-
+        
+        if(customerOrders != null) {
+        	customerOrders.add(order);
+        }else {
+        	customerOrders = new ArrayList<Order>();
+        	customerOrders.add(order);
+        }
+        
+        ArrayList<Customer> allCustomers = customerDAO.getAll();
+        for(Customer c: allCustomers) {
+        	if(c.getUsername().equals(customer.getUsername()))
+        		c.setOrders(customerOrders);
+        }
+        
         if (orders == null) {
             orderDAO.create(order);
         } else {
@@ -81,7 +96,8 @@ public class OrderService {
                     return null;
                 }
             }
-            orderDAO.create(order);
+         orderDAO.create(order);
+         customerDAO.saveAll(allCustomers);
         }
         return order;
     }
@@ -102,8 +118,18 @@ public class OrderService {
         return orderDAO.changeStatusToInTransport(params);
     }
 
-    public Order changeStatusToDelivered(String params) throws JsonSyntaxException, IOException {
-        return orderDAO.changeStatusToDelivered(params);
+    public Order changeStatusToDelivered(String params, String username) throws JsonSyntaxException, IOException {
+    	Supplier supplier = supplierDAO.getByID(username);
+    	Order order = orderDAO.getByID(params);
+    	order.setOrderStatus(OrderStatus.DELIVERED);
+    	update(order);
+    	for(Order o: supplier.getOrders()) {
+    		if(o.getID().equals(order.getID())) {
+    			o.setOrderStatus(OrderStatus.DELIVERED);
+    	    	supplierDAO.update(supplier);    			
+    		}
+    	}
+    	return order;
     }
 
     public Order changeStatusToCanceled(String params) throws JsonSyntaxException, IOException {
@@ -453,16 +479,18 @@ public class OrderService {
 		return result;	
 		}
 
-	public ArrayList<Order> getOrdersByManager(String managerUsername) throws JsonSyntaxException, IOException {
+	public ArrayList<Order> getOrdersByManager() throws JsonSyntaxException, IOException {
 		ArrayList<Order> allOrders = orderDAO.getAll();
 		ArrayList<Menager> managers = managerDAO.getAll();
+		
 		ArrayList<Order> result = new ArrayList<>();
 		for (Order o : allOrders) {
 			for(Menager m : managers) {
-				if (o.getCustomer().equals(managerUsername) && o.getRestaurant().equals(m.getRestaurant()) && m.getUsername().equals(managerUsername)) {
+				if (o.getRestaurant().equals(m.getRestaurant()) ) {
 					result.add(o);
 				}
 			}
 		}	
-		return result;		}
+		return result;		
+	}
 }

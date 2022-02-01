@@ -112,8 +112,7 @@ public class CommentDAO implements IDAO<Comment, String> {
         return null;
     }
 
-    public Comment getByRestaurantAndCustomerName(String restaurant, String customer)
-            throws JsonSyntaxException, IOException {
+    public Comment getByRestaurantAndCustomerName(String restaurant, String customer) throws JsonSyntaxException, IOException {
         ArrayList<Comment> comments = getAll();
         Comment result = null;
         for (Comment c : comments) {

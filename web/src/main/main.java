@@ -9,6 +9,8 @@ import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import controller.AddressController;
@@ -93,11 +95,11 @@ public class main {
 		SupplierService supplierService = new SupplierService(supplierDAO);
 		SupplierController supplierController = new SupplierController(supplierService);
 
+		CustomerDAO customersDAO = new CustomerDAO("data/customers.json");
 		OrderDAO orderDAO = new OrderDAO("data/orders.json");
-		OrderService orderService = new OrderService(orderDAO, menagerDAO, supplierDAO);
+		OrderService orderService = new OrderService(orderDAO, menagerDAO, supplierDAO, customersDAO);
 		OrderController orderController = new OrderController(orderService);
 		
-		CustomerDAO customersDAO = new CustomerDAO("data/customers.json");
 		CustomerService customerService = new CustomerService(customersDAO, orderDAO);
 		CustomerController customerController = new CustomerController(customerService);
 
@@ -126,7 +128,7 @@ public class main {
 		SupplierRequestController supplierRequestController = new SupplierRequestController(supplierRequestService);
 
 		CommentDAO commentDAO = new CommentDAO("data/comments.json");
-		CommentService commentService = new CommentService(commentDAO);
+		CommentService commentService = new CommentService(commentDAO, orderDAO, customersDAO);
 		CommentController commentController = new CommentController(commentService);
 
 		CustomerTypeDAO customerTypeDAO = new CustomerTypeDAO("data/customerTypes.json");
@@ -647,9 +649,9 @@ public class main {
 			return gson.toJson(order);
 		});
 
-		post("/changeStatusToDelivered/:orderId", "application/json", (req, res) -> {
+		post("/changeStatusToDelivered/:orderId/:username", "application/json", (req, res) -> {
 			res.type("application/json");
-			Order order = orderController.changeStatusToDelivered(req.params("orderId"));
+			Order order = orderController.changeStatusToDelivered(req.params("orderId"), req.params("username"));
 			return gson.toJson(order);
 		});
 
@@ -696,11 +698,11 @@ public class main {
 			return gson.toJson(requests);
 		});
 		
-		post("/addComment", "application/json", (req, res) -> {
+		post("/addComment/:username/:name", "application/json", (req, res) -> {
 			res.type("application/json");
 			Comment comment = gson.fromJson(req.body(), Comment.class);
 			Restaurant restaurant = restaurantController.getRestaurantByName(comment.getRestaurant());
-
+			ArrayList<Comment> comments = commentController.getAllCommentsByRestaurant(req.params("name"));
 			ArrayList<Integer> grades = restaurant.getGrade();
 			if (grades == null) {
 				grades = new ArrayList<>();
@@ -710,8 +712,16 @@ public class main {
 			restaurant.setGrade(grades);
 			restaurantController.update(restaurant);
 			comment.status = CommentStatus.Processing;
-			commentController.addComment(comment);
-			return comment;
+	        String uniqString = UUID.randomUUID().toString().substring(0, 10);
+
+			for(Comment c: comments) {
+				if(c.getId().equals(uniqString)) {
+					comment.id = c.id;
+				}
+			}
+			comment.id =  uniqString;
+			Boolean result = commentController.addComment(req.params("username"), req.params("name"), comment);
+			return result;
 		});
 		
 
@@ -719,14 +729,14 @@ public class main {
 			res.type("application/json");
 			Comment comment = gson.fromJson(req.body(), Comment.class);
 			commentController.approveComment(comment);
-			return comment;
+			return gson.toJson(comment);
 		});
 
 		post("/rejectComment", "application/json", (req, res) -> {
 			res.type("application/json");
 			Comment comment = gson.fromJson(req.body(), Comment.class);
 			commentController.rejectComment(comment);
-			return comment;
+			return gson.toJson(comment);
 		});
 
 		get("/getCommentsWithStatusApproved", "application/json", (req, res) -> {
@@ -765,9 +775,9 @@ public class main {
 			return gson.toJson(orders);
 		});
 		
-		get("/getOrdersByManager/:username", "application/json", (req, res) -> {
+		get("/getOrdersByRestaurantName", "application/json", (req, res) -> {
 			res.type("application/json");
-			ArrayList<Order> orders = orderController.getOrdersByManager(req.params("username"));
+			ArrayList<Order> orders = orderController.getOrdersByManager();
 			return gson.toJson(orders);
 		});
 

@@ -26,7 +26,9 @@ Vue.component("adminRestaurant", {
 				quantitySC: null,
 				shoppingCartItems: [],
 				itemsPrice: 0,
-				shoppingCartt: {}
+				shoppingCartt: {},
+				customer: null,
+				commentTemp: null
 				}
 	},
 	mounted() {
@@ -42,26 +44,20 @@ Vue.component("adminRestaurant", {
 	           console.log(response.data)
 	           this.articles = response.data;               
 	       });
-		
-		axios.get("/getCommentsWithStatusRejected")
-			.then(response => {
-				console.log(response.data)
-				this.commentsRejected = response.data;
-			});
-		
-		axios.get("/getCommentsWithStatusApproved")
-		.then(response => {
-			console.log(response.data)
-			this.commentsApproved = response.data;
-		});
-	
-		axios.get("/getAllCommentsByRestaurant/" +  JSON.parse(localStorage.getItem('restaurant')))
-		.then(response => {
-			console.log(response.data)
-			let customer = response.data.customer;
-			console.log(customer)
-			this.commentsProcessing = response.data;
-		});
+
+		if(this.role == "CUSTOMER"){
+			axios.get("/getCommentsWithStatusApproved")
+				.then(response => {
+					console.log(response.data)
+					this.commentsProcessing = response.data;
+				});
+		}else{
+			axios.get("/getAllCommentsByRestaurant/" +  JSON.parse(localStorage.getItem('restaurant')))
+				.then(response => {
+					console.log(response.data)
+					this.commentsProcessing = response.data;
+				});
+		}
 	},
 	
 	template: 
@@ -165,42 +161,43 @@ Vue.component("adminRestaurant", {
 	
 		<!-- COMMENTS-->
 			
-		<div class="comment-list" v-if="status=='reviews'">
-		<div ref="comments" id="commentClass" class="comment" :key=comment.customer v-for="comment in commentsProcessing" @click= "select($event)" data-toggle="modal" data-target="#approveModal">
-		<div class="comment-icon"  v-if="role == 'CUSTOMER' && comment.status == 'Approved' || role == 'MENAGER'  || role == 'ADMIN' && comment.status=='Approved' || comment.status== 'Rejected' ">
-		<i class="fas fa-user fa-3x"></i>
-		<label>{{comment.status}}</label>
+		<div class="container" v-if="status=='reviews'">
+		<div ref="comments" id="commentClass" class="comment" :key=comment.id v-for="comment in commentsProcessing">
+		<div class="comment-icon">
+			<i class="fas fa-user fa-3x"></i>
+			<label>{{comment.status}}</label>
 		</div>
-		<div class="comment-section"  v-if="role == 'CUSTOMER' && comment.status == 'Approved' || role == 'MENAGER' || role == 'ADMIN' && comment.status=='Approved' || comment.status== 'Rejected'">
-			<div class="comment-top">
-				<h4>{{comment.customer}}</h4>
-				<div class="grade">
-            	<i class="fas fa-star" style="color: #FAE480"></i>
-            	<label>{{comment.grade}}</label>	
-        	</div>
-			</div>
-			<label for="">{{comment.text}}</label>
-		</div>
-	</div>
-	</div>
-	<div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModal" aria-hidden="true" v-if="accessControlManager">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <h5 class="modal-title" id="exampleModalLongTitle">Approve customer review</h5>
-			  <button type="button" class="close comment-button" data-dismiss="modal" aria-label="Close">
-				<i class="fas fa-times"></i>
-			  </button>
-			</div>
-			<div class="modal-body">
-			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			  <button type="button" class="btn btn-primary" data-dismiss="modal" @click= "approveComment">Approve</button>
-			  <button type="button" class="btn btn-primary" data-dismiss="modal" @click= "rejectComment">Reject</button>
-		  </div>
-		</div>
-	  </div>
-	  </div>	
+		<div class="restaurant-info" >
+			<h6><b>Customer: {{comment.customer}}</b></h6>
 			
+			<label></label>
+		    <label></label>
+
+			<h5>{{comment.text}}</h5>
+		</div>
+		<div class="restaurant-details">
+		  		<div class="grade">
+		            <i class="fas fa-star" style="color: #FAE480"></i>
+		            <label>Grade: {{comment.grade}}</label>
+		       </div>
+		      	
+		      	<label></label>
+
+		  		<div class="restaurant-status">
+	       			<button type="button" class="btn btn-success" @click="approveComment(comment)" v-if="comment.status === 'Processing'">Approve</button>
+		    	</div>
+		    	
+		    	<label></label>
+
+           		<div class="restaurant-status">
+					<button type="button" class="btn btn-danger" @click="rejectComment(comment)" v-if="comment.status === 'Processing'">Reject</button>
+		    	</div>
+        </div>
+			
+			
+		</div>
+		</div>
+		</div>
 	
 	<!-- ADD NEW ARTICLE DIALOG -->		
 			
@@ -461,7 +458,9 @@ Vue.component("adminRestaurant", {
 			console.log(article);
 			this.editedArticle=article;
 		},
-		
+		setCommentTemp(comment){
+			this.commentTemp = comment;
+		},
 		updateArticle(e){
 			e.preventDefault();
             e.preventDefault();
@@ -475,8 +474,17 @@ Vue.component("adminRestaurant", {
                             alert("That article already exists!")
                     });   
 		},
-		approveComment(){
-			axios.post('/approveComment', {status: 'Approved', restaurant: JSON.parse(localStorage.getItem('restaurant')), customer:  JSON.parse(localStorage.getItem('commentCustomer'))})
+		approveComment(comment){
+			console.log(comment.text);
+			axios.post('/approveComment',
+				{
+					id: comment.id,
+					status: 'Approved',
+					restaurant: JSON.parse(localStorage.getItem('restaurant')),
+					grade: comment.grade,
+					text: comment.text,
+					customer: comment.customer
+				})
             .then(response => {
                 if(response.data){
                     alert("Your comment is approved now!")
@@ -485,8 +493,16 @@ Vue.component("adminRestaurant", {
                     alert("That article already exists!")
             });   
 		},
-		rejectComment(){
-			axios.post('/rejectComment', {status: 'Rejected', restaurant: JSON.parse(localStorage.getItem('restaurant')), customer:  JSON.parse(localStorage.getItem('commentCustomer'))})
+		rejectComment(comment){
+			axios.post('/rejectComment',
+				{
+					id: comment.id,
+					status: 'Rejected',
+					restaurant: JSON.parse(localStorage.getItem('restaurant')),
+					grade: comment.grade,
+					text: comment.text,
+					customer: comment.customer
+				})
             .then(response => {
                 if(response.data){
                     alert("Your comment is rejected now!")

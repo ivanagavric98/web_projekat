@@ -1,16 +1,1 @@
-[
-	{
-		"customer": "Marija Milic",
-		"restaurant": "Petrus",
-		"text": "sve ok",
-		"grade": 5,
-		"status": "Approved"
-	},
-	{
-		"customer": "Ana Novakovic",
-		"restaurant": "McDonald's",
-		"text": "sve ok",
-		"grade": 5,
-		"status": "Processing"
-	}
-]
+[{"id":"9d5c1040-5","customer":"iii","restaurant":"Petrus","text":"Hrana preukusna. Sve preporuke!","grade":3,"status":"Approved"},{"id":"c7919f40-1","customer":"iii","restaurant":"Petrus","text":"Nezadovoljni uslugom. Porcije su male i hrana se dugo ceka.","grade":1,"status":"Rejected"}]

@@ -45,7 +45,7 @@ Vue.component("orders", {
 		        });
 
 		 }else {
-			 axios.get("/getOrdersByManager/" + localStorage.getItem('username'))
+			 axios.get("/getOrdersByRestaurantName")
 		        .then(response => {
 		            console.log(response.data)
 		            this.orders = response.data;               
@@ -135,15 +135,18 @@ Vue.component("orders", {
 			    min-width: 800px;
 			    width: 80%;">
 	    
-		    <div class="restaurant-info" data-toggle="modal" data-target="#requestModal">
+		    <div class="restaurant-info">
 		        <h3 :key="article" v-for="article in order.articles">{{article}}</h3>
 				<p class="restaurant-type">Order ID:{{order.ID}}</p>
 				<button class="btn btn-danger" @click="cancelOrder(order)" v-if="accessControlCustomer"
 						>Cancel<b></b></button
 					>
-				<button class="btn btn-success" v-if="accessControlManager" data-toggle="modal" data-target="#editModal"
+				<button class="btn btn-success" v-if="accessControlManagerAndDeliverer" data-toggle="modal" data-target="#editModal"
 						>Edit<b></b></button
 					>
+				<button class="btn btn-light"  v-if="accessControlDeliverer" @click="sendRequest(order)"
+						>Send request for delivering<b></b></button
+					>	
 		    </div>
 		  
 		    <div class="restaurant-details">
@@ -180,7 +183,7 @@ Vue.component("orders", {
 				  <label for="staticEmail" class="col-sm-2 col-form-label">Order Status</label>
 				  <div class="col-sm-10">
 								<select id="form3Example1q"  class="form-control"  v-model="order.orderStatus">
-									<option value="WAITING_FOR_DELIVERER" v-if="accessControlManagerAndDeliverer">Waiting For Supplier</option>
+									<option value="WAITING_FOR_DELIVERER" v-if="accessControlManager">Waiting For Supplir</option>
 									<option value="IN_PREPARATION" v-if="accessControlManager">In Preparation</option>
 									<option value="IN_TRANSPORT" v-if="accessControlDeliverer">In Transport</option>
 									<option value="DELIVERED" v-if="accessControlDeliverer">Delivered</option>
@@ -190,7 +193,9 @@ Vue.component("orders", {
 				
 			<div class="modal-footer">
 			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			  <button type="button" class="btn btn-primary"  data-dismiss="modal" @click=setEditableOrder(order)>Save changes</button>
+			  <button type="button" class="btn btn-primary"  data-dismiss="modal" v-if="order.orderStatus !== 'DELIVERED'" @click=setEditableOrder(order)>Save changes</button>
+			  <button type="button" class="btn btn-primary"  data-dismiss="modal" v-if="order.orderStatus !== 'IN_PREPARATION'" @click=setEditableOrder(order)>Save changes</button>
+		
 			</div>
 		  </form>
 		  </div>
@@ -198,13 +203,13 @@ Vue.component("orders", {
 		</div>	
 		</div>
 		
-		<!-- SUPPLIER REQUEST FOR DELIVERING -->
+		<!-- CHANGE DELIVERY STATUS -->
 		
-		<div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="requestModal" aria-hidden="true">
+		<div class="modal fade" id="deliveryStatus" tabindex="-1" role="dialog" aria-labelledby="deliveryStatus" aria-hidden="true" v-if="accessControlDeliverer">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 		  <div class="modal-content">
 			<div class="modal-header">
-			  <h5 class="modal-title" id="exampleModalLongTitle">Send request for delivering</h5>
+			  <h5 class="modal-title" id="exampleModalLongTitle">Change delivery status</h5>
 			  <button type="button" class="close comment-button" data-dismiss="modal" aria-label="Close">
 				<i class="fas fa-times"></i>
 			  </button>
@@ -212,8 +217,14 @@ Vue.component("orders", {
 			<div class="modal-body">
 				<form name='new-item-form'>
 			  <div class="form-group row mb-2">
-				  <label for="staticEmail" class="label label-default text-center">I want to deliver this order.</label> 
-				</div>
+			  	<label for="staticEmail" class="col-sm-2 col-form-label">Order Status</label>
+				  <div class="col-sm-10">	
+					<select id="form3Example1q"  class="form-control"  v-model="order.orderStatus">
+										<option value="IN_TRANSPORT" v-if="accessControlDeliverer">{{order.orderStatus}}</option>
+										<option value="DELIVERED" v-if="accessControlDeliverer">Delivered</option>
+					</select>
+				  </div>
+			  </div>
 				
 			<div class="modal-footer">
 			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -294,8 +305,9 @@ Vue.component("orders", {
 						});
 
 		},
-		changeOrderStatus(){
+		changeOrderStatus(order){
 			let role = localStorage.getItem('role')
+			let orderStatus = order.orderStatus;
 			if(role == 'MENAGER') {
 				axios.post('/changeStatusToWaitingForSupplier/' + this.editedOrder.ID, {})
 					.then(response => {
@@ -306,7 +318,7 @@ Vue.component("orders", {
 							alert("That article already exists!")
 					});
 			}else if(role == 'SUPPLIER'){
-				axios.post('/changeStatusToDelivered/' + this.editedOrder.ID, {})
+				axios.post('/changeStatusToDelivered/' + this.editedOrder.ID + "/" + localStorage.getItem("username"), {})
 					.then(response => {
 						if (response.data) {
 							alert("You have successfully change order status!")
@@ -318,7 +330,7 @@ Vue.component("orders", {
 		},
 		setEditableOrder(order) {
 			this.editedOrder = order;
-			this.changeOrderStatus();
+			this.changeOrderStatus(order);
 		},
 		cancelOrder(order) {
 			axios.post('/cancelOrder/'+ localStorage.getItem("username") + "/" + order.ID)
