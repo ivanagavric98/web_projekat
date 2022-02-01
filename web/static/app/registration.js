@@ -77,9 +77,7 @@ Vue.component("registration", {
 		</section>
     </div>
 	`,
-	computed : {
-		
-    },
+	computed : {},
 	methods: {
 		  register(e) {
 	            e.preventDefault();
@@ -102,9 +100,10 @@ Vue.component("registration", {
 	                        role: "CUSTOMER"
 	                    })
 	                    .then(response => {
-	                        if(response.data)
-	                            alert("You have successfully registered!")
-	                        else
+	                        if(response.data) {
+								alert("You have successfully registered!");
+								this.$router.push("login");
+							}else
 	                            alert("That username already exists!")
 	                    });
 	            }

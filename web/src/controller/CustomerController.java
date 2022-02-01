@@ -42,10 +42,6 @@ public class CustomerController {
         return customerService.getAllCustomers();
     }
 
-    public List<Customer> customerFiltrateByType(String type) throws JsonSyntaxException, IOException {
-        return customerService.customerFiltrateByType(type);
-    }
-
     public Customer updateUsersPoints(String customer, double price, ArrayList<CustomerType> allTypes)
             throws JsonSyntaxException, IOException {
         return customerService.updateCustomerssPoints(customer, price, allTypes);

@@ -106,18 +106,10 @@ Vue.component("registerManager", {
 	                        dateOfBirth : this.dateOfBirth,
 	                        role: "MENAGER"
 	            	}
-	            	
-	            		axios.post('/registerManager',  JSON.stringify(manager))
-	                    .then(response => {
-	                    		let username = manager.username
 
-	                    		axios
-	                        	.post('/addRestaurantToManager/' + username, this.restaurant)
-	                        	.then(alert("You have successfully registered!")
-);
-	                        
-	                        
-	                    });	
+					axios.post('/registerManager',  JSON.stringify(manager))
+					.then(response => {
+						alert("You have successfully registered manager!")});
 	            	}
 	            	}
 	              	

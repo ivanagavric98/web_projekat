@@ -20,7 +20,8 @@ Vue.component("restaurants", {
                 text: "",
                 grade: 0,
                 restName: null,
-                commentLabel: null
+                commentLabel: null,
+                averageGrade: 0.0,
 				}
 	},
 	mounted() {
@@ -121,7 +122,7 @@ Vue.component("restaurants", {
 		        </div>
 		        <div class="grade">
 		            <i class="fas fa-star" style="color: #FAE480"></i>
-		            <label>{{restaurant.grade}}</label>
+		            <label>{{restaurant.averageGrade}}</label>
 		        </div>
 		    </div>
 		    </div>

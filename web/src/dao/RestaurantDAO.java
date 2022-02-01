@@ -232,7 +232,9 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 		for(Integer i : restaurant.getGrade()){
 			totalGrade+=i;
 		}
-		averageGrade=(double) (totalGrade/restaurant.getGrade().size());
+		if(restaurant.getGrade().size() != 0) {
+			averageGrade=(double) (totalGrade/restaurant.getGrade().size());
+		}
 		return averageGrade;
 	}
 
@@ -269,37 +271,6 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 		}
 		return resultList;
 	}
-
-	/*
-	 * public List<Restaurant> combineSearchRestaurant(String type, String status)
-	 * throws JsonSyntaxException, IOException {
-	 * ArrayList<Restaurant> allRestaurants=getAll();
-	 * List<Restaurant> typeList=new ArrayList<Restaurant>();
-	 * List<Restaurant> statusList=new ArrayList<Restaurant>();
-	 * 
-	 * if(type==null || type.isBlank())
-	 * typeList=allRestaurants;
-	 * else
-	 * typeList=restaurantsFiltrateByType(type);
-	 * 
-	 * if(status==null || status.isBlank())
-	 * statusList=allRestaurants;
-	 * else
-	 * statusList=restaurantsFiltrateByStatus(status);
-	 * 
-	 * List<Restaurant> intersectionResult=new ArrayList<Restaurant>();
-	 * 
-	 * for(Restaurant restaurant :typeList){
-	 * for(Restaurant restaurant2: statusList){
-	 * if(restaurant.getName().equals(restaurant2.getName()) ){
-	 * intersectionResult.add(restaurant);
-	 * }
-	 * }
-	 * }
-	 * 
-	 * return intersectionResult;
-	 * }
-	 */
 
 	public List<Restaurant> getRestaurantsOpenAndClosed() throws JsonSyntaxException, IOException {
 		List<Restaurant> resultList = new ArrayList<>();

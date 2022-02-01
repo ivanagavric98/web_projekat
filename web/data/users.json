@@ -1,3 +1,38 @@
 [
-    
+	{
+		"username": "milica",
+		"password": "123",
+		"name": "Milica",
+		"surname": "Lukic",
+		"gender": "FEMALE",
+		"dateOfBirth": "Dec 16, 1998 12:00:00 AM",
+		"role": "CUSTOMER"
+	},
+	{
+		"username": "helena",
+		"password": "123",
+		"name": "Helena",
+		"surname": "Jovic",
+		"gender": "FEMALE",
+		"dateOfBirth": "Nov 29, 2000 12:00:00 AM",
+		"role": "ADMIN"
+	},
+	{
+		"username": "ivana",
+		"password": "123",
+		"name": "Ivana",
+		"surname": "Gavric",
+		"gender": "FEMALE",
+		"dateOfBirth": "Jan 7, 1998 12:00:00 AM",
+		"role": "SUPPLIER"
+	},
+	{
+		"username": "marija",
+		"password": "123",
+		"name": "Marija",
+		"surname": "Vucetic",
+		"gender": "FEMALE",
+		"dateOfBirth": "Jul 1, 1998 12:00:00 AM",
+		"role": "MENAGER"
+	}
 ]

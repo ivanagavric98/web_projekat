@@ -121,48 +121,6 @@ public class UserDAO implements IDAO<User, String> {
 		return null;
 	}
 
-	public ArrayList<User> searchByName(String name) throws JsonSyntaxException, IOException {
-		ArrayList<User> allUsers = getAll();
-		ArrayList<User> nameSearchList = new ArrayList<>();
-
-		if (allUsers.size() != 0) {
-			for (User user : allUsers) {
-				if (user.name.toLowerCase().contains(name.toLowerCase())) {
-					nameSearchList.add(user);
-				}
-			}
-		}
-		return nameSearchList;
-	}
-
-	public ArrayList<User> searchBySurname(String surname) throws JsonSyntaxException, IOException {
-		ArrayList<User> allUsers = getAll();
-		ArrayList<User> surnameSearchList = new ArrayList<>();
-
-		if (allUsers.size() != 0) {
-			for (User user : allUsers) {
-				if (user.surname.toLowerCase().contains(surname.toLowerCase())) {
-					surnameSearchList.add(user);
-				}
-			}
-		}
-		return surnameSearchList;
-	}
-
-	public ArrayList<User> searchByUsername(String username) throws JsonSyntaxException, IOException {
-		ArrayList<User> allUsers = getAll();
-		ArrayList<User> usernameSearchList = new ArrayList<>();
-
-		if (allUsers.size() != 0) {
-			for (User user : allUsers) {
-				if (user.username.toLowerCase().contains(username.toLowerCase())) {
-					usernameSearchList.add(user);
-				}
-			}
-		}
-		return usernameSearchList;
-	}
-
 	public List<User> userSortByNameAsc(List<User> users) throws JsonSyntaxException, IOException {
 		Set<User> toSort = new HashSet<>();
 
@@ -222,61 +180,4 @@ public class UserDAO implements IDAO<User, String> {
 		return resultList;
 	}
 
-	public List<User> usersFiltrateByRole(String role, List<User> users) throws JsonSyntaxException, IOException {
-		ArrayList<User> resultList = new ArrayList<>();
-		for (User user : users) {
-			if (user.getRole().toString().toLowerCase().equals(role.toLowerCase())) {
-				resultList.add(user);
-			}
-		}
-		return resultList;
-	}
-
-	/*
-	 * public List<User> combineSearchUser(String name, String surname, String
-	 * username) throws JsonSyntaxException, IOException {
-	 * ArrayList<User> allUsers=getAll();
-	 * ArrayList<User> resultList=new ArrayList<User>();
-	 * ArrayList<User> nameList=new ArrayList<User>();
-	 * ArrayList<User> surnameLis=new ArrayList<User>();
-	 * ArrayList<User> usernameList=new ArrayList<User>();
-	 * 
-	 * if(name==null || name.isBlank())
-	 * nameList=allUsers;
-	 * else
-	 * nameList=searchByName(name);
-	 * 
-	 * if(surname==null || surname.isBlank())
-	 * surnameLis=allUsers;
-	 * else
-	 * surnameLis=searchBySurname(surname);
-	 * 
-	 * if(username==null || username.isBlank())
-	 * usernameList=allUsers;
-	 * else
-	 * usernameList=searchByUsername(username);
-	 * 
-	 * List<User> intersectionResult=new ArrayList<User>();
-	 * List<User> intersectionResult1=new ArrayList<User>();
-	 * 
-	 * for(User user :nameList){
-	 * for(User user2: surnameLis){
-	 * if(user.getUsername().equals(user2.getUsername()) ){
-	 * intersectionResult.add(user);
-	 * }
-	 * }
-	 * }
-	 * 
-	 * for(User user :intersectionResult){
-	 * for(User user1: usernameList){
-	 * if(user.getUsername().equals(user1.getUsername()) ){
-	 * intersectionResult1.add(user);
-	 * }
-	 * }
-	 * }
-	 * 
-	 * return intersectionResult1;
-	 * 
-	 * }
-	 */
 }

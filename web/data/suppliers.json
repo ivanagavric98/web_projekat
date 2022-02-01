@@ -1,25 +1,12 @@
 [
 	{
-		"orders": [
-			{
-				"ID": "fa420586-3",
-				"articles": [
-					"salata",
-					"vino crveno"
-				],
-				"restaurant": "Petrus",
-				"dateAndTime": "2021-05-14",
-				"price": 1404.0,
-				"customer": "Maja Milekic",
-				"orderStatus": "DELIVERED"
-			}
-		],
-		"username": "nina",
-		"password": "nina",
-		"name": "Ana",
-		"surname": "Anic",
+		"orders": [],
+		"username": "ivana",
+		"password": "123",
+		"name": "Ivana",
+		"surname": "Gavric",
 		"gender": "FEMALE",
-		"dateOfBirth": "Jul 8, 2021 12:00:00 AM",
+		"dateOfBirth": "Jan 7, 1998 12:00:00 AM",
 		"role": "SUPPLIER"
 	}
 ]

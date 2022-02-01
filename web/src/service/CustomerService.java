@@ -11,6 +11,7 @@ import com.google.gson.JsonSyntaxException;
 import dao.CustomerDAO;
 import dao.OrderDAO;
 import dao.RestaurantDAO;
+import dao.UserDAO;
 import model.Customer;
 import model.CustomerType;
 import model.Order;
@@ -57,9 +58,6 @@ public class CustomerService {
 		return customerDao.userSortByUserPointsDesc();
 	}
 
-	public List<Customer> customerFiltrateByType(String type) throws JsonSyntaxException, IOException {
-		return customerDao.customerFiltrateByType(type);
-	}
 
 	public Customer updateCustomerssPoints(String customer, double price, ArrayList<CustomerType> allTypes)
 			throws JsonSyntaxException, IOException {

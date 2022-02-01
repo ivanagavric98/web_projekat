@@ -80,9 +80,10 @@ Vue.component("editPersonalInfo", {
 	                    .then(response => {
 	                        if(response.data){
 	                            alert("You have successfully update!")
+								this.$router.push("profile")
 	                        }
 	                        else
-	                            alert("Error!")
+	                            alert("Try again!")
 	                    });
 	            }
 	},

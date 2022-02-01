@@ -8,14 +8,15 @@ public class Restaurant {
 	public ArrayList<Article> articles;
 	public Location location;
 	public String logo;
-	public ArrayList<Integer> grade;
+	public ArrayList<Integer> grade = new ArrayList<Integer>();
+	public Double averageGrade = 5.0;
 	public RestaurantStatus status;
-
+	
 	public Restaurant() {
 	}
 
 	public Restaurant(String name, String type, ArrayList<Article> articles, Location location, String logo,
-			ArrayList<Integer> grade, RestaurantStatus status) {
+			ArrayList<Integer> grade, Double averageGrade, RestaurantStatus status) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -23,6 +24,7 @@ public class Restaurant {
 		this.location = location;
 		this.logo = logo;
 		this.grade = grade;
+		this.averageGrade = averageGrade;
 		this.status = status;
 	}
 

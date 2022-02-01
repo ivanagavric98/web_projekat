@@ -48,8 +48,12 @@ public class UserController {
 		return userService.usersSearchBySurname(surname);
 	}
 
-    public List<User> searchFiltreteSortUsers(SearchFiltrateSortUsersDTO searchFiltrateSortUsersDTO, List<Customer> customers) throws JsonSyntaxException, IOException {
-        return userService.searchFiltreteSortUsers(searchFiltrateSortUsersDTO,customers);
-    }
+	public List<User> usersFiltrateByType(String type) throws JsonSyntaxException, IOException {
+		return userService.usersFiltrateByType(type);
+	}
+
+	public List<User> usersFiltrateByRole(String role) throws JsonSyntaxException, IOException {
+		return userService.usersFiltrateByRolee(role);
+	}
 
 }

@@ -1,12 +1,1 @@
-[
-	{
-		"restaurant": "Petrus",
-		"username": "anda",
-		"password": "anda",
-		"name": "Ana",
-		"surname": "Andric",
-		"gender": "FEMALE",
-		"dateOfBirth": "Feb 22, 2000 12:00:00 AM",
-		"role": "MENAGER"
-	}
-]
+[{"restaurant":"Atina","username":"marija","password":"123","name":"Marija","surname":"Vucetic","gender":"FEMALE","dateOfBirth":"Jul 1, 1998 12:00:00 AM","role":"MENAGER"}]

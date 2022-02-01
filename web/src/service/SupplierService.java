@@ -23,14 +23,11 @@ public class SupplierService {
 			result = true;
 		} else {
 			for (Supplier u : users) {
-				if (u.username.equals(supplier.username)) {
-					result = false;
-				} else {
-					supplierDao.create(u);
-					result = true;
-				}
+				if (u.username.equals(supplier.username)) 
+					return result = false;
 			}
 		}
+		supplierDao.create(supplier);
 		return result;
 	}
 

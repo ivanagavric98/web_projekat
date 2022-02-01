@@ -142,17 +142,6 @@ public class CustomerDAO implements IDAO<Customer, String> {
         return resultList;
     }
 
-    public List<Customer> customerFiltrateByType(String type) throws JsonSyntaxException, IOException {
-        ArrayList<Customer> customers = getAll();
-        ArrayList<Customer> resultList = new ArrayList<>();
-        for (Customer customer : customers) {
-            if (customer.getType().type.toString().toLowerCase().equals(type.toLowerCase())) {
-                resultList.add(customer);
-            }
-        }
-        return resultList;
-    }
-
     public Customer updateUsersPoints(String customerName, double price, ArrayList<CustomerType> allTypes)
             throws JsonSyntaxException, IOException {
         Customer customer = getByID(customerName);

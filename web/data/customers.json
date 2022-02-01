@@ -1,62 +1,22 @@
 [
 	{
-		"orders": [
-			{
-				"ID": "2b9aeb43-b",
-				"articles": [
-					"Chicken Big Mac",
-					"McCoffee"
-				],
-				"restaurant": "McDonald\u0027s",
-				"dateAndTime": "2022-02-01",
-				"price": 1935.0,
-				"customer": "iii",
-				"orderStatus": "PROCESSING"
-			},
-			{
-				"ID": "04e01f6a-a",
-				"articles": [
-					"McCoffee"
-				],
-				"restaurant": "McDonald\u0027s",
-				"dateAndTime": "2022-02-01",
-				"price": 212.5,
-				"customer": "iii",
-				"orderStatus": "PROCESSING"
-			}
-		],
+		"orders": [],
 		"cart": {
-			"id": 12,
-			"items": [
-				{
-					"articleName": "Chicken Big Mac",
-					"quantity": 2,
-					"image": "./images/articles/Chicken Big Mac.jpg",
-					"price": 550.0
-				},
-				{
-					"articleName": "McCoffee",
-					"quantity": 1,
-					"image": "./images/articles/McCoffee.jpg",
-					"price": 250.0
-				}
-			],
-			"customer": "iii",
-			"price": 1350.0,
-			"restaurantName": "McDonald\u0027s"
+			"id": 0,
+			"price": 0.0
 		},
-		"points": 731.1675,
+		"points": 0.0,
 		"type": {
-			"type": "GOLDEN",
-			"discount": 15,
-			"requiredPoints": 500
+			"type": "BRONZE",
+			"discount": 0,
+			"requiredPoints": 0
 		},
-		"username": "iii",
-		"password": "iii",
-		"name": "Ivana",
-		"surname": "Gavric",
+		"username": "milica",
+		"password": "123",
+		"name": "Milica",
+		"surname": "Lukic",
 		"gender": "FEMALE",
-		"dateOfBirth": "Jul 8, 2021 12:00:00 AM",
+		"dateOfBirth": "Dec 16, 1998 12:00:00 AM",
 		"role": "CUSTOMER"
 	}
 ]

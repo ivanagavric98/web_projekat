@@ -45,22 +45,19 @@ Vue.component("adminUsers", {
 		     <div class="row mb-5">
 				  <div class="col-3">
 				  <h6>User role: </h6>
-				  <select class="custom-select"  @change="filtrate" v-model = "filterParam">    
+				  <select class="custom-select"  @change="filtrateByRole" v-model = "filterParam">    
 				    <option value="" disabled selected>Select user role...</option>
-				    <option value="All">All roles</option>
-				    <option value="Customer">Customer</option>
-				    <option value="Menager">Manager</option>
-				    <option value="Supplier">Deliverer</option>
+				    <option value="CUSTOMER">Customer</option>
+				    <option value="MENAGER">Manager</option>
+				    <option value="SUPPLIER">Deliverer</option>
 				  </select></div>
 				  <div class="col-3">
 				    <h6>User type: </h6>
-				  <select class="custom-select">
+				  <select class="custom-select" @change="filtrateByType" v-model = "filterParam">
 				    <option value="" disabled selected>Select user type...</option>
-				    <option value="All">All types</option>
-				    <option value="Regular">Regular</option>
-				    <option value="Bronze">Bronze</option>
-				    <option value="Silver">Silver</option>
-				    <option value="Gold">Gold</option>
+				    <option value="BRONZE">Bronze</option>
+				    <option value="SILVER">Silver</option>
+				    <option value="GOLD">Gold</option>
 				  </select></div>
 				</div>
 		  
@@ -141,7 +138,7 @@ Vue.component("adminUsers", {
 	               console.log(response.data)
 	               this.users = response.data;               
 	           });
-			   
+
 		},		
 			sortedClass (key) {
 	            return this.sort.key === key ? `sorted ${this.sort.isAsc ? 'asc' : 'desc' }` : '';
@@ -202,8 +199,8 @@ Vue.component("adminUsers", {
                 })
 	                
 	        },
-	        filtrate(){
-	            axios.get("/usersFiltrateByRole/" + this.filterParam)
+	        filtrateByType(){
+	            axios.get("/usersFiltrateByType/" + this.filterParam)
                 .then(response => {
                     console.log(response.data)
                     if(response.data.length !== 0) {
@@ -214,7 +211,20 @@ Vue.component("adminUsers", {
                         alert("No results!")
                 })
 	                
-	        }
+	        },
+		filtrateByRole(){
+			axios.get("/usersFiltrateByRole/" + this.filterParam)
+				.then(response => {
+					console.log(response.data)
+					if(response.data.length !== 0) {
+						this.users = response.data
+						this.items = this.users
+					}
+					else
+						alert("No results!")
+				})
+
+		}
 	      
 	},
 });	

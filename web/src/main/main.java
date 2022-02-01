@@ -83,9 +83,6 @@ public class main {
 		port(8080);
 
 		staticFiles.externalLocation(new File("./static").getCanonicalPath());
-		UserDAO usersDAO = new UserDAO("data/users.json");
-		UserService usersService = new UserService(usersDAO);
-		UserController usersController = new UserController(usersService);
 
 		MenagerDAO menagerDAO = new MenagerDAO("data/menagers.json");
 		MenagerService menagerService = new MenagerService(menagerDAO);
@@ -104,6 +101,10 @@ public class main {
 		CustomerService customerService = new CustomerService(customersDAO, orderDAO);
 		CustomerController customerController = new CustomerController(customerService);
 
+		UserDAO usersDAO = new UserDAO("data/users.json");
+		UserService usersService = new UserService(usersDAO, customersDAO, menagerDAO, supplierDAO);
+		UserController usersController = new UserController(usersService);
+		
 		RestaurantDAO restaurantDAO = new RestaurantDAO("data/restaurants.json");
 		RestaurantService restaurantService = new RestaurantService(restaurantDAO, menagerDAO);
 		RestaurantController restaurantController = new RestaurantController(restaurantService);
@@ -263,11 +264,18 @@ public class main {
 			return customerController.userSortByUserPointsDesc();
 		});
 
-		get("/customersFiltrateByType/:type", "application/json", (req, res) -> {
+		get("/usersFiltrateByType/:type", "application/json", (req, res) -> {
 			res.type("application/json");
 			String type = req.params("type");
-			List<Customer> customers = customerController.customerFiltrateByType(type);
-			return gson.toJson(customers);
+			List<User> users = usersController.usersFiltrateByType(type); 
+			return gson.toJson(users);
+		});
+		
+		get("/usersFiltrateByRole/:role", "application/json", (req, res) -> {
+			res.type("application/json");
+			String role = req.params("role");
+			List<User> users = usersController.usersFiltrateByRole(role);
+			return gson.toJson(users);
 		});
 
 		get("/getAllMenagersWithoutRestaurant", "application/json", (req, res) -> {
@@ -311,7 +319,7 @@ public class main {
 			List<Restaurant> restaurants = restaurantController.getRestaurantsOpenAndClosed();
 			return gson.toJson(restaurants);
 		});
-
+		
 		post("/addArticleToRestaurant", "application/json", (req, res) -> {
 			res.type("application/json");
 			Article article = gson.fromJson(req.body(), Article.class);
@@ -650,14 +658,6 @@ public class main {
 			return gson.toJson(restaurants);
 			});
 
-		post("/searchFiltreteSortUsers", "application/json", (req, res) -> {
-				res.type("application/json");
-				SearchFiltrateSortUsersDTO searchFiltrateSortUsersDTO = gson.fromJson(req.body(),
-				SearchFiltrateSortUsersDTO.class);
-				List<Customer> customers=customerController.userSortByUserPointAsc();
-				List<User> users = usersController.searchFiltreteSortUsers(searchFiltrateSortUsersDTO,customers);
-				return gson.toJson(users);
-			 });
 
 		get("/getOrdersByRestaurant/:name", "application/json", (req, res) -> {
 			res.type("application/json");

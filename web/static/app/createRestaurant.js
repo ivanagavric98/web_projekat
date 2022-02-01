@@ -123,6 +123,8 @@ Vue.component("createRestaurant", {
                         type: this.type,
                         status: 'OPEN',
                         logo: this.logo,
+						averageGrade: 5,
+						grade: [],
                         location: {
                         	latitude: this.latitude,
                         	longitude: this.longitude,
@@ -152,7 +154,9 @@ Vue.component("createRestaurant", {
 	                		let username = this.selectedManager.username	            	
 	                    	axios
 	                        	.post('/addRestaurantToManager/' + username, JSON.stringify(restaurant))
-	                        	.then(alert("That restaurant is created!"));
+	                        	.then( response => {
+										alert("That restaurant is created!")
+										this.$router.push('restaurants')});
 	                    	
 	                    });
 	                
