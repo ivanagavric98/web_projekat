@@ -70,7 +70,7 @@ Vue.component("login", {
 	                            localStorage.setItem("username", user.username);
 	                            console.log(user.username);
 	                            localStorage.setItem("role", user.role);
-	                            this.$router.push("profile")
+	                            this.$router.push("restaurants")
 	                        }
 	                    }).catch(err => {
 	                        console.log(err);

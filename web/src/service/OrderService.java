@@ -25,6 +25,7 @@ import com.google.gson.JsonSyntaxException;
 import dao.CustomerDAO;
 import dao.MenagerDAO;
 import dao.OrderDAO;
+import dao.ShoppingCartDAO;
 import dao.SupplierDAO;
 import dto.OrderFiltrateSortSearchDTO;
 import javaxt.utils.string;
@@ -45,16 +46,17 @@ public class OrderService {
     private MenagerDAO managerDAO;
     private SupplierDAO supplierDAO;
     private CustomerDAO customerDAO;
-
-    public OrderService(OrderDAO orderDAO, MenagerDAO managerDAO, SupplierDAO supplierDAO, CustomerDAO customerDAO) {
+    private ShoppingCartDAO shoppingCartDAO;
+    
+    public OrderService(OrderDAO orderDAO, MenagerDAO managerDAO, SupplierDAO supplierDAO, CustomerDAO customerDAO, ShoppingCartDAO shoppingCartDAO) {
         this.orderDAO = orderDAO;
         this.managerDAO = managerDAO;
         this.supplierDAO = supplierDAO;
         this.customerDAO = customerDAO;
+        this.shoppingCartDAO = shoppingCartDAO;
     }
 
-    public Order add(ShoppingCart shoppingCart, Customer customer, Double newPrice)
-            throws JsonSyntaxException, IOException {
+    public Order add(ShoppingCart shoppingCart, Customer customer, Double newPrice) throws JsonSyntaxException, IOException {
         ArrayList<Order> orders = getAllOrders();
         String uniqString = UUID.randomUUID().toString().substring(0, 10);
 
@@ -96,9 +98,11 @@ public class OrderService {
                     return null;
                 }
             }
+        
          orderDAO.create(order);
          customerDAO.saveAll(allCustomers);
-        }
+         Boolean deleted = shoppingCartDAO.delete(shoppingCart.getId());
+        } 	
         return order;
     }
 

@@ -96,8 +96,9 @@ public class main {
 		SupplierController supplierController = new SupplierController(supplierService);
 
 		CustomerDAO customersDAO = new CustomerDAO("data/customers.json");
+		ShoppingCartDAO shoppingCartDAO = new ShoppingCartDAO("data/shoppingCarts.json");
 		OrderDAO orderDAO = new OrderDAO("data/orders.json");
-		OrderService orderService = new OrderService(orderDAO, menagerDAO, supplierDAO, customersDAO);
+		OrderService orderService = new OrderService(orderDAO, menagerDAO, supplierDAO, customersDAO, shoppingCartDAO);
 		OrderController orderController = new OrderController(orderService);
 		
 		CustomerService customerService = new CustomerService(customersDAO, orderDAO);
@@ -119,7 +120,6 @@ public class main {
 		ArticleService articleService = new ArticleService(articleDAO);
 		ArticleController articleController = new ArticleController(articleService);
 
-		ShoppingCartDAO shoppingCartDAO = new ShoppingCartDAO("data/shoppingCarts.json");
 		ShoppingCartService shoppingCartService = new ShoppingCartService(shoppingCartDAO, customersDAO);
 		ShoppingCartController shoppingCartController = new ShoppingCartController(shoppingCartService);
 
@@ -253,40 +253,6 @@ public class main {
 
 		});
 
-		// get("/userSortByNameAsc", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	return usersController.userSortByNameAsc();
-		// });
-/*		get("/userSortByNameAsc", "application/json", (req, res) -> {
-			res.type("application/json");
-			return usersController.userSortByNameAsc();
-		});
-*/
-		// get("/userSortByNameDesc", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	return usersController.userSortByNameDesc();
-		// });
-
-		// get("/userSortBySurnameAsc", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	return usersController.userSortBySurnameAsc();
-		// });
-
-		// get("/userSortBySurnameDesc", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	return usersController.userSortBySurnameDesc();
-		// });
-
-		// get("/userSortByUsernameAsc", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	return usersController.userSortByUsernameAsc();
-		// });
-
-		// get("/userSortByUsernameDesc", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	return usersController.userSortByUsernameDesc();
-		// });
-
 		get("/customerSortByUserPointAsc", "application/json", (req, res) -> {
 			res.type("application/json");
 			return customerController.userSortByUserPointAsc();
@@ -303,13 +269,6 @@ public class main {
 			List<Customer> customers = customerController.customerFiltrateByType(type);
 			return gson.toJson(customers);
 		});
-
-		// get("/usersFiltrateByRole/:role", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	String role = req.params("role");
-		// 	List<User> users = usersController.usersFiltrateByRole(role);
-		// 	return gson.toJson(users);
-		// });
 
 		get("/getAllMenagersWithoutRestaurant", "application/json", (req, res) -> {
 			res.type("application/json");
@@ -347,115 +306,6 @@ public class main {
 			return gson.toJson(restaurants);
 		});
 
-		// get("/restaurantSortByNameAsc", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	List<Restaurant> restaurants = restaurantController.restaurantSortByNameAsc();
-		// 	return gson.toJson(restaurants);
-		// });
-
-		// get("/restaurantSortByNameDesc", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	List<Restaurant> restaurants = restaurantController.restaurantSortByNameDesc();
-		// 	return gson.toJson(restaurants);
-		// });
-
-		// get("/restaurantSortByLocationAsc", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	List<Restaurant> restaurants = restaurantController.restaurantSortByLocationAsc();
-		// 	return gson.toJson(restaurants);
-		// });
-
-		// get("/restaurantSortByLocationDesc", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	List<Restaurant> restaurants = restaurantController.restaurantSortByLocationDesc();
-		// 	return gson.toJson(restaurants);
-		// });
-
-		// get("/restauranSortByGradeAsc", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	List<Restaurant> restaurants = restaurantController.restauranSortByGradeAsc();
-		// 	return gson.toJson(restaurants);
-		// });
-
-		// get("/restauranSortByGradeDesc", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	List<Restaurant> restaurants = restaurantController.restauranSortByGradeDesc();
-		// 	return gson.toJson(restaurants);
-		// });
-
-		// get("/restaurantsFiltrateByType/:type", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	String type = req.params("type");
-		// 	List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByType(type);
-		// 	return gson.toJson(restaurants);
-		// });
-
-		// get("/restaurantsFiltrateByStatus/:status", "application/json", (req, res) -> {
-		// 	res.type("application/json");
-		// 	String role = req.params("status");
-		// 	List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByStatus(role);
-		// 	return gson.toJson(restaurants);
-		// });
-	/*
-		get("/restaurantSortByNameAsc", "application/json", (req, res) -> {
-		res.type("application/json");
-		List<Restaurant> restaurants = restaurantController.restaurantSortByNameAsc();
-		return gson.toJson(restaurants);
-	});
-
-		get("/restaurantSortByNameDesc", "application/json", (req, res) -> {
-			res.type("application/json");
-			List<Restaurant> restaurants = restaurantController.restaurantSortByNameDesc();
-			return gson.toJson(restaurants);
-		});
-
-		get("/restaurantSortByLocationAsc", "application/json", (req, res) -> {
-			res.type("application/json");
-			List<Restaurant> restaurants = restaurantController.restaurantSortByLocationAsc();
-			return gson.toJson(restaurants);
-		});
-
-		get("/restaurantSortByLocationDesc", "application/json", (req, res) -> {
-			res.type("application/json");
-			List<Restaurant> restaurants = restaurantController.restaurantSortByLocationDesc();
-			return gson.toJson(restaurants);
-		});
-
-		get("/restauranSortByGradeAsc", "application/json", (req, res) -> {
-			res.type("application/json");
-			List<Restaurant> restaurants = restaurantController.restauranSortByGradeAsc();
-			return gson.toJson(restaurants);
-		});
-
-		get("/restauranSortByGradeDesc", "application/json", (req, res) -> {
-			res.type("application/json");
-			List<Restaurant> restaurants = restaurantController.restauranSortByGradeDesc();
-			return gson.toJson(restaurants);
-		});
-
-		get("/restaurantsFiltrateByType/:type", "application/json", (req, res) -> {
-			res.type("application/json");
-			String type = req.params("type");
-			List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByType(type);
-			return gson.toJson(restaurants);
-		});
-
-		get("/restaurantsFiltrateByStatus/:status", "application/json", (req, res) -> {
-			res.type("application/json");
-			String role = req.params("status");
-			List<Restaurant> restaurants = restaurantController.restaurantsFiltrateByStatus(role);
-			return gson.toJson(restaurants);
-		});
-
-		/*
-		 * get("/combineSearchRestaurant", "application/json", (req, res) -> {
-		 * res.type("application/json");
-		 * String type= req.queryParams("type");
-		 * String status= req.queryParams("status");
-		 * 
-		 * return restaurantController.combineSearchRestaurant(type,status);
-		 * });
-		 */
 		get("/getRestaurantsOpenAndClosed", "application/json", (req, res) -> {
 			res.type("application/json");
 			List<Restaurant> restaurants = restaurantController.getRestaurantsOpenAndClosed();
@@ -531,10 +381,10 @@ public class main {
 
 		// kad napravis korpu, sacuvaj njen id u localStorage-u jer nam treba za metodu
 		// koja popunjava korpu sa artiklima
-		post("/createShoppingCart/:username", "application/json", (req, res) -> {
+		post("/createShoppingCart", "application/json", (req, res) -> {
 			res.type("application/json");
 			ShoppingCart shoppingCart = gson.fromJson(req.body(), ShoppingCart.class);
-			Boolean r = shoppingCartService.addShoppingCart(shoppingCart, req.params("username"));
+			Boolean r = shoppingCartController.addShoppingCart(shoppingCart);
 			return gson.toJson(r);
 		});
 
@@ -600,7 +450,7 @@ public class main {
 			Order order = orderController.addOrder(shoppingCart, customer, newPrice);
 			ArrayList<CustomerType> allTypes = customerTypeController.getAllTypes();
 			
-			customerController.updateUsersPoints(req.params("username"), shoppingCart.price, allTypes);
+			customerController.updateUsersPoints(req.params("username"), newPrice, allTypes);
 			return gson.toJson(order);
 		});
 
@@ -781,75 +631,6 @@ public class main {
 			return gson.toJson(orders);
 		});
 
-		// get("/getOrderByRestaurantName/:restaurantName", "application/json", (req,
-		// res) -> {
-		// res.type("application/json");
-		// String name = req.params("restaurantName");
-		// ArrayList<Order> orders = orderController.usersOrderByRestaurantName(name);
-		// return gson.toJson(orders);
-		// });
-
-		// get("/getOrderByPriceRange/:from/:to", "application/json", (req, res) -> {
-		// res.type("application/json");
-		// ArrayList<Order> orders =
-		// orderController.getOrderByPriceRange(Double.parseDouble(req.params("from")),
-		// Double.parseDouble(req.params("to")));
-		// return gson.toJson(orders);
-		// });
-
-		// get("/getOrderByDateRange/:from/:to", "application/json", (req, res) -> {
-		// res.type("application/json");
-		// ArrayList<Order> orders =
-		// orderController.getOrderByDateRange(req.params("from"),
-		// req.params("to"));
-		// return gson.toJson(orders);
-		// });
-
-		// get("/sortOrderByRestaurantNameAsc", "application/json", (req, res) -> {
-		// res.type("application/json");
-		// List<Order> orders = orderController.sortOrderByRestaurantName();
-		// return gson.toJson(orders);
-		// });
-		// get("/sortOrderByRestaurantNameDesc", "application/json", (req, res) -> {
-		// res.type("application/json");
-		// List<Order> orders = orderController.sortOrderByRestaurantNameDesc();
-		// return gson.toJson(orders);
-		// });
-
-		// get("/sortOrderByPriceAsc", "application/json", (req, res) -> {
-		// res.type("application/json");
-		// List<Order> orders = orderController.sortOrderByPriceAsc();
-		// return gson.toJson(orders);
-		// });
-		// get("/sortOrderByPriceDesc", "application/json", (req, res) -> {
-		// res.type("application/json");
-		// List<Order> orders = orderController.sortOrderByPriceDesc();
-		// return gson.toJson(orders);
-		// });
-		// get("/sortOrderByDateAsc", "application/json", (req, res) -> {
-		// res.type("application/json");
-		// List<Order> orders = orderController.sortOrderByDateAsc();
-		// return gson.toJson(orders);
-		// });
-		// get("/sortOrderByDateDesc", "application/json", (req, res) -> {
-		// res.type("application/json");
-		// List<Order> orders = orderController.sortOrderByDateDesc();
-		// return gson.toJson(orders);
-		// });
-		// get("/filtrateOrderByStatus/:status", "application/json", (req, res) -> {
-		// res.type("application/json");
-		// List<Order> orders =
-		// orderController.filtrateOrderByStatus(req.params("status"));
-		// return gson.toJson(orders);
-		// });
-		// get("/filtrateOrderByRestoranType/:type", "application/json", (req, res) -> {
-		// res.type("application/json");
-		// ArrayList<Restaurant> restaurants = restaurantController.getAll();
-		// List<Order> orders =
-		// orderController.filtrateOrderByRestoranType(req.params("type"), restaurants);
-		// return gson.toJson(orders);
-		// });
-
 		// za kupca i dostavljaca
 		post("/searchFiltrateSortOrders", "application/json", (req, res) -> {
 			res.type("application/json");
@@ -877,13 +658,7 @@ public class main {
 				List<User> users = usersController.searchFiltreteSortUsers(searchFiltrateSortUsersDTO,customers);
 				return gson.toJson(users);
 			 });
-/*
-		get("/getOrdersByUser/:username", "application/json", (req, res) -> {
-			res.type("application/json");
-			ArrayList<Order> orders = orderController.getOrdersByUser(req.params("username"));
-			return gson.toJson(orders);
-		});
-*/
+
 		get("/getOrdersByRestaurant/:name", "application/json", (req, res) -> {
 			res.type("application/json");
 			ArrayList<Order> orders = orderController.getOrdersByRestaurant(req.params("name"));
@@ -896,13 +671,6 @@ public class main {
 			return gson.toJson(orders);
 		});
 		
-		// post("/addCustomerType", "application/json", (req, res) -> {
-		// res.type("application/json");
-		// CustomerType customerType = gson.fromJson(req.body(), CustomerType.class);
-		// Boolean r = customerTypeController.add(customerType);
-		// return r;
-		// });
-
 		post("/updateCustomerType", "application/json", (req, res) -> {
 			res.type("application/json");
 			CustomerType customerType = gson.fromJson(req.body(), CustomerType.class);

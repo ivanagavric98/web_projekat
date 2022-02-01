@@ -19,22 +19,29 @@ public class ShoppingCartService {
         this.customerDAO = customerDAO;
     }
 
-    public Boolean addShoppingCart(ShoppingCart shoppingCart, String username) throws JsonSyntaxException, IOException {
+    public Boolean addShoppingCart(ShoppingCart shoppingCart) throws JsonSyntaxException, IOException {
         ArrayList<ShoppingCart> sc = getAllCarts();
-        Customer customer = customerDAO.getByID(username);
+        ArrayList<Customer> customers = customerDAO.getAll();
         Boolean result = false;
-        if (sc == null) {
-            shoppingCartDAO.create(shoppingCart);
-            result = true;
-        } else {
-            for (ShoppingCart u : sc) {
-                if (u.id == shoppingCart.getId()) {
-                    return result = false;
-                }
-            }
-            shoppingCartDAO.create(shoppingCart);
-            customerDAO.update(customer);
-            result = true;
+        
+        if(sc == null) {
+        	shoppingCartDAO.create(shoppingCart);
+        	result = true;
+        }
+        else{
+        	for (ShoppingCart sHCart : sc) {
+        		if (sHCart.getId() == shoppingCart.getId()) 
+        			return result;    
+        	}
+        
+        	for(Customer c: customers) {
+    			if(shoppingCart.getCustomer().equals(c.getUsername())) {
+        			shoppingCartDAO.create(shoppingCart);
+            		c.setCart(shoppingCart);
+            		customerDAO.saveAll(customers);
+                    result = true;
+        		}
+        	}
         }
         return result;
     }
@@ -70,20 +77,19 @@ public class ShoppingCartService {
             ShoppingCartItem shoppingCartItem) throws JsonSyntaxException, IOException {
         ShoppingCart shoppingCart = shoppingCartDAO.getByID(shoppingCartId);
 
-        if (shoppingCart.getItems().size() == 0) {
+        if (shoppingCart.getItems() == null) {
             return shoppingCart;
         } else {
             ArrayList<ShoppingCartItem> items = shoppingCart.getItems();
-            ArrayList<ShoppingCartItem> itemsToRemove = new ArrayList<>();
+            ArrayList<ShoppingCartItem> itemsToKeep = new ArrayList<>();
 
             for (ShoppingCartItem shi : items) {
-                if (shi.getArticleName().equals(shoppingCartItem.articleName)) {
-                    itemsToRemove.add(shi);
+                if (!shi.getArticleName().equals(shoppingCartItem.articleName)) {
+                    itemsToKeep.add(shi);
+                    
                 }
             }
-
-            items.removeAll(itemsToRemove);
-            shoppingCart.setItems(items);
+            shoppingCart.setItems(itemsToKeep);
 
             Double priceToUpdate = shoppingCart.getPrice() - priceForArticle;
             shoppingCart.setPrice(priceToUpdate);
@@ -98,12 +104,11 @@ public class ShoppingCartService {
             ShoppingCartItem shoppingCartItem) throws JsonSyntaxException, IOException {
         ShoppingCart shoppingCart = shoppingCartDAO.getByID(shoppingCartId);
 
-        if (shoppingCart.getItems().size() == 0) {
+        if (shoppingCart.getItems() == null) {
             return shoppingCart;
         } else {
             ArrayList<ShoppingCartItem> items = shoppingCart.getItems();
             ArrayList<ShoppingCartItem> itemsToRemove = new ArrayList<>();
-            ;
 
             for (ShoppingCartItem shi : items) {
                 if (shi.getArticleName().equals(shoppingCartItem.articleName)) {
@@ -111,6 +116,7 @@ public class ShoppingCartService {
                 }
             }
             items.removeAll(itemsToRemove);
+            
             Double price = shoppingCart.getPrice() - priceToSub + priceForArticle;
             items.add(shoppingCartItem);
 
@@ -118,7 +124,7 @@ public class ShoppingCartService {
 
             shoppingCart.setPrice(price);
             shoppingCartDAO.update(shoppingCart);
-
+            
             return shoppingCart;
         }
     }

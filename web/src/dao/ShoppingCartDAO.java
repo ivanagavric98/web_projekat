@@ -43,7 +43,7 @@ public class ShoppingCartDAO implements IDAO<ShoppingCart, String> {
     public ShoppingCart getByID(String id) throws JsonSyntaxException, IOException {
         ShoppingCart wantedASCart = null;
         ArrayList<ShoppingCart> shoppingCarts = (ArrayList<ShoppingCart>) getAll();
-        if (shoppingCarts.size() != 0) {
+        if (shoppingCarts != null) {
             for (ShoppingCart shoppingCart : shoppingCarts) {
                 if (shoppingCart.getId() == Integer.parseInt(id)) {
                     wantedASCart = shoppingCart;
@@ -77,10 +77,21 @@ public class ShoppingCartDAO implements IDAO<ShoppingCart, String> {
         saveAll(articles);
     }
 
-    @Override
-    public void delete(ShoppingCart entity) throws JsonSyntaxException, IOException {
-        return;
-    }
+    public Boolean delete(int entity) throws JsonSyntaxException, IOException {
+        int index = -1;
+        for (int i = 0; i < shoppingCarts.size(); i++){
+            if(shoppingCarts.get(i).getId() == entity){
+                index = i;
+                break;
+            }
+        }
+        if(index != -1){
+            shoppingCarts.remove(index);
+            saveAll(shoppingCarts);
+            return true;
+        }
+        return false;    	
+     }
 
     @Override
     public void save(ShoppingCart entity) throws JsonSyntaxException, IOException {
@@ -105,4 +116,10 @@ public class ShoppingCartDAO implements IDAO<ShoppingCart, String> {
         // TODO Auto-generated method stub
         return null;
     }
+
+	@Override
+	public void delete(ShoppingCart entity) throws JsonSyntaxException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
 }

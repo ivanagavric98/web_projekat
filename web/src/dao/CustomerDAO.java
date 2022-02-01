@@ -174,16 +174,16 @@ public class CustomerDAO implements IDAO<Customer, String> {
                 golden = ct;
             }
         }
-        if (customer.getPoints() <= bronze.getRequiredPoints()) {
+        if (customer.getPoints() >= bronze.getRequiredPoints()) {
             customer.setType(bronze);
         }
-        if (customer.getPoints() > bronze.getRequiredPoints() && customer.getPoints() <= golden.getRequiredPoints()) {
+        if (customer.getPoints() >= silver.getRequiredPoints()) {
             customer.setType(silver);
         }
-        if (customer.getPoints() > silver.getRequiredPoints()) {
+        if (customer.getPoints() >= golden.getRequiredPoints()) {
             customer.setType(golden);
         }
-
+        
         update(customer);
         
         return customer;

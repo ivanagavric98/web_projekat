@@ -79,7 +79,6 @@ public class SupplierDAO implements IDAO<Supplier, String> {
 			}
 		}
 		saveAll(suppliers);
-
 	}
 
 	@Override

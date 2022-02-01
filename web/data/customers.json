@@ -2,63 +2,59 @@
 	{
 		"orders": [
 			{
-				"ID": "fa7ffa17-5",
+				"ID": "2b9aeb43-b",
 				"articles": [
-					"salata",
-					"Cezar Salata"
+					"Chicken Big Mac",
+					"McCoffee"
 				],
-				"restaurant": "Petrus",
+				"restaurant": "McDonald\u0027s",
 				"dateAndTime": "2022-02-01",
-				"price": 1476.0,
+				"price": 1935.0,
 				"customer": "iii",
-				"orderStatus": "DELIVERED"
+				"orderStatus": "PROCESSING"
 			},
 			{
-				"ID": "780ae504-c",
+				"ID": "04e01f6a-a",
 				"articles": [
-					"Burger"
+					"McCoffee"
 				],
-				"restaurant": "McDonald's",
+				"restaurant": "McDonald\u0027s",
 				"dateAndTime": "2022-02-01",
-				"price": 2025.0,
+				"price": 212.5,
 				"customer": "iii",
 				"orderStatus": "PROCESSING"
 			}
 		],
 		"cart": {
-			"id": 21,
-			"price": 0.0
+			"id": 12,
+			"items": [
+				{
+					"articleName": "Chicken Big Mac",
+					"quantity": 2,
+					"image": "./images/articles/Chicken Big Mac.jpg",
+					"price": 550.0
+				},
+				{
+					"articleName": "McCoffee",
+					"quantity": 1,
+					"image": "./images/articles/McCoffee.jpg",
+					"price": 250.0
+				}
+			],
+			"customer": "iii",
+			"price": 1350.0,
+			"restaurantName": "McDonald\u0027s"
 		},
-		"points": 1695.6419999999998,
+		"points": 731.1675,
 		"type": {
 			"type": "GOLDEN",
-			"discount": 10,
+			"discount": 15,
 			"requiredPoints": 500
 		},
 		"username": "iii",
 		"password": "iii",
 		"name": "Ivana",
 		"surname": "Gavric",
-		"gender": "FEMALE",
-		"dateOfBirth": "Jul 8, 2021 12:00:00 AM",
-		"role": "CUSTOMER"
-	},
-	{
-		"orders": [],
-		"cart": {
-			"id": 0,
-			"price": 0.0
-		},
-		"points": 50.0,
-		"type": {
-			"type": "SILVER",
-			"discount": 0,
-			"requiredPoints": 50
-		},
-		"username": "aa",
-		"password": "123",
-		"name": "Marija",
-		"surname": "Marijanic",
 		"gender": "FEMALE",
 		"dateOfBirth": "Jul 8, 2021 12:00:00 AM",
 		"role": "CUSTOMER"

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import com.google.gson.JsonSyntaxException;
 
+import model.Restaurant;
+
 public interface IDAO<T, ID> {
 	ArrayList<T> getAll() throws JsonSyntaxException, IOException;
 	ArrayList<T> getAllNonDeleted() throws JsonSyntaxException, IOException;

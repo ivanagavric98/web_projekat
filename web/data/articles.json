@@ -1,14 +1,5 @@
 [
 	{
-		"name": "vino crveno",
-		"price": 400.0,
-		"type": "pice",
-		"restaurant": "McDonald\u0027s",
-		"quantity": 150,
-		"description": "odlicno je",
-		"image": "./images/articles/salat.jpg"
-	},
-	{
 		"name": "salata",
 		"price": 100.0,
 		"type": "pice",
@@ -34,5 +25,49 @@
 		"quantity": 300,
 		"description": "Socno i ukusno",
 		"image": "./images/articles/Burger.jpg"
+	},
+	{
+		"name": "Chicken Big Mac",
+		"price": 550.0,
+		"type": "Food",
+		"restaurant": "McDonald\u0027s",
+		"quantity": 200,
+		"description": "Chicken, Salat",
+		"image": "./images/articles/Chicken Big Mac.jpg"
+	},
+	{
+		"name": "McCoffee",
+		"price": 250.0,
+		"type": "Drink",
+		"restaurant": "McDonald\u0027s",
+		"quantity": 12,
+		"image": "./images/articles/McCoffee.jpg"
+	},
+	{
+		"name": "Cheeseburger",
+		"price": 150.0,
+		"type": "Food",
+		"restaurant": "McDonald\u0027s",
+		"quantity": 100,
+		"description": "Kechap",
+		"image": "./images/articles/Cheeseburger.jpg"
+	},
+	{
+		"name": "Chicken nuggets",
+		"price": 400.0,
+		"type": "Food",
+		"restaurant": "McDonald\u0027s",
+		"quantity": 300,
+		"description": "Ketchup",
+		"image": "./images/articles/Chicken nuggets.jpg"
+	},
+	{
+		"name": "French fries",
+		"price": 200.0,
+		"type": "Food",
+		"restaurant": "McDonald\u0027s",
+		"quantity": 200,
+		"description": "Big and delicious",
+		"image": "./images/articles/French fries.jpg"
 	}
 ]
