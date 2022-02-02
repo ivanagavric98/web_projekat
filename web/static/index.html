@@ -2,25 +2,52 @@
 <html>
 
 <head>
-	<link href="css/toast.css" rel="stylesheet" />
+    <link href="css/navbar.css" rel="stylesheet"/>
+    <link href="css/restaurants.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" type="text/css">
+    <link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
 	<meta charset="utf-8"/>
+	 <link href="css/registration.css" rel="stylesheet" />
+	
 </head> 
 
-<body>
-<div id="webShop">
-<h3>Primer WebShop aplikacije u Vue.js tehnologiji</h3>
-	  <router-view></router-view>
-</div>
+<body background="https://www.rollingstone.com/wp-content/uploads/2021/06/ZWILLING-Kitchen-Knife.jpg?resize=1800,1200&w=1800">
 
-<script src="js/vue.js"></script>
-<script src="js/vue-router.js"></script>
-<script src="js/axios.js"></script>
-<script src="js/jquery.min.js"></script>
-<script src="js/toast.js"></script>
-<script src="app/webShop.js"></script>
-<script src="app/app.js"></script>
-<script src="app/registration.js"></script>
+	<div id="webShop">
+		  <navbar :key="$route.fullPath"></navbar>
+		  <router-view></router-view>
+	</div>
+	
+	<script src="js/vue.js"></script>
+	<script src="js/vue-router.js"></script>
+	<script src="js/axios.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/toast.js"></script>
+	<script src="app/navbar.js"></script>
+	<script src="app/webShop.js"></script>
+	<script src="app/shoppingCart.js"></script>
+	<script src="app/registration.js"></script>
+    <script src="app/login.js"></script>
+	<script src="app/editPersonalInfo.js"></script>
+	<script src="app/registerManager.js"></script>
+	<script src="app/registerSupplier.js"></script>
+	<script src="app/adminUsers.js"></script>
+	<script src="app/profile.js"></script>
+	<script src="app/createRestaurant.js"></script>
+	<script src="app/restaurantsOverview.js"></script>
+	<script src="app/adminRestaurant.js"></script>
+	<script src="app/orders.js"></script>
+	<script src="app/managerRestaurant.js"></script>
+	<script src="app/deliveryRequests.js"></script>
+	<script src="app/app.js"></script>
 
-
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+	
 </body>
 </html>

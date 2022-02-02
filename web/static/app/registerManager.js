@@ -1,4 +1,4 @@
-Vue.component("registration", {
+Vue.component("registerManager", {
 	data: function () {
 		return {
 				name: null,
@@ -8,10 +8,19 @@ Vue.component("registration", {
 				username: null,
 				gender: null,
 				role: null,
-				dateOfBirth: null
+				dateOfBirth: null,
+				restaurant: {}
 		}
 	},
-	mounted() {},
+	mounted() {
+		
+		 axios.get("/getRestaurantByName/" + localStorage.getItem('restaurant'))
+         .then(response => {
+             console.log(response.data)
+             this.restaurant = response.data;               
+         });
+		
+	},
 	template: 
 	`
 	<div id="Registration">
@@ -22,7 +31,7 @@ Vue.component("registration", {
 		        <div class="card rounded-3">
 		          <img src="images/food.jpg" class="w-100" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;" alt="Sample photo">
 		          <div class="card-body p-4 p-md-3">
-		            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2 text-center">Registration Info</h3>
+		            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2 text-center">Register Manager</h3>
 	
 		            <form class="px-md-2" @submit="register">
 		
@@ -45,11 +54,6 @@ Vue.component("registration", {
 		                <label class="form-label" for="form3Example1q">Password</label>
 		                <input type="password" id="form3Example1q" class="form-control" v-model="password"/>
 		              </div>    
-		              
-		              <div class="form-outline mb-2">
-		                <label class="form-label" for="form3Example2q">Confirm Password</label>
-		                <input type="password" id="form3Example2q" class="form-control" v-model="password2"/>
-		              </div> 
 		              
 		              <div class="form-outline mb-2">
 		                 <label for="exampleDatepicker1" class="form-label">Date of Birth</label>		
@@ -77,37 +81,42 @@ Vue.component("registration", {
 		</section>
     </div>
 	`,
-	computed : {},
+	computed : {
+		
+    },
 	methods: {
 		  register(e) {
-	            e.preventDefault();
-	            e.preventDefault();
+			  e.preventDefault();
+			  e.preventDefault();
 
+			  
 	            this.errors = null;
-	            if(!this.name || !this.surname || !this.username || !this.password || !this.password2 || !this.dateOfBirth || !this.gender){
+	            if(!this.name || !this.surname || !this.username || !this.password || !this.dateOfBirth || !this.gender){
 	                alert("Fill out all the fields")
 	                e.preventDefault();
-	            }else if(this.password2  !== this.password){
-	                alert("Passwords must match!")
-	                e.preventDefault();
+	              
 	            }else{
-	                axios.post('/registerCustomer', { name: this.name,
+	            	
+	            	let manager = {
+	            			name: this.name,
 	                        surname: this.surname,
 	                        username : this.username,
 	                        password: this.password,
 	                        gender : this.gender,
 	                        dateOfBirth : this.dateOfBirth,
-	                        role: "CUSTOMER"
-	                    })
-	                    .then(response => {
-	                        if(response.data) {
-								alert("You have successfully registered!");
-								this.$router.push("login");
-							}else
-	                            alert("That username already exists!")
-	                    });
-	            }
-	        }
-	
+	                        role: "MENAGER"
+	            	}
+
+					axios.post('/registerManager',  manager)
+					.then(response => {
+						alert("You have successfully registered manager!")
+							axios.post('/addRestaurantToManager/' + manager.username, this.restaurant)
+							.then( response => {
+								alert("That restaurant is created!")
+								this.$router.push('restaurants')});
+							});
+	            	}
+	            	}
+	              	
 	},
 });
