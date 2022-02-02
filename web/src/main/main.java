@@ -502,12 +502,12 @@ public class main {
 			return gson.toJson(order);
 		});
 
-		// mozda staviti neku listu samo onih porudybina koje su u statusu obrada pa
-		// odatle da ih otkazuje
+		
 		post("/cancelOrder/:username/:orderId", "application/json", (req, res) -> {
 			res.type("application/json");
 			Order order = orderController.changeStatusToCanceled(req.params("orderId"));
-			customerController.updateUsersPointsAferCancellation(req.params("username"), order.getPrice());
+			ArrayList<CustomerType> allTypes = customerTypeController.getAllTypes();
+			customerController.updateUsersPointsAferCancellation(req.params("username"), order.getPrice(), allTypes);
 			return gson.toJson(order);
 		});
 

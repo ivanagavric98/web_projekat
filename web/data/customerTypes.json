@@ -1,1 +1,22 @@
-[{"type":"GOLDEN","discount":15,"requiredPoints":500},{"type":"SILVER","discount":10,"requiredPoints":350},{"type":"BRONZE","discount":0,"requiredPoints":0}]
+[
+	{
+		"type": "GOLDEN",
+		"discount": 20,
+		"requiredPoints": 5000
+	},
+	{
+		"type": "SILVER",
+		"discount": 15,
+		"requiredPoints": 3500
+	},
+	{
+		"type": "BRONZE",
+		"discount": 5,
+		"requiredPoints": 1000
+	},
+	{
+		"type": "REGULAR",
+		"discount": 0,
+		"requiredPoints": 0
+	}
+]

@@ -13,7 +13,7 @@ public class CustomerType {
 	}
 	
 	public CustomerType() {
-		type=Type.BRONZE;
+		type=Type.REGULAR;
 	}
 
 	public Type getType() {
@@ -38,7 +38,5 @@ public class CustomerType {
 
 	public void setRequiredPoints(int requiredPoints) {
 		this.requiredPoints = requiredPoints;
-	}
-	
-	
+	}	
 }

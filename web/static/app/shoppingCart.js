@@ -99,11 +99,14 @@ Vue.component("shoppingCart", {
 					});
 			},
 			createOrder(){
+				let restaurant = JSON.parse(localStorage.getItem("restaurant"));
+
 				axios.post('/addOrder/' + localStorage.getItem("username"), this.shoppingCart)
 					.then(response => {
 						if(response.data){
 							alert("Your order is created!")
 							axios.post('/updateCustomerType', this.customerType)
+							localStorage.removeItem("restaurant")
 							location.reload()
 						}else
 							alert("That article already exists!")

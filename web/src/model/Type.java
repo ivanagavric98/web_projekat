@@ -3,5 +3,6 @@ package model;
 public enum Type {
 	GOLDEN,
 	SILVER,
-	BRONZE
+	BRONZE,
+	REGULAR
 }

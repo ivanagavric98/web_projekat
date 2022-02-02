@@ -51,9 +51,9 @@ public class CustomerController {
         return customerService.getByUsername(customerUsername);
     }
 
-    public Customer updateUsersPointsAferCancellation(String params, Double price)
+    public Customer updateUsersPointsAferCancellation(String params, Double price, ArrayList<CustomerType> allTypes)
             throws JsonSyntaxException, IOException {
-        return customerService.updateUsersPointsAferCancellation(params, price);
+        return customerService.updateUsersPointsAferCancellation(params, price, allTypes);
     }
 
 	public ArrayList<Customer> getCustomersWithOrderFromRestaurant(String restaurantName) throws JsonSyntaxException, IOException {

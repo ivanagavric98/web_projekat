@@ -283,10 +283,27 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 
 	public List<Restaurant> getRestaurantsOpenAndClosed() throws JsonSyntaxException, IOException {
 		List<Restaurant> resultList = new ArrayList<>();
+		
 		List<Restaurant> openList = restaurantsFiltrateByStatus("OPEN");
 		List<Restaurant> closedList = restaurantsFiltrateByStatus("CLOSED");
 		resultList = Stream.concat(openList.stream(), closedList.stream())
 				.collect(Collectors.toList());
+		
+		for(Restaurant restaurant: resultList) {
+			Double averageGrade=0.0;
+			Integer totalGrade=0;
+			for(Integer i : restaurant.getGrade()){
+				totalGrade+=i;
+			}
+			if(restaurant.getGrade().size() != 0) {
+				averageGrade=(double) (totalGrade/restaurant.getGrade().size());
+				double roundOff = Math.round(averageGrade * 100.0) / 100.0;
+				restaurant.setAverageGrade(roundOff);
+
+			}
+			update(restaurant);
+		}
+		
 		return resultList;
 	}
 

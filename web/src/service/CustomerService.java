@@ -65,9 +65,9 @@ public class CustomerService {
 
 	}
 
-	public Customer updateUsersPointsAferCancellation(String customer, Double price)
+	public Customer updateUsersPointsAferCancellation(String customer, Double price, ArrayList<CustomerType> allTypes)
 			throws JsonSyntaxException, IOException {
-		return customerDao.updateUsersPointsAferCancellation(customer, price);
+		return customerDao.updateUsersPointsAferCancellation(customer, price, allTypes);
 	}
 
 	public Customer getByUsername(String customerUsername) throws JsonSyntaxException, IOException {

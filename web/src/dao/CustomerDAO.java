@@ -158,6 +158,7 @@ public class CustomerDAO implements IDAO<Customer, String> {
         CustomerType bronze = new CustomerType();
         CustomerType silver = new CustomerType();
         CustomerType golden = new CustomerType();
+        CustomerType regular = new CustomerType();
 
         for (CustomerType ct : allTypes) {
             if (ct.getType().toString().equals("BRONZE")) {
@@ -169,9 +170,13 @@ public class CustomerDAO implements IDAO<Customer, String> {
             if (ct.getType().toString().equals("GOLDEN")) {
                 golden = ct;
             }
+            if (ct.getType().toString().equals("REGULAR")) {
+                regular = ct;
+            }
         }
         if (customer.getPoints() >= bronze.getRequiredPoints()) {
             customer.setType(bronze);
+           
         }
         if (customer.getPoints() >= silver.getRequiredPoints()) {
             customer.setType(silver);
@@ -179,19 +184,55 @@ public class CustomerDAO implements IDAO<Customer, String> {
         if (customer.getPoints() >= golden.getRequiredPoints()) {
             customer.setType(golden);
         }
+        if(customer.getPoints() < bronze.getRequiredPoints()) {
+        	customer.setType(regular);
+        }
         
-        update(customer);
-        
+        update(customer);        
         return customer;
     }
 
-    public Customer updateUsersPointsAferCancellation(String customerName, Double price)
+    public Customer updateUsersPointsAferCancellation(String customerName, Double price, ArrayList<CustomerType> allTypes)
             throws JsonSyntaxException, IOException {
         Customer customer = getByID(customerName);
         Double points = price / 1000 * 133 * 4;
         Double userPoints = customer.getPoints();
         customer.setPoints(userPoints - points);
+        CustomerType bronze = new CustomerType();
+        CustomerType silver = new CustomerType();
+        CustomerType golden = new CustomerType();
+        CustomerType regular = new CustomerType();
+
+        for (CustomerType ct : allTypes) {
+            if (ct.getType().toString().equals("BRONZE")) {
+                bronze = ct;
+            }
+            if (ct.getType().toString().equals("SILVER")) {
+                silver = ct;
+            }
+            if (ct.getType().toString().equals("GOLDEN")) {
+                golden = ct;
+            }
+            if (ct.getType().toString().equals("REGULAR")) {
+                regular = ct;
+            }
+        }
+        if (customer.getPoints() >= bronze.getRequiredPoints()) {
+            customer.setType(bronze);
+           
+        }
+        if (customer.getPoints() >= silver.getRequiredPoints()) {
+            customer.setType(silver);
+        }
+        if (customer.getPoints() >= golden.getRequiredPoints()) {
+            customer.setType(golden);
+        }
+        if(customer.getPoints() < bronze.getRequiredPoints()) {
+        	customer.setType(regular);
+        }
+           	
         update(customer);
+   
         return customer;
     }
 }

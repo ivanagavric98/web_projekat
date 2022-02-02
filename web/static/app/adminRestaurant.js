@@ -28,7 +28,8 @@ Vue.component("adminRestaurant", {
 			itemsPrice: 0,
 			shoppingCartt: {},
 			customer: null,
-			commentTemp: null
+			commentTemp: null,
+			rest: null
 		}
 	},
 	mounted() {
@@ -519,6 +520,7 @@ Vue.component("adminRestaurant", {
 				let itemsPrice = this.quantitySC * this.editedArticle.price
 				this.itemsPrice += itemsPrice
 				this.shoppingCartItems.push(items)
+				console.log(this.rest)
 			}
 		},
 		createShoppingCart(event){
@@ -532,15 +534,17 @@ Vue.component("adminRestaurant", {
 					restaurantName: JSON.parse(localStorage.getItem('restaurant'))
 				};
 
-				axios.post('/createShoppingCart', shoppingCart)
-					.then(response => {
-						if(response.data){
-							alert("Your shopping cart is created!")
-							localStorage.setItem("shoppingCartID", shoppingCart.id.valueOf())
-							this.$router.push('shoppingCart')
-						}else
-							alert("That shopping cart already exists!")
-					});
+					axios.post('/createShoppingCart', shoppingCart)
+						.then(response => {
+							if(response.data){
+								alert("Your shopping cart is created!")
+								localStorage.setItem("shoppingCartID", shoppingCart.id.valueOf())
+								this.$router.push('shoppingCart')
+							}else
+								alert("That shopping cart already exists!")
+						});
+
+
 			}
 
 

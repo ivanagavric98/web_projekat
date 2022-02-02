@@ -8,8 +8,6 @@ public class Customer extends User {
 	public ShoppingCart cart;
 	public Double points;
 	public CustomerType type;
-
-	
 	
 	public ArrayList<Order> getOrders() {
 		return orders;
