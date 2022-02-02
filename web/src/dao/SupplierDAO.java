@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import model.Customer;
 import model.Supplier;
 import model.User;
 
@@ -47,7 +48,7 @@ public class SupplierDAO implements IDAO<Supplier, String> {
 	@Override
 	public Supplier getByID(String id) throws JsonSyntaxException, IOException {
 		Supplier wantedUser = null;
-		ArrayList<Supplier> suppliers = (ArrayList<Supplier>) getAll();
+		ArrayList<Supplier> suppliers = (ArrayList<Supplier>) getAllNonDeleted();
 		if (suppliers.size() != 0) {
 			for (Supplier supplier : suppliers) {
 				if (supplier.getUsername().equals(id)) {
@@ -105,8 +106,15 @@ public class SupplierDAO implements IDAO<Supplier, String> {
 
 	@Override
 	public ArrayList<Supplier> getAllNonDeleted() throws JsonSyntaxException, IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        ArrayList<Supplier> suppliers = getAll();
+        ArrayList<Supplier> result = new ArrayList<Supplier>();
+
+        for(Supplier s : suppliers) {
+        	if(!s.getDeleted()) {
+        		result.add(s);
+        	}
+        }
+        return result;
+   	}
 
 }

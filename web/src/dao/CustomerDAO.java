@@ -59,14 +59,21 @@ public class CustomerDAO implements IDAO<Customer, String> {
 
     @Override
     public ArrayList<Customer> getAllNonDeleted() throws JsonSyntaxException, IOException {
-        // TODO Auto-generated method stub
-        return null;
+        ArrayList<Customer> customers = getAll();
+        ArrayList<Customer> result = new ArrayList<Customer>();
+
+        for(Customer c : customers) {
+        	if(!c.getDeleted()) {
+        		result.add(c);
+        	}
+        }
+        return result;
     }
 
     @Override
     public Customer getByID(String id) throws JsonSyntaxException, IOException {
         Customer wantedUser = null;
-        ArrayList<Customer> users = (ArrayList<Customer>) getAll();
+        ArrayList<Customer> users = (ArrayList<Customer>) getAllNonDeleted();
         if (users.size() != 0) {
             for (Customer user : users) {
                 if (user.getUsername().equals(id)) {

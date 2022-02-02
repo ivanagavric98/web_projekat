@@ -15,8 +15,8 @@ public class Supplier extends User {
 	}
 
 	public Supplier(String username, String password, String name, String surname, Gender gender, Date dateOfBirth,
-			Role role, ArrayList<Order> orders) {
-		super(username, password, name, surname, gender, dateOfBirth, role);
+			Role role, ArrayList<Order> orders,  Boolean deleted) {
+		super(username, password, name, surname, gender, dateOfBirth, role, deleted);
 		this.orders = orders;
 	}
 

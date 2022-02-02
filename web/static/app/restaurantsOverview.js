@@ -111,6 +111,7 @@ Vue.component("restaurants", {
 		        <h3>{{restaurant.name}}</h3>
 		        <p class="restaurant-type">{{restaurant.type}}</p>
 		        <button type="button" class="btn btn-success" @click= "goToRestaurant(restaurant)">Go to {{restaurant.name}}</button>
+		        <button type="button" class="btn btn-danger" v-if= "accessControlAdmin" @click="isDeleted(restaurant)">Delete</button>
 		        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addComment" @click="setTemporaryRestaurant(restaurant)" v-if="accessControlCustomer">Add comment</button>
 		    </div>
 		    <div class="restaurant-details">
@@ -182,6 +183,14 @@ Vue.component("restaurants", {
                 return true;
             }else
                 return false;
+        },
+
+        accessControlAdmin(){
+            let role = localStorage.getItem('role')
+            if(role == 'ADMIN'){
+                return true;
+            }else
+                return false;
         }
     },
 	methods: {
@@ -238,6 +247,14 @@ Vue.component("restaurants", {
                         location.reload()
                     }
                 })
+        },
+        isDeleted(restaurant){
+            axios.post("/deleteRestaurant", restaurant)
+                .then(response => {
+                    location.reload()
+
+                })
+
         }
 	},
 });

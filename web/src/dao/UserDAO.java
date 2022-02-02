@@ -117,8 +117,15 @@ public class UserDAO implements IDAO<User, String> {
 
 	@Override
 	public ArrayList<User> getAllNonDeleted() throws JsonSyntaxException, IOException {
-		// TODO Auto-generated method stub
-		return null;
+        ArrayList<User> users = getAll();
+        ArrayList<User> result = new ArrayList<User>();
+
+        for(User u : users) {
+        	if(!u.getDeleted()) {
+        		result.add(u);
+        	}
+        }
+        return result;
 	}
 
 	public List<User> userSortByNameAsc(List<User> users) throws JsonSyntaxException, IOException {

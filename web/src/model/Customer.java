@@ -9,6 +9,8 @@ public class Customer extends User {
 	public Double points;
 	public CustomerType type;
 
+	
+	
 	public ArrayList<Order> getOrders() {
 		return orders;
 	}
@@ -42,8 +44,8 @@ public class Customer extends User {
 	}
 
 	public Customer(String username, String password, String name, String surname, Gender gender, Date dateOfBirth,
-			Role role, ArrayList<Order> orders, ShoppingCart cart, Double points, CustomerType type) {
-		super(username, password, name, surname, gender, dateOfBirth, role);
+			Role role, ArrayList<Order> orders, ShoppingCart cart, Double points, CustomerType type,  Boolean deleted) {
+		super(username, password, name, surname, gender, dateOfBirth, role, deleted);
 		this.orders = orders;
 		this.cart = cart;
 		this.points = points;

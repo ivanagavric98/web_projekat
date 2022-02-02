@@ -17,6 +17,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import model.Article;
+import model.Customer;
 import model.Menager;
 import model.User;
 
@@ -49,7 +50,7 @@ public class MenagerDAO implements IDAO<Menager, String> {
 	@Override
 	public Menager getByID(String id) throws JsonSyntaxException, IOException {
 		Menager wanted = null;
-		ArrayList<Menager> menagers = (ArrayList<Menager>) getAll();
+		ArrayList<Menager> menagers = (ArrayList<Menager>) getAllNonDeleted();
 		if (menagers.size() != 0) {
 			for (Menager menager : menagers) {
 				if (menager.getUsername().equals(id)) {
@@ -108,8 +109,16 @@ public class MenagerDAO implements IDAO<Menager, String> {
 
 	@Override
 	public ArrayList<Menager> getAllNonDeleted() throws JsonSyntaxException, IOException {
-		// TODO Auto-generated method stub
-		return null;
+        ArrayList<Menager> menagers = getAll();
+        ArrayList<Menager> result = new ArrayList<Menager>();
+
+        for(Menager m : menagers) {
+        	if(!m.getDeleted()) {
+        		result.add(m);
+        	}
+        }
+        return result;
+   	
 	}
 
 }

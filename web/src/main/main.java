@@ -54,6 +54,7 @@ import model.Menager;
 import model.Order;
 import model.OrderStatus;
 import model.Restaurant;
+import model.Role;
 import model.ShoppingCart;
 import model.ShoppingCartItem;
 import model.Supplier;
@@ -357,6 +358,45 @@ public class main {
 			return gson.toJson(menager);
 		});
 
+		post("/delete", (req, res) -> {
+			res.type("application/json");
+			User user = gson.fromJson(req.body(), User.class);
+			user.setDeleted(true);
+			usersController.updatePersonalInfo(user);
+			
+			switch (user.getRole()) {
+			case CUSTOMER:
+				Customer customer = customersDAO.getByID(user.getUsername());
+				customer.setDeleted(true);
+				customersDAO.update(customer);
+				break;
+			case MENAGER:
+				Menager menager = menagerDAO.getByID(user.getUsername());
+				menager.setDeleted(true);
+				menagerDAO.update(menager);
+				break;
+			case SUPPLIER:
+				Supplier supplier = supplierDAO.getByID(user.getUsername());
+				supplier.setDeleted(true);
+				supplierDAO.update(supplier);
+				break;
+			default:
+				break;
+			}
+			
+			return gson.toJson(user);
+		});
+
+		post("/deleteRestaurant", (req, res) -> {
+			res.type("application/json");
+			Restaurant restaurant = gson.fromJson(req.body(), Restaurant.class);
+			restaurant.setDeleted(true);
+			restaurantController.update(restaurant);
+			
+			return gson.toJson(restaurant);
+		});
+		
+		
 		get("/getRestaurantByName/:name", "application/json", (req, res) -> {
 			res.type("application/json");
 			Restaurant restaurant = restaurantController.getRestaurantByName(req.params("name"));

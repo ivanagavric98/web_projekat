@@ -96,6 +96,11 @@ Vue.component("adminUsers", {
 		        >
 		          Points
 		        </th>
+				<th
+		         
+		        >
+		         Delete
+		        </th>
 		      </tr>
 		    </thead>
 		    <tbody>
@@ -108,6 +113,8 @@ Vue.component("adminUsers", {
 		        <td>{{ item.surname }}</td>
 		        <td>{{ item.role }}</td>
 		        <td>{{ item.points }}</td>
+		        <td><button type="button" class="btn btn-danger" @click="isDeleted(item)">Delete</button></td>
+		        
 		      </tr>
 		    </tbody>
 		  </table>
@@ -224,6 +231,12 @@ Vue.component("adminUsers", {
 						alert("No results!")
 				})
 
+		},
+		isDeleted(item){
+			axios.post("/delete", item)
+				.then(response => {
+					location.reload();
+				})
 		}
 	      
 	},

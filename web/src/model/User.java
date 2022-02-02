@@ -10,7 +10,22 @@ public class User {
 	public Gender gender;
 	public Date dateOfBirth;
 	public Role role;
+	public Boolean deleted = false;
 	
+	public User() {}
+	
+	public User(String username, String password, String name, String surname, Gender gender, Date dateOfBirth,
+			Role role, Boolean deleted) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.gender = gender;
+		this.dateOfBirth = dateOfBirth;
+		this.role = role;
+		this.deleted = deleted;
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -53,18 +68,11 @@ public class User {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	public User(String username, String password, String name, String surname, Gender gender, Date dateOfBirth,
-			Role role) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.name = name;
-		this.surname = surname;
-		this.gender = gender;
-		this.dateOfBirth = dateOfBirth;
-		this.role = role;
+	public Boolean getDeleted() {
+		return deleted;
 	}
-
-	public User() {}
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
 	
 }

@@ -11,12 +11,13 @@ public class Restaurant {
 	public ArrayList<Integer> grade = new ArrayList<Integer>();
 	public Double averageGrade = 5.0;
 	public RestaurantStatus status;
+	public Boolean deleted = false;
 	
 	public Restaurant() {
 	}
 
 	public Restaurant(String name, String type, ArrayList<Article> articles, Location location, String logo,
-			ArrayList<Integer> grade, Double averageGrade, RestaurantStatus status) {
+			ArrayList<Integer> grade, Double averageGrade, RestaurantStatus status, Boolean deleted) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -26,7 +27,34 @@ public class Restaurant {
 		this.grade = grade;
 		this.averageGrade = averageGrade;
 		this.status = status;
+		this.deleted = deleted;
 	}
+
+
+
+	public Double getAverageGrade() {
+		return averageGrade;
+	}
+
+
+
+	public void setAverageGrade(Double averageGrade) {
+		this.averageGrade = averageGrade;
+	}
+
+
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+
 
 	public String getName() {
 		return name;

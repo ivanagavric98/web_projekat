@@ -37,7 +37,7 @@ public Boolean register(Menager menager) throws JsonSyntaxException, IOException
 }
 	 
 	public ArrayList<Menager> getAllMenagers() throws JsonSyntaxException, IOException{
-	    return menagerDAO.getAll();
+	    return menagerDAO.getAllNonDeleted();
 	}
 	
 	public void update(Menager menager) throws JsonSyntaxException, IOException{
@@ -46,7 +46,7 @@ public Boolean register(Menager menager) throws JsonSyntaxException, IOException
 	
 	public ArrayList<Menager> getAllMenagersWithoutRestaurant() throws JsonSyntaxException, IOException {
 		
-		ArrayList<Menager> menagers = menagerDAO.getAll();
+		ArrayList<Menager> menagers = menagerDAO.getAllNonDeleted();
 		ArrayList<Menager> menagersWithoutRestaurants = new ArrayList<Menager>();
 		
 		if(menagers != null) {

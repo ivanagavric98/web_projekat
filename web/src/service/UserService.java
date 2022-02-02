@@ -75,9 +75,9 @@ public class UserService {
 	}
 
 	public ArrayList<User> getAllUsers() throws JsonSyntaxException, IOException {
-		ArrayList<Customer> customers = customerDAO.getAll();
-		ArrayList<Supplier> suppliers = supplierDAO.getAll();
-		ArrayList<Menager> menagers = menagerDAO.getAll();
+		ArrayList<Customer> customers = customerDAO.getAllNonDeleted();
+		ArrayList<Supplier> suppliers = supplierDAO.getAllNonDeleted();
+		ArrayList<Menager> menagers = menagerDAO.getAllNonDeleted();
 		ArrayList<User> users = new ArrayList<User>();
 		
 		users.addAll(customers);
@@ -97,9 +97,9 @@ public class UserService {
 
 	public ArrayList<User> usersSearchByName(String name) throws JsonSyntaxException, IOException {
 		ArrayList<User> allUsers = new ArrayList<User>();
-		ArrayList<Customer> customers = customerDAO.getAll();
-		ArrayList<Supplier> suppliers = supplierDAO.getAll();
-		ArrayList<Menager> menagers = menagerDAO.getAll();
+		ArrayList<Customer> customers = customerDAO.getAllNonDeleted();
+		ArrayList<Supplier> suppliers = supplierDAO.getAllNonDeleted();
+		ArrayList<Menager> menagers = menagerDAO.getAllNonDeleted();
 		
 		allUsers.addAll(customers);
 		allUsers.addAll(menagers);
@@ -119,9 +119,9 @@ public class UserService {
 
 	public ArrayList<User> usersSearchByUserName(String username) throws JsonSyntaxException, IOException {
 		ArrayList<User> allUsers = new ArrayList<User>();
-		ArrayList<Customer> customers = customerDAO.getAll();
-		ArrayList<Supplier> suppliers = supplierDAO.getAll();
-		ArrayList<Menager> menagers = menagerDAO.getAll();
+		ArrayList<Customer> customers = customerDAO.getAllNonDeleted();
+		ArrayList<Supplier> suppliers = supplierDAO.getAllNonDeleted();
+		ArrayList<Menager> menagers = menagerDAO.getAllNonDeleted();
 		
 		allUsers.addAll(customers);
 		allUsers.addAll(menagers);
@@ -141,9 +141,9 @@ public class UserService {
 
 	public ArrayList<User> usersSearchBySurname(String surname) throws JsonSyntaxException, IOException {
 		ArrayList<User> allUsers = new ArrayList<User>();
-		ArrayList<Customer> customers = customerDAO.getAll();
-		ArrayList<Supplier> suppliers = supplierDAO.getAll();
-		ArrayList<Menager> menagers = menagerDAO.getAll();
+		ArrayList<Customer> customers = customerDAO.getAllNonDeleted();
+		ArrayList<Supplier> suppliers = supplierDAO.getAllNonDeleted();
+		ArrayList<Menager> menagers = menagerDAO.getAllNonDeleted();
 		
 		allUsers.addAll(customers);
 		allUsers.addAll(menagers);
@@ -189,10 +189,10 @@ public class UserService {
 
 	public List<User> usersFiltrateByType(String type) throws JsonSyntaxException, IOException {
 	    ArrayList<User> users = new ArrayList<User>();
-	    ArrayList<Customer> customers = customerDAO.getAll();
-	    ArrayList<Supplier> suppliers = supplierDAO.getAll();
-	    ArrayList<Menager> menagers = menagerDAO.getAll();
-	    
+	    ArrayList<Customer> customers = customerDAO.getAllNonDeleted();
+		ArrayList<Supplier> suppliers = supplierDAO.getAllNonDeleted();
+		ArrayList<Menager> menagers = menagerDAO.getAllNonDeleted();
+		
 	    users.addAll(customers);
 	    users.addAll(menagers);
 	    users.addAll(suppliers);
@@ -207,10 +207,10 @@ public class UserService {
 	}
 	public List<User> usersFiltrateByRolee(String role) throws JsonSyntaxException, IOException {
 	    ArrayList<User> users = new ArrayList<User>();
-	    ArrayList<Customer> customers = customerDAO.getAll();
-	    ArrayList<Supplier> suppliers = supplierDAO.getAll();
-	    ArrayList<Menager> menagers = menagerDAO.getAll();
-	    
+	    ArrayList<Customer> customers = customerDAO.getAllNonDeleted();
+		ArrayList<Supplier> suppliers = supplierDAO.getAllNonDeleted();
+		ArrayList<Menager> menagers = menagerDAO.getAllNonDeleted();
+		
 	    users.addAll(customers);
 	    users.addAll(menagers);
 	    users.addAll(suppliers);

@@ -21,6 +21,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import model.Article;
+import model.Menager;
 import model.Restaurant;
 import model.RestaurantStatus;
 import model.User;
@@ -53,7 +54,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 	@Override
 	public Restaurant getByID(String id) throws JsonSyntaxException, IOException {
 		Restaurant wantedRestaurant = null;
-		ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) getAll();
+		ArrayList<Restaurant> restaurants = (ArrayList<Restaurant>) getAllNonDeleted();
 		if (restaurants != null) {
 			for (Restaurant restaurant : restaurants) {
 				if (restaurant.getName().equals(id)) {
@@ -113,12 +114,20 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 
 	@Override
 	public ArrayList<Restaurant> getAllNonDeleted() throws JsonSyntaxException, IOException {
-		// TODO Auto-generated method stub
-		return null;
+		  	ArrayList<Restaurant> restaurants = getAll();
+	        ArrayList<Restaurant> result = new ArrayList<Restaurant>();
+
+	        for(Restaurant r : restaurants) {
+	        	if(!r.getDeleted()) {
+	        		result.add(r);
+	        	}
+	        }
+	        return result;
+	   	
 	}
 
 	public ArrayList<Restaurant> restourantSearchByName(String restaurantName) throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> allRestaurants = getAll();
+		ArrayList<Restaurant> allRestaurants = getAllNonDeleted();
 		ArrayList<Restaurant> nameSearchList = new ArrayList<>();
 
 		if (allRestaurants.size() != 0) {
@@ -132,7 +141,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 	}
 
 	public ArrayList<Restaurant> restourantSearchByType(String type) throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> allRestaurants = getAll();
+		ArrayList<Restaurant> allRestaurants = getAllNonDeleted();
 		ArrayList<Restaurant> typeSearchList = new ArrayList<>();
 
 		if (allRestaurants.size() != 0) {
@@ -146,7 +155,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 	}
 
 	public ArrayList<Restaurant> restourantSearchByLocation(String location) throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> allRestaurants = getAll();
+		ArrayList<Restaurant> allRestaurants = getAllNonDeleted();
 		ArrayList<Restaurant> locationSearchList = new ArrayList<>();
 		
 		if (allRestaurants.size() != 0) {
@@ -262,7 +271,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 	}
 
 	public List<Restaurant> restaurantsFiltrateByStatus(String status) throws JsonSyntaxException, IOException {
-		ArrayList<Restaurant> restaurants = getAll();
+		ArrayList<Restaurant> restaurants = getAllNonDeleted();
 		ArrayList<Restaurant> resultList = new ArrayList<>();
 		for (Restaurant restaurant : restaurants) {
 			if (restaurant.getStatus().toString().toLowerCase().equals(status.toLowerCase())) {
@@ -283,7 +292,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 
 	public Restaurant getRestaurantByName(String restaurantName) throws JsonSyntaxException, IOException {
 		Restaurant result = new Restaurant();
-		ArrayList<Restaurant> restaurants = getAll();
+		ArrayList<Restaurant> restaurants = getAllNonDeleted();
 		for (Restaurant restaurant : restaurants) {
 			if (restaurant.name.trim().toLowerCase().equals(restaurantName.trim().toLowerCase())) {
 				result = restaurant;
@@ -294,7 +303,7 @@ public class RestaurantDAO implements IDAO<Restaurant, String> {
 
 	public ArrayList<Restaurant> restaurantSearchByGrade(double gradeToCompare) throws JsonSyntaxException, IOException {
 		Set<Restaurant> toSort = new HashSet<>();
-		ArrayList<Restaurant> restaurants=getAll();
+		ArrayList<Restaurant> restaurants=getAllNonDeleted();
 		for (Restaurant object : restaurants) {
 			toSort.add(object);
 		}

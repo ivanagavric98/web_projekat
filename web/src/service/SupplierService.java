@@ -32,7 +32,7 @@ public class SupplierService {
 	}
 
 	public ArrayList<Supplier> getAllSuppliers() throws JsonSyntaxException, IOException {
-		return supplierDao.getAll();
+		return supplierDao.getAllNonDeleted();
 	}
 
 	public void update(Supplier user) throws JsonSyntaxException, IOException {

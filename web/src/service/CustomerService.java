@@ -47,7 +47,7 @@ public class CustomerService {
 	}
 
 	public ArrayList<Customer> getAllCustomers() throws JsonSyntaxException, IOException {
-		return customerDao.getAll();
+		return customerDao.getAllNonDeleted();
 	}
 
 	public List<Customer> userSortByUserPointAsc() throws JsonSyntaxException, IOException {
@@ -76,7 +76,7 @@ public class CustomerService {
 
 	public ArrayList<Customer> getCustomersWithOrderFromRestaurant(String restaurantName) throws JsonSyntaxException, IOException {
 		ArrayList<Order> orders = orderDAO.getAll();
-		ArrayList<Customer> customers = customerDao.getAll();
+		ArrayList<Customer> customers = customerDao.getAllNonDeleted();
 		ArrayList<Customer> result = new ArrayList<Customer>();
 		
 		for(Customer customer: customers) {

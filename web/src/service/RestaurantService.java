@@ -57,7 +57,7 @@ public class RestaurantService {
     }
 
     public ArrayList<Restaurant> getAllRestaurants() throws JsonSyntaxException, IOException {
-        return restaurantDAO.getAll();
+        return restaurantDAO.getAllNonDeleted();
     }
 
     public ArrayList<Restaurant> restourantSearchByName(String restaurantName) throws JsonSyntaxException, IOException {
@@ -112,7 +112,7 @@ public class RestaurantService {
         return restaurantDAO.getByID(name);
     }
     public List<Restaurant> getRestaurantsByName(String name) throws JsonSyntaxException, IOException {
-       ArrayList<Restaurant> restaurants=getAllRestaurants();
+       ArrayList<Restaurant> restaurants=  restaurantDAO.getAllNonDeleted();
        List<Restaurant> resultList=new ArrayList<>();
        for(Restaurant res :restaurants){
            if(res.getName().toLowerCase().contains(name.toLowerCase())){
@@ -133,7 +133,7 @@ public class RestaurantService {
         return openedRestaurants;
     }
     public ArrayList<Restaurant> getRestaurantsByType(String type) throws JsonSyntaxException, IOException {
-        ArrayList<Restaurant> allRestaurants = restaurantDAO.getAll();
+        ArrayList<Restaurant> allRestaurants = restaurantDAO.getAllNonDeleted();
         ArrayList<Restaurant> resultList = new ArrayList<Restaurant>();
 
         for (Restaurant r : allRestaurants) {
@@ -171,26 +171,26 @@ public class RestaurantService {
                     searchByRestaurantName = getRestaurantsByName(restaurantSearchSortFiltrateDTO.getSearchByrestaurantName());
                     System.out.println(restaurantSearchSortFiltrateDTO.getSearchByrestaurantName());
                 } else {
-                    searchByRestaurantName = restaurantDAO.getAll();
+                    searchByRestaurantName = restaurantDAO.getAllNonDeleted();
                 }
         
                 if (restaurantSearchSortFiltrateDTO.getSearchByRestaurantType() != "") {
                     searchByRestaurantType = getRestaurantsByType(restaurantSearchSortFiltrateDTO.getSearchByRestaurantType()); 
                     System.out.println(restaurantSearchSortFiltrateDTO.getSearchByRestaurantType());
                 } else {
-                    searchByRestaurantType =  restaurantDAO.getAll();
+                    searchByRestaurantType =  restaurantDAO.getAllNonDeleted();
                 }
         
                 if (restaurantSearchSortFiltrateDTO.getSearchByLocation() != "") {
                     searchByLocation = restourantSearchByLocation(restaurantSearchSortFiltrateDTO.getSearchByLocation());
                 } else {
-                    searchByLocation =  restaurantDAO.getAll();
+                    searchByLocation =  restaurantDAO.getAllNonDeleted();
                 }
 
                 if (restaurantSearchSortFiltrateDTO.getSearchByAverageGrade() != 0.0) {
                     searchByGrade = restaurantSearchByGrade(restaurantSearchSortFiltrateDTO.getSearchByAverageGrade());
                 } else {
-                    searchByGrade =  restaurantDAO.getAll();
+                    searchByGrade =  restaurantDAO.getAllNonDeleted();
                 }
         
         
@@ -294,8 +294,8 @@ public class RestaurantService {
              }
 
 		public Restaurant getRestaurantByManager(String username) throws JsonSyntaxException, IOException {
-			ArrayList<Restaurant> restaurants = getAllRestaurants();
-			ArrayList<Menager> menagers = menagerDAO.getAll();
+			ArrayList<Restaurant> restaurants = restaurantDAO.getAllNonDeleted();
+			ArrayList<Menager> menagers = menagerDAO.getAllNonDeleted();
 		    
 			for(Restaurant restaurant: restaurants){
 				for(Menager menager: menagers) {

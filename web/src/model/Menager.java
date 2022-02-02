@@ -8,8 +8,8 @@ public class Menager extends User {
 	public Menager() {}
 	
 	public Menager(String username, String password, String name, String surname, Gender gender, Date dateOfBirth,
-			Role role, String restaurant) {
-		super(username, password, name, surname, gender, dateOfBirth, role);
+			Role role, String restaurant, Boolean deleted) {
+		super(username, password, name, surname, gender, dateOfBirth, role, deleted);
 		this.restaurant = restaurant;
 	}
 	public String getRestaurant() {
