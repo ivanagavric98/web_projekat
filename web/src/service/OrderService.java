@@ -111,15 +111,64 @@ public class OrderService {
     }
 
     public Order changeStatusToInPreparation(String params) throws JsonSyntaxException, IOException {
-        return orderDAO.changeStatusToInPreparation(params);
+    	Order order = orderDAO.getByID(params);
+        ArrayList<Customer> customers = customerDAO.getAll();
+         
+        order.setOrderStatus(OrderStatus.IN_PREPARATION);
+        for(Customer c: customers) {
+        	for(Order o: c.getOrders()) {
+	    		if(o.getID().equals(order.getID())) {
+	    			o.setOrderStatus(OrderStatus.IN_PREPARATION);
+	    	    	customerDAO.saveAll(customers);    			
+	    		}
+        	}
+    	}
+
+        orderDAO.update(order);
+        
+        return order;    
+
+    
     }
 
     public Order changeStatusToWaitingForSupplier(String params) throws JsonSyntaxException, IOException {
-        return orderDAO.changeStatusToWaitingForSupplier(params);
+		Order order = orderDAO.getByID(params);
+        ArrayList<Customer> customers = customerDAO.getAll();
+         
+        order.setOrderStatus(OrderStatus.WAITING_FOR_SUPPLIER);
+        for(Customer c: customers) {
+        	for(Order o: c.getOrders()) {
+	    		if(o.getID().equals(order.getID())) {
+	    			o.setOrderStatus(OrderStatus.WAITING_FOR_SUPPLIER);
+	    	    	customerDAO.saveAll(customers);    			
+	    		}
+        	}
+    	}
+
+        orderDAO.update(order);
+        
+        return order;    
     }
 
     public Order changeStatusToInTransport(String params) throws JsonSyntaxException, IOException {
-        return orderDAO.changeStatusToInTransport(params);
+    	Order order = orderDAO.getByID(params);
+        ArrayList<Supplier> suppliers = supplierDAO.getAll();
+         
+        order.setOrderStatus(OrderStatus.IN_TRANSPORT);
+        for(Supplier c: suppliers) {
+        	for(Order o: c.getOrders()) {
+	    		if(o.getID().equals(order.getID())) {
+	    			o.setOrderStatus(OrderStatus.IN_TRANSPORT);
+	    	    	supplierDAO.saveAll(suppliers);    			
+	    		}
+        	}
+    	}
+
+        orderDAO.update(order);
+        
+        return order;    
+    	
+    
     }
 
     public Order changeStatusToDelivered(String params, String username) throws JsonSyntaxException, IOException {
@@ -425,13 +474,26 @@ public class OrderService {
     }
 
     public ArrayList<Order> getOrdersByUser(OrderFiltrateSortSearchDTO orderFiltrateSortSearchDTO) throws JsonSyntaxException, IOException {
-        ArrayList<Order> orders = getAllOrders();
-        ArrayList<Order> resultList = new ArrayList<>();
-        for (Order o : orders) {
-            if (o.getCustomer().equals(orderFiltrateSortSearchDTO.getUser())) {
-                resultList.add(o);
-            }
-        }
+    	ArrayList<Order> orders = getAllOrders();
+        Customer customer = customerDAO.getByID(orderFiltrateSortSearchDTO.getUser());
+        ArrayList<Order> resultList = new ArrayList<Order>();
+    
+        if(orderFiltrateSortSearchDTO.getUser() == null) {
+        	resultList = orders;
+    	}else if(customer == null) {
+        	Supplier supplier = supplierDAO.getByID(orderFiltrateSortSearchDTO.getUser());
+        	if(supplier.getOrders() != null) {
+        		for(Order o: supplier.getOrders()) {
+        			resultList.add(o);
+        		}
+        	}
+        }else { 
+	        for (Order o : orders) {
+	            if (o.getCustomer().equals(orderFiltrateSortSearchDTO.getUser())) {
+	                resultList.add(o);
+	            }
+	        }
+	    }
         return resultList;
     }
 
@@ -460,7 +522,7 @@ public class OrderService {
 		ArrayList<Order> allOrders = orderDAO.getAll();
 		ArrayList<Order> result = new ArrayList<>();
 		for (Order o : allOrders) {
-			if (o.getCustomer().equals(customerUsername) && (o.getOrderStatus().equals(OrderStatus.IN_TRANSPORT) || o.getOrderStatus().equals(OrderStatus.IN_PREPARATION) || o.getOrderStatus().equals(OrderStatus.WAITING_FOR_SUPPLIER))) {
+			if (o.getCustomer().equals(customerUsername)) {
 				result.add(o);
 			}
 		}

@@ -161,7 +161,7 @@ public class main {
 					session.attribute("user", loggedUser);
 					return gson.toJson(loggedUser);
 				} else {
-					return "Nije pronasao korisnika";
+					return "";
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

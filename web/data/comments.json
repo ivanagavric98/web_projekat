@@ -1,18 +1,1 @@
-[
-	{
-		"id": "9d5c1040-5",
-		"customer": "iii",
-		"restaurant": "Petrus",
-		"text": "Hrana preukusna. Sve preporuke!",
-		"grade": 3,
-		"status": "Approved"
-	},
-	{
-		"id": "c7919f40-1",
-		"customer": "iii",
-		"restaurant": "Petrus",
-		"text": "Nezadovoljni uslugom. Porcije su male i hrana se dugo ceka.",
-		"grade": 1,
-		"status": "Rejected"
-	}
-]
+[{"id":"99a437d3-9","customer":"milica","restaurant":"Petrus","text":"Ne valja.","grade":3,"status":"Processing"}]

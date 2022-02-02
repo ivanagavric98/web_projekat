@@ -1,1 +1,1 @@
-[]
+[{"ID":"293bba33-3","articles":["Losos","Cezar salata"],"restaurant":"Petrus","dateAndTime":"2022-02-01","price":2100.0,"customer":"milica","orderStatus":"DELIVERED"},{"ID":"e85cbde7-7","articles":["Cezar salata"],"restaurant":"Petrus","dateAndTime":"2022-02-02","price":1400.0,"customer":"milica","orderStatus":"PROCESSING"}]

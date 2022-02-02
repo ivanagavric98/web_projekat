@@ -61,20 +61,16 @@ Vue.component("login", {
 	                        password: this.password
 	                    })
 	                    .then(response => {
-	                    	user = response.data;
+	                    	let user = response.data;
 	                        if (response.data == "") {
-	                        	console.log(user.username);
 	                            alert("Wrong username or password");
 	                        } else {
-	                        	console.log(user.username);
 	                            localStorage.setItem("username", user.username);
-	                            console.log(user.username);
 	                            localStorage.setItem("role", user.role);
 	                            this.$router.push("restaurants")
 	                        }
 	                    }).catch(err => {
 	                        console.log(err);
-	                        this.showFailedLogin = true;
 	                    });
 	            }
 	        }

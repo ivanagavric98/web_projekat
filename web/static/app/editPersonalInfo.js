@@ -38,7 +38,7 @@ Vue.component("editPersonalInfo", {
 		              
 		              <div class="form-outline mb-2">
 		                <label class="form-label" for="form3Example1q">Username</label>
-		                <input type="text" id="form3Example1q" class="form-control" v-model = "user.username"/>
+		                <input type="text" id="form3Example1q" class="form-control" v-model = "user.username" disabled/>
 		              </div>
 		              
 		              <div class="form-outline mb-2">

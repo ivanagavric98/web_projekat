@@ -56,15 +56,7 @@ Vue.component("managerRestaurant", {
 	 <div class="row mb-5" style = "width: 56%; margin-left: 22%;">
                <div class="container">
 			    <div class="row">
-			      <div class="col-sm">
-				  <select class="custom-select"  @change="search" v-model = "filtrateByRestaurantType">
-				    <option value="" disabled selected>Filtrate by name..</option>
-				    <option value="International"> International</option>
-				    <option value="Fast Food"> Fast food</option>
-				    <option value="Traditional Food"> Traditional food</option>
-				    <option value="Chinese Food"> Chinese food</option>
-				  </select>
-				  </div>
+			      
 				  <div class="col-sm">
 				  <select class="custom-select"  @change="search" v-model = "filtrateByOrderStatus">
 				    <option value="" disabled selected>Filtrate by status...</option>
@@ -77,7 +69,8 @@ Vue.component("managerRestaurant", {
 				  </select>
 				  </div>
 				  <div class="col-sm">
-				  <select class="custom-select"  @change="search" v-model = "sortByRestaurantName">
+				  <select class="custom-select"  @ch
+				  ange="search" v-model = "sortByRestaurantName">
 				    <option value="" disabled selected>Sort by name...</option>
 				    <option value="ascending"> Ascending</option>
 				    <option value="descending"> Descending</option>
@@ -122,7 +115,7 @@ Vue.component("managerRestaurant", {
 		    <div class="restaurant-info">
 		        <h3>{{restaurant.name}}</h3>
 		        <p class="restaurant-type">{{restaurant.type}}</p>
-                <button class="btn btn-light" @click="customersOverview" data-toggle="modal" data-target="#editModal"
+                <button class="btn btn-light" @click="customersOverview(restaurant)" data-toggle="modal" data-target="#editModal"
 						><b>Customers who made order from {{restaurant.name}}</b></button
 					>		    </div>
 		    <div class="restaurant-details">
@@ -225,8 +218,8 @@ Vue.component("managerRestaurant", {
 		    <div class="restaurant-info" >
 		        <h3 :key="article" v-for="article in order.articles">{{article}}</h3>
 				<p class="restaurant-type">Order ID:{{order.ID}}</p>
-				<button class="btn btn-success" v-if="!accessControlManager" data-toggle="modal" data-target="#editOrderModal"
-						>Edit<b></b></button>
+				<button class="btn btn-success" v-if="!accessControlManager" v-on:click="changeOrderStatus(order)" data-toggle="modal" data-target="#editOrderModal"
+						>Change order status<b></b></button>
 		    </div>
 		  
 		    <div class="restaurant-details">
@@ -247,40 +240,7 @@ Vue.component("managerRestaurant", {
     	
 		    </div>
 		    </div>		 
-	
-	
-	<!-- EDIT ORDER STATUS -->
 
-	<div class="modal fade" id="editOrderModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <h5 class="modal-title" id="exampleModalLongTitle">Change order status</h5>
-			  <button type="button" class="close comment-button" data-dismiss="modal" aria-label="Close">
-				<i class="fas fa-times"></i>
-			  </button>
-			</div>
-			<div class="modal-body">
-				<form name='new-item-form'>
-			  <div class="form-group row mb-2">
-				  <label for="staticEmail" class="col-sm-2 col-form-label">Order Status</label>
-				  <div class="col-sm-10">
-								<select id="form3Example1q"  class="form-control"  v-model="order.orderStatus">
-									<option value="WAITING_FOR_SUPPLIER" v-if="!accessControlManager">Waiting For Supplier</option>
-									<option value="IN_PREPARATION" v-if="!accessControlManager">In Preparation</option>
-								</select>
-					  </div>			  
-				</div>
-				
-			<div class="modal-footer">
-			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			  <button type="button" class="btn btn-primary"  data-dismiss="modal" @click=setEditableOrder(order)>Save changes</button>
-			</div>
-		  </form>
-		  </div>
-		</div>
-		</div>
-		</div>
 		</div>	
 		</div>
 		</div>
@@ -317,8 +277,8 @@ Vue.component("managerRestaurant", {
         selectRow(item) {
             this.selectedItem = item;
         },
-        customersOverview() {
-            axios.get('/getCustomersWithOrderFromRestaurant/' + JSON.parse(localStorage.getItem("restaurant")))
+        customersOverview(restaurant) {
+            axios.get('/getCustomersWithOrderFromRestaurant/' + restaurant.name)
                 .then(response => {
                     this.customers = response.data;
                 });
@@ -327,8 +287,8 @@ Vue.component("managerRestaurant", {
             let role = localStorage.getItem('role')
 
             this.orderFiltrateSortSearchDTO = {
-                user : localStorage.getItem("username"),
-                searchByrestaurantName : this.searchByrestaurantName,
+                user : null,
+                searchByrestaurantName : this.restaurant.name,
                 searchBypriceFrom : this.searchBypriceFrom,
                 searchBypriceTo : this.searchBypriceTo,
                 searchBydateFrom : this.searchBydateFrom,
@@ -355,9 +315,12 @@ Vue.component("managerRestaurant", {
                         }
                     });
             },
-        changeOrderStatus(){
-            let role = localStorage.getItem('role')
-                axios.post('/changeStatusToWaitingForSupplier/' + this.editedOrder.ID, {})
+        changeOrderStatus(order){
+            let role = localStorage.getItem('role');
+
+            if(order.orderStatus == 'IN_PREPARATION') {
+
+                axios.post('/changeStatusToWaitingForSupplier/' + order.ID, {})
                     .then(response => {
                         if (response.data) {
                             alert("You have successfully change order status!")
@@ -365,12 +328,23 @@ Vue.component("managerRestaurant", {
                         } else
                             alert("That article already exists!")
                     });
+            }else if(order.orderStatus == 'PROCESSING'){
+
+                axios.post('/changeStatusToInPreparation/' + order.ID, {})
+                    .then(response => {
+                        if (response.data) {
+                            alert("You have successfully change order status!")
+                            location.reload()
+                        } else
+                            alert("That article already exists!")
+                    });
+            }else {
+                alert('You cannot change order status when status is ' + order.orderStatus);
+            }
 
         },
         setEditableOrder(order) {
             this.editedOrder = order;
-            this.changeOrderStatus();
         },
         }
-
 });

@@ -18,7 +18,8 @@ Vue.component("orders", {
 			    filtrateByOrderStatus : null,
 				searchQuery: null,
 				commentText: null,
-				grade: null
+				grade: null,
+				ordersSupplier: null,
 				}
 	},
 	mounted() {
@@ -40,11 +41,19 @@ Vue.component("orders", {
 		}else if(this.role == "SUPPLIER"){
 			 axios.get("/getOrdersBySupplier/" + localStorage.getItem('username'))
 		        .then(response => {
-		            console.log(response.data)
-		            this.orders = response.data;               
-		        });
+					this.orders = response.data;
+				});
+			axios.get("/getOrderWithStatusWaitingForSupplier")
+				.then(response => {
+					console.log(response.data)
 
-		 }else {
+					this.ordersSupplier = response.data;
+				});
+
+
+
+
+		}else {
 			 axios.get("/getOrdersByRestaurantName")
 		        .then(response => {
 		            console.log(response.data)
@@ -141,10 +150,10 @@ Vue.component("orders", {
 				<button class="btn btn-danger" @click="cancelOrder(order)" v-if="accessControlCustomer"
 						>Cancel<b></b></button
 					>
-				<button class="btn btn-success" v-if="accessControlManagerAndDeliverer" data-toggle="modal" data-target="#editModal"
-						>Edit<b></b></button
+				<button class="btn btn-success" v-if="accessControlManagerAndDeliverer" @click="changeOrderStatus(order)"
+						>Change order status<b></b></button
 					>
-				<button class="btn btn-light"  v-if="accessControlDeliverer" @click="sendRequest(order)"
+				<button class="btn btn-light"  v-if="order.orderStatus == 'WAITING_FOR_DELIVERY' && accessControlDeliverer" @click="sendRequest(order)"
 						>Send request for delivering<b></b></button
 					>	
 		    </div>
@@ -183,7 +192,7 @@ Vue.component("orders", {
 				  <label for="staticEmail" class="col-sm-2 col-form-label">Order Status</label>
 				  <div class="col-sm-10">
 								<select id="form3Example1q"  class="form-control"  v-model="order.orderStatus">
-									<option value="WAITING_FOR_DELIVERER" v-if="accessControlManager">Waiting For Supplir</option>
+									<option value="WAITING_FOR_DELIVERER" v-if="accessControlManager">Waiting For Supplier</option>
 									<option value="IN_PREPARATION" v-if="accessControlManager">In Preparation</option>
 									<option value="IN_TRANSPORT" v-if="accessControlDeliverer">In Transport</option>
 									<option value="DELIVERED" v-if="accessControlDeliverer">Delivered</option>
@@ -237,6 +246,57 @@ Vue.component("orders", {
 		</div>
 		
   </div>
+  
+  		<h2 class="text-center" v-if="accessControlDeliverer"> Waiting for delivery</h2>
+
+  
+        <div :key="order.ID" v-for="order in ordersSupplier">
+		    <div class="container" name="rest" style= "margin-top:10px;
+			    color: #42405F;
+			    display: flex;
+			    flex-direction: row;
+			    background-color: white;
+			    padding: 17px;
+			    border-radius: 20px;
+			    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+			    cursor: pointer;
+			    min-width: 800px;
+			    width: 80%;">
+	    
+		    <div class="restaurant-info">
+		        <h3 :key="article" v-for="article in order.articles">{{article}}</h3>
+				<p class="restaurant-type">Order ID:{{order.ID}}</p>
+				<button class="btn btn-danger" @click="cancelOrder(order)" v-if="accessControlCustomer"
+						>Cancel<b></b></button
+					>
+				<button class="btn btn-success" v-if="accessControlManagerAndDeliverer" data-toggle="modal" data-target="#editModal"
+						>Edit<b></b></button
+					>
+				<button class="btn btn-light"  v-if="accessControlDeliverer" @click="sendRequest(order)"
+						>Send request for delivering<b></b></button
+					>	
+		    </div>
+		  
+		    <div class="restaurant-details">
+		        <div class="restaurant-location">
+		            <p>📍:Restaurant: {{order.restaurant}}</p>
+		        </div>
+		        <div class="restaurant-status">
+		           		    <p>Status: {{order.orderStatus}}</p>
+		        </div>
+		        <div class="restaurant-status">
+		           		    <p>Date: {{order.dateAndTime}}</p>
+		        </div>
+		        
+		        <div class="grade">
+		            <i class="fas fa-star" style="color: #FAE480"></i>
+		            <label>Price: {{order.price}} DIN</label>
+		        </div>
+		    </div>
+		    </div>		  
+  </div>
+  
+  
   </div>
 
 	
@@ -265,7 +325,7 @@ Vue.component("orders", {
 		},
 		accessControlManagerAndDeliverer(){
 			let role = localStorage.getItem('role')
-			if(role !== 'SUPPLIER' || role !== 'MENAGER'){
+			if(role == 'SUPPLIER' || role == 'DELIVERER'){
 				return true;
 			}else
 				return false;
@@ -296,20 +356,24 @@ Vue.component("orders", {
 
 					axios.post('/searchFiltrateSortOrders', this.orderFiltrateSortSearchDTO)
 						.then(response => {
-							if (response.data.length !== 0) {
-								this.orders = response.data
-							} else {
-								alert("No results!")
-								location.reload()
-							}
+							this.orderFiltrateSortSearchDTO.user = null;
+							this.orderFiltrateSortSearchDTO.filtrateByOrderStatus = "WAITING_FOR_SUPPLIER";
+							this.orders = response.data
+
+							axios.post('/searchFiltrateSortOrders', this.orderFiltrateSortSearchDTO)
+								.then(response => {
+										this.ordersSupplier = response.data
+								});
+
 						});
+
+
+
 
 		},
 		changeOrderStatus(order){
-			let role = localStorage.getItem('role')
-			let orderStatus = order.orderStatus;
-			if(role == 'MENAGER') {
-				axios.post('/changeStatusToWaitingForSupplier/' + this.editedOrder.ID, {})
+
+				axios.post('/changeStatusToDelivered/' + order.ID + "/" + localStorage.getItem("username"), {})
 					.then(response => {
 						if (response.data) {
 							alert("You have successfully change order status!")
@@ -317,37 +381,35 @@ Vue.component("orders", {
 						} else
 							alert("That article already exists!")
 					});
-			}else if(role == 'SUPPLIER'){
-				axios.post('/changeStatusToDelivered/' + this.editedOrder.ID + "/" + localStorage.getItem("username"), {})
-					.then(response => {
-						if (response.data) {
-							alert("You have successfully change order status!")
-							location.reload()
-						} else
-							alert("That article already exists!")
-					});
-			}
+
 		},
 		setEditableOrder(order) {
 			this.editedOrder = order;
 			this.changeOrderStatus(order);
 		},
 		cancelOrder(order) {
-			axios.post('/cancelOrder/'+ localStorage.getItem("username") + "/" + order.ID)
-				.then(response => {
-					if(response.data){
-						alert("You have successfully cancel order!")
-						location.reload()
-					}else
-						alert("That article already exists!")
-				});
+			if(order.orderStatus == "PROCESSING"){
+				axios.post('/cancelOrder/'+ localStorage.getItem("username") + "/" + order.ID)
+					.then(response => {
+						if(response.data){
+							alert("You have successfully cancel order!")
+							location.reload()
+						}else
+							alert("That article already exists!")
+					});
+			}else{
+				alert('You cannot canceled order when status is ' + order.orderStatus)
+			}
+
 		},
 		sendRequest(order) {
-			axios.post('/addRequest/'+ localStorage.getItem("username") + "/" + order.ID)
+
+
+			axios.post('/addRequest/' + localStorage.getItem("username") + "/" + order.ID)
 				.then(response => {
-					if(response.data){
+					if (response.data) {
 						alert("You have successfully sent request!")
-					}else
+					} else
 						alert("That article already exists!")
 				});
 		}

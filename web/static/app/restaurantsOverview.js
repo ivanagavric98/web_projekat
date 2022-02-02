@@ -38,7 +38,7 @@ Vue.component("restaurants", {
     <div class="restaurant-list">
     
     	<div class="input-group mb-3" style = "width: 56%; margin-left: 22%;">
-		  <input type="text" class="form-control" placeholder="Restaurant name" aria-label="" aria-describedby="basic-addon2" v-model="searchByrestaurantName">
+		  <input type="text" class="form-control" placeholder="Restaurant name" aria-label="" aria-describedby="basic-addon2" v-model="searchByrestaurantName" v-if="accessControlCustomerAndDeliverer">
 		  <input type="text" class="form-control" placeholder="Location" aria-label="" aria-describedby="basic-addon2" v-model="searchByLocation">
 		  <input type="text" class="form-control" placeholder="Type" aria-label="" aria-describedby="basic-addon2" v-model="searchByRestaurantType">
 		  <input type="text" class="form-control" placeholder="Grade" aria-label="" aria-describedby="basic-addon2" v-model="searchByAverageGrade">
@@ -117,7 +117,7 @@ Vue.component("restaurants", {
 		        <div class="restaurant-location">
 		            <p>📍:  {{restaurant.location.address.street}} {{restaurant.location.address.number}}, {{restaurant.location.address.city}}</p>
 		        </div>
-		                    <div class="restaurant-status">
+               <div class="restaurant-status">
 		            {{restaurant.status}}
 		        </div>
 		        <div class="grade">
@@ -172,6 +172,13 @@ Vue.component("restaurants", {
         accessControlCustomer(){
             let role = localStorage.getItem("role");
             if(role == 'CUSTOMER'){
+                return true;
+            }else
+                return false;
+        },
+        accessControlCustomerAndDeliverer(){
+            let role = localStorage.getItem("role");
+            if(role == 'CUSTOMER' || role == 'DELIVERER'){
                 return true;
             }else
                 return false;

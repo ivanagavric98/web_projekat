@@ -119,31 +119,6 @@ public class OrderDAO implements IDAO<Order, String> {
 
     }
 
-    public Order changeStatusToInPreparation(String params) throws JsonSyntaxException, IOException {
-        Order order = getByID(params);
-        order.setOrderStatus(OrderStatus.IN_PREPARATION);
-        update(order);
-        return order;
-    }
-
-    public Order changeStatusToWaitingForSupplier(String params)
-            throws JsonSyntaxException, IOException {
-        Order order = getByID(params);
-        System.out.println(order.ID);
-        if(order.orderStatus.equals(OrderStatus.IN_PREPARATION)) {
-        	order.setOrderStatus(OrderStatus.WAITING_FOR_SUPPLIER);
-        }
-        update(order);
-        return order;
-    }
-
-    public Order changeStatusToInTransport(String params) throws JsonSyntaxException, IOException {
-        Order order = getByID(params);
-        order.setOrderStatus(OrderStatus.IN_TRANSPORT);
-        update(order);
-        return order;
-    }
-
     public Order changeStatusToDelivered(String params) throws JsonSyntaxException, IOException {
         Order order = getByID(params);
         order.setOrderStatus(OrderStatus.DELIVERED);

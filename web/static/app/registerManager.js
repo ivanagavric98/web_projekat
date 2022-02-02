@@ -14,7 +14,7 @@ Vue.component("registerManager", {
 	},
 	mounted() {
 		
-		 axios.get("/getRestaurantByName/" + JSON.parse(localStorage.getItem('restaurant')))
+		 axios.get("/getRestaurantByName/" + localStorage.getItem('restaurant'))
          .then(response => {
              console.log(response.data)
              this.restaurant = response.data;               
@@ -107,9 +107,14 @@ Vue.component("registerManager", {
 	                        role: "MENAGER"
 	            	}
 
-					axios.post('/registerManager',  JSON.stringify(manager))
+					axios.post('/registerManager',  manager)
 					.then(response => {
-						alert("You have successfully registered manager!")});
+						alert("You have successfully registered manager!")
+							axios.post('/addRestaurantToManager/' + manager.username, this.restaurant)
+							.then( response => {
+								alert("That restaurant is created!")
+								this.$router.push('restaurants')});
+							});
 	            	}
 	            	}
 	              	

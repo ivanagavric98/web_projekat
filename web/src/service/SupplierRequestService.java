@@ -23,7 +23,7 @@ public class SupplierRequestService {
         supplierRequest.supplier = supplier;
 
         Boolean result = false;
-        if (requests == null) {
+        if (requests == null || requests.size() == 0) {
             supplierRequestDAO.create(supplierRequest);
             result = true;
         } else {
@@ -43,10 +43,11 @@ public class SupplierRequestService {
     	ArrayList<SupplierRequest> requests = supplierRequestDAO.getAll();
     	ArrayList<SupplierRequest> result = new ArrayList<SupplierRequest>();
     	
+    	if(requests != null) {
     	for(SupplierRequest r : requests) {
     		if(r.getStatus().equals(RequestStatus.PROCESSING)) 
     			result.add(r);
-    	}
+    	}}
         return result;
     }
 

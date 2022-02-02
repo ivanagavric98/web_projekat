@@ -109,8 +109,8 @@ Vue.component("adminRestaurant", {
 	<div class="items-list" v-if="status =='items'">
 			<div style="width: 888px; margin: auto" class="headr">			
 				<h3>Articles</h3>
-				<button data-toggle="modal" class="modal-button" data-target="#exampleModalCenter"><span class="headr-new-item" v-if="accessControlManager">New Article </span></button>
-				<button class="btn btn-success" @click="createShoppingCart" v-if="role == 'CUSTOMER'"><span class="headr-new-item" v-if="accessControlCustomer"> Shopping Cart </span></button>
+				<button class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter" v-if="accessControlManager">New Article</button>
+				<button class="btn btn-success" @click="createShoppingCart" v-if="accessControlCustomer">Shopping Cart</button>
 		</div>
 		
 		<div :key="index" v-for="(article, index) in articles" class="item-wrapper">

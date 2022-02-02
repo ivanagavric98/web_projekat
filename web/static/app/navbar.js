@@ -13,6 +13,7 @@ Vue.component("navbar", {
             event.preventDefault();
             localStorage.removeItem("role");
             localStorage.removeItem("username");
+            localStorage.removeItem("restaurant");
             router.replace({ path: `/login` })
 
         },
@@ -43,7 +44,7 @@ Vue.component("navbar", {
           <li v-if="role =='admin' | role =='prodavac'"  class="nav-item active">
             <a class="btn btn-dark mr-1" href="/#/tickets">Tickets</a>
           </li>
-          <li v-if="role =='CUSTOMER' || role =='SUPPLIER' || role =='MENAGER'" class="nav-item active">
+          <li v-if="role =='CUSTOMER' || role =='SUPPLIER'" class="nav-item active">
             <a class="btn btn-dark mr-1" href="/#/orders">View orders</a>
           </li>
           <li v-if="role =='MENAGER' " class="nav-item active">

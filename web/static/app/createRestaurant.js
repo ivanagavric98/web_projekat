@@ -143,7 +143,7 @@ Vue.component("createRestaurant", {
 	                e.preventDefault();
 	            }else{
 	            	if(!this.selectedManager){  
-    	            	  localStorage.setItem('restaurant', JSON.stringify(restaurant.name));
+    	            	  localStorage.setItem('restaurant', restaurant.name);
     	            	  alert("There is no available manager. You have to create new manager for Your restaurant.");
                           this.$router.push("registerManager")
     	            	  
